@@ -1,0 +1,8 @@
+server:
+  port : 8080 # 포트는 자기 마음대로..
+
+spring:
+  profiles.active: dev
+  web:
+    resources:
+      static-locations: classpath:/static, classpath:/frontend # 이부분 추가해야됨
