@@ -36,13 +36,13 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
 
     @Override
     public Optional<Student> findById(Long id) {
-        List<Student> result = jdbcTemplate.query("select * from student where id = ?", memberRowMapper());
+        List<Student> result = jdbcTemplate.query("select * from student where id = ?", memberRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public Optional<Student> findByName(String name) {
-        List<Student> result = jdbcTemplate.query("select * from student where name = ?", memberRowMapper());
+        List<Student> result = jdbcTemplate.query("select * from student where name = ?", memberRowMapper(), name);
         return result.stream().findAny();
     }
 
