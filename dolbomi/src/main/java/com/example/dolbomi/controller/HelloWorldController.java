@@ -1,13 +1,15 @@
-package com.example.dolbomi.Controller;
+package com.example.dolbomi.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.Arrays;
+import java.util.List;
+
+@RestController
 public class HelloWorldController {
-    @GetMapping("/")
-    public String test(){
-        return "index.html";
+    @GetMapping("/hello")
+    public List<String> hello(){
+        return Arrays.asList("안녕하세요","hello");
     }
 }
