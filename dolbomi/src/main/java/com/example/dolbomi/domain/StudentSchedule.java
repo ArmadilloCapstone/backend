@@ -1,6 +1,6 @@
 package com.example.dolbomi.domain;
 
-public class Student_schedule {
+public class StudentSchedule {
     private Long id;
     private Long student_id;
     private Long class_id;

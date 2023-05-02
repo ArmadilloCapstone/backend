@@ -2,7 +2,7 @@ package com.example.dolbomi.domain;
 
 import java.util.Date;
 
-public class After_school_class {
+public class AfterSchoolClass {
     private Long id;
     private String class_name;
     private Date start_time;
