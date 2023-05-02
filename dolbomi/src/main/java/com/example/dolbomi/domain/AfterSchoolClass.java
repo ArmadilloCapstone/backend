@@ -1,12 +1,13 @@
 package com.example.dolbomi.domain;
 
+import java.sql.Time;
 import java.util.Date;
 
 public class AfterSchoolClass {
     private Long id;
     private String class_name;
-    private Date start_time;
-    private Date end_time;
+    private Time start_time;
+    private Time end_time;
     private Long day;
 
     public Long getId() {
@@ -25,19 +26,19 @@ public class AfterSchoolClass {
         this.class_name = class_name;
     }
 
-    public Date getStart_time() {
+    public Time getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(Date start_time) {
+    public void setStart_time(Time start_time) {
         this.start_time = start_time;
     }
 
-    public Date getEnd_time() {
+    public Time getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Date end_time) {
+    public void setEnd_time(Time end_time) {
         this.end_time = end_time;
     }
 

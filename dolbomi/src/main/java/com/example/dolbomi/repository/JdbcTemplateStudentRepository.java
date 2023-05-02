@@ -27,7 +27,13 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
         jdbcInsert.withTableName("student").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("name", student.getName());
+        parameters.put("name", student.getName());;
+        parameters.put("grade", student.getGrade());;
+        parameters.put("phone_num", student.getPhone_num());;
+        parameters.put("gender", student.getGender());;
+        parameters.put("class_id", student.getClass_id());;
+        parameters.put("birth_date", student.getBirth_date());;
+        parameters.put("disable", student.getDisable());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         student.setId(key.longValue());
@@ -40,11 +46,6 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
         return result.stream().findAny();
     }
 
-    @Override
-    public Optional<Student> findByName(String name) {
-        List<Student> result = jdbcTemplate.query("select * from student where name = ?", memberRowMapper(), name);
-        return result.stream().findAny();
-    }
 
     @Override
     public List<Student> findAll() {
@@ -59,6 +60,12 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
                 Student student = new Student();
                 student.setId(rs.getLong("id"));
                 student.setName(rs.getString("name"));
+                student.setGrade(rs.getLong("grade"));
+                student.setPhone_num(rs.getString("phone_num"));
+                student.setGender(rs.getLong("gender"));
+                student.setClass_id(rs.getLong("class_id"));
+                student.setBirth_date(rs.getDate("birth_date"));
+                student.setDisable(rs.getLong("disable"));
 
                 return student;
             }
