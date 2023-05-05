@@ -7,6 +7,7 @@ import com.example.dolbomi.service.PickupService;
 import com.example.dolbomi.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -21,13 +22,14 @@ public class HelloWorldController {
     public HelloWorldController(StudentService studentService){
         this.studentService = studentService;
     }
-//    @GetMapping("/hello")
-//    public List<String> hello(){
-//        return Arrays.asList("안녕하세요","hello");
-//    }
     @GetMapping("/hello")
-    public List<Student> hello(){
-        return studentService.findMembers();
+    public List<String> hello(){
+        return Arrays.asList("안녕하세요","hello","good","happy");
     }
+
+//    @GetMapping("/hello")
+//    public List<Student> hello(){
+//        return studentService.findMembers();
+//    }
 
 }

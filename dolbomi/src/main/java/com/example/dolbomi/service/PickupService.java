@@ -1,5 +1,6 @@
 package com.example.dolbomi.service;
 
+import com.example.dolbomi.controller.ParentPickupRequestForm;
 import com.example.dolbomi.controller.StudentPickupForm;
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
@@ -41,6 +42,17 @@ public class PickupService {
         }
         return studentPickupFormList;
     }
+    public ParentPickupRequestForm requestPickupByParent(String parentName, StudentPickupForm studentPickupForm){
+        ParentPickupRequestForm parentPickupRequestForm = new ParentPickupRequestForm();
+        parentPickupRequestForm.setParentName(parentName);
+        parentPickupRequestForm.setStudentName(studentPickupForm.getName());
+        parentPickupRequestForm.setStudentGrade(studentPickupForm.getGrade());
+        parentPickupRequestForm.setStudentGender(studentPickupForm.getGender());
+        return parentPickupRequestForm;
+    }
+
+
+
     private static boolean guardianChildIdEqualToStudentId(List<Long> studentIdList, List<Student> studentList, int i, int j) {
         return studentList.get(i).getId().equals(studentIdList.get(j));
     }
