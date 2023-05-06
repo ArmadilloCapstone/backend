@@ -67,7 +67,6 @@ public class PickupService {
         return pickupRequestFormList;
     }
 
-
     private static boolean guardianChildIdEqualToStudentId(List<Long> studentIdList, List<Student> studentList, int i, int j) {
         return studentList.get(i).getId().equals(studentIdList.get(j));
     }
