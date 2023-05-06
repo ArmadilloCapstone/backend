@@ -1,15 +1,19 @@
 package com.example.dolbomi.controller;
 
-import java.util.Date;
-
-public class ParentPickupRequestForm {
-    private String parentName;
+public class PickupRequestForm {
+    private Long pickupManId;
+    private String pickupManName;
+    private Long studentId;
     private String studentName;
     private Long studentGrade;
     private Long studentGender;
 
-    public String getParentName() { return parentName; }
-    public void setParentName(String parentName) { this.parentName = parentName; }
+    public Long getPickupManId() { return pickupManId; }
+    public void setPickupManId(Long pickupManId) { this.pickupManId = pickupManId; }
+    public String getPickupManName() { return pickupManName; }
+    public void setPickupManName(String pickupManName) { this.pickupManName = pickupManName; }
+    public Long getStudentId() { return studentId; }
+    public void setStudentId(Long studentId) { this.studentId = studentId; }
     public String getStudentName() { return studentName; }
     public void setStudentName(String studentName) { this.studentName = studentName; }
     public Long getStudentGrade() { return studentGrade; }

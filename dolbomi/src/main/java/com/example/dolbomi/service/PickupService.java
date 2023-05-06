@@ -1,6 +1,6 @@
 package com.example.dolbomi.service;
 
-import com.example.dolbomi.controller.ParentPickupRequestForm;
+import com.example.dolbomi.controller.PickupRequestForm;
 import com.example.dolbomi.controller.StudentPickupForm;
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
@@ -18,39 +18,54 @@ public class PickupService {
     public StudentPickupForm selectStudentForParent(Parent parent){
         StudentPickupForm studentPickupForm = new StudentPickupForm();
         Optional<Student> result = studentRepository.findById(parent.getChild_id());
+        studentPickupForm.setId(result.get().getId());
         studentPickupForm.setName(result.get().getName());
         studentPickupForm.setGrade(result.get().getGrade());
         studentPickupForm.setGender(result.get().getGender());
         return studentPickupForm;
     }
-    public List<StudentPickupForm> selectStudentForGuardian(List<Long> studentIdList){
-        List<Student> studentList = studentRepository.findAll();
+
+    public List<StudentPickupForm> selectStudentForGuardian(Guardian guardian){
         List<StudentPickupForm> studentPickupFormList = new ArrayList<>();
-        int studentCount = studentList.size();
-        int studentIdCount = studentIdList.size();
-        for(int i = 0; i < studentCount; i++){
-            for(int j = 0; j<studentIdCount;j++){
-                if(guardianChildIdEqualToStudentId(studentIdList, studentList, i, j)){
-                    StudentPickupForm studentPickupForm = new StudentPickupForm();
-                    studentPickupForm.setName(studentList.get(i).getName());
-                    studentPickupForm.setGrade(studentList.get(i).getGrade());
-                    studentPickupForm.setGender(studentList.get(i).getGender());
-                    studentPickupFormList.add(studentPickupForm);
-                    break;
-                }
-            }
+        List<Student>result =  studentRepository.findStudent_idById(guardian.getId());
+        int studentCount = result.size();
+        for(int i = 0; i<studentCount;i++){
+            StudentPickupForm studentPickupForm = new StudentPickupForm();
+            studentPickupForm.setId(result.get(i).getId());
+            studentPickupForm.setName(result.get(i).getName());
+            studentPickupForm.setGrade(result.get(i).getGrade());
+            studentPickupForm.setGender(result.get(i).getGender());
+            studentPickupFormList.add(studentPickupForm);
         }
         return studentPickupFormList;
     }
-    public ParentPickupRequestForm requestPickupByParent(String parentName, StudentPickupForm studentPickupForm){
-        ParentPickupRequestForm parentPickupRequestForm = new ParentPickupRequestForm();
-        parentPickupRequestForm.setParentName(parentName);
-        parentPickupRequestForm.setStudentName(studentPickupForm.getName());
-        parentPickupRequestForm.setStudentGrade(studentPickupForm.getGrade());
-        parentPickupRequestForm.setStudentGender(studentPickupForm.getGender());
-        return parentPickupRequestForm;
+
+    public PickupRequestForm requestPickupByParent(Parent parent, StudentPickupForm studentPickupForm){
+        PickupRequestForm pickupRequestForm = new PickupRequestForm();
+        pickupRequestForm.setPickupManId(parent.getId());
+        pickupRequestForm.setPickupManName(parent.getName());
+        pickupRequestForm.setStudentId(studentPickupForm.getId());
+        pickupRequestForm.setStudentName(studentPickupForm.getName());
+        pickupRequestForm.setStudentGrade(studentPickupForm.getGrade());
+        pickupRequestForm.setStudentGender(studentPickupForm.getGender());
+        return pickupRequestForm;
     }
 
+    public List<PickupRequestForm> requestPickupByGuardian(Guardian guardian, List<StudentPickupForm> studentPickupFormList){
+        List<PickupRequestForm> pickupRequestFormList = new ArrayList<>();
+        int studentCount = studentPickupFormList.size();
+        for(int i = 0; i<studentCount;i++){
+            PickupRequestForm pickupRequestForm = new PickupRequestForm();
+            pickupRequestForm.setPickupManId(guardian.getId());
+            pickupRequestForm.setPickupManName(guardian.getName());
+            pickupRequestForm.setStudentId(studentPickupFormList.get(i).getId());
+            pickupRequestForm.setStudentName(studentPickupFormList.get(i).getName());
+            pickupRequestForm.setStudentGrade(studentPickupFormList.get(i).getGrade());
+            pickupRequestForm.setStudentGender(studentPickupFormList.get(i).getGender());
+            pickupRequestFormList.add(pickupRequestForm);
+        }
+        return pickupRequestFormList;
+    }
 
 
     private static boolean guardianChildIdEqualToStudentId(List<Long> studentIdList, List<Student> studentList, int i, int j) {

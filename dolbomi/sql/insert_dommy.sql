@@ -40,3 +40,11 @@ insert into student_time(id, student_id, entry1, entry2, entry3, entry4, entry5,
 values(002, 20230002, '14:00:00', '14:00:00', '14:00:00', '14:00:00', '14:00:00', '18:30:00', '18:30:00', '18:30:00', '18:30:00', '18:30:00');
 insert into student_time(id, student_id, entry1, entry2, entry3, entry4, entry5, off1, off2, off3, off4, off5)
 values(003, 20230003, '14:00:00', '14:00:00', '14:00:00', '14:00:00', '14:00:00', '18:30:00', '18:30:00', '18:30:00', '18:30:00', '18:30:00');
+
+insert into guardian(id, name, serial_num ,info)
+values(0001,"하루윌", 1750298361, "가나다 태권도장의 셔틀버스 기사");
+
+insert into student_of_guardian(guardian_id, student_id)
+values(0001, 20230001);
+insert into student_of_guardian(guardian_id, student_id)
+values(0001, 20230002);

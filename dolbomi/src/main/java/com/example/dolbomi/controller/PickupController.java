@@ -1,13 +1,12 @@
 package com.example.dolbomi.controller;
 
+import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.service.PickupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 @RestController
 public class PickupController {
@@ -25,21 +24,22 @@ public class PickupController {
 
     @PostMapping("/guardian")
     public List<StudentPickupForm> guardianPickup(){
-        List<Long> studentList = new ArrayList<>();
-        studentList.add(20230001L);
-        studentList.add(20230003L);
-        return pickupService.selectStudentForGuardian(studentList);
+        Guardian guardian = new Guardian();
+        guardian.setId(0001L);
+        return pickupService.selectStudentForGuardian(guardian);
     }
 
     @PostMapping("/requestParent")
-    public ParentPickupRequestForm parentRequest(){
+    public PickupRequestForm parentRequest(){
         Parent parent = new Parent();
+        parent.setId(200L);
         parent.setName("박현숙");
         StudentPickupForm studentPickupForm = new StudentPickupForm();
+        studentPickupForm.setId(150L);
         studentPickupForm.setName("박미희");
         studentPickupForm.setGrade(1L);
         studentPickupForm.setGender(1L);
-        return pickupService.requestPickupByParent(parent.getName(),studentPickupForm);
+        return pickupService.requestPickupByParent(parent,studentPickupForm);
     }
 
 

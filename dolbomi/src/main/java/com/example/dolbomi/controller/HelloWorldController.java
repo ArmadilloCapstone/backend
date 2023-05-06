@@ -1,16 +1,11 @@
 package com.example.dolbomi.controller;
 
-import com.example.dolbomi.domain.Guardian;
-import com.example.dolbomi.domain.Parent;
-import com.example.dolbomi.domain.Student;
-import com.example.dolbomi.service.PickupService;
+
 import com.example.dolbomi.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
