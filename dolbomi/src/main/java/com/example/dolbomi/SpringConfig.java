@@ -37,7 +37,12 @@ public class SpringConfig {
         return new JdbcTemplateStudentStateRepository(dataSource);
     }
     @Bean
-    public StudentTimeRepository studentTimeRepository() {
+    public StudentTimeRepository studentTimeRepository()
+    {
         return new JdbcTemplateStudentTimeRepository(dataSource);
+    }
+    @Bean
+    public GuardianRepository guardianRepository() {
+        return new JdbcTemplateGuardianRepository(dataSource);
     }
 }

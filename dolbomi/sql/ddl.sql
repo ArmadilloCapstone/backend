@@ -3,6 +3,8 @@ drop table if exists after_school_class CASCADE;
 drop table if exists student_schedule CASCADE;
 drop table if exists student_state CASCADE;
 drop table if exists student_time CASCADE;
+drop table if exists guardian CASCADE;
+drop table if exists student_of_guardian CASCADE;
 
 
 create table student
@@ -53,9 +55,27 @@ create table student_time
     off5 time
 );
 
+create table guardian
+(
+    id int primary key,
+    name char(5),
+    serial_num int,
+    info varchar(80),
+
+);
+
+create table student_of_guardian
+(
+    guardian_id int,
+    student_id int,
+
+);
+
 
 alter table student convert to charset utf8;
 alter table after_school_class convert to charset utf8;
 alter table student_schedule convert to charset utf8;
 alter table student_state convert to charset utf8;
 alter table student_time convert to charset utf8;
+alter table guardian convert to charset utf8;
+alter table student_of_guardian convert to charset utf8;
