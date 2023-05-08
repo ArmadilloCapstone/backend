@@ -63,7 +63,7 @@ function App() {
    }
     async function getStudentState(){
         await axios
-            .post("/changeStudentState")
+            .post("/getStudentState")
             .then((response) => {
                 console.log(response.data);
             })

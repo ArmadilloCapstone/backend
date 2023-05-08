@@ -3,6 +3,8 @@ package com.example.dolbomi.service;
 import com.example.dolbomi.domain.StudentState;
 import com.example.dolbomi.repository.StudentStateRepository;
 
+import java.util.List;
+
 public class StudentStateService {
     private final StudentStateRepository studentStateRepository;
 
@@ -15,5 +17,8 @@ public class StudentStateService {
             return "변경완료";
         }
         else return "error";
+    }
+    public List<StudentState> findAll(){
+        return studentStateRepository.findAll();
     }
 }
