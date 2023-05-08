@@ -36,6 +36,15 @@ public class JdbcTemplateStudentStateRepository implements StudentStateRepositor
     }
 
     @Override
+    public Boolean changeState(Long student_id, int state) {
+        int result = jdbcTemplate.update("update student_state set state = ? where student_id = ?;", state, student_id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Optional<StudentState> findById(Long id) {
         List<StudentState> result = jdbcTemplate.query("select * from student_state where id = ?", memberRowMapper(), id);
         return result.stream().findAny();

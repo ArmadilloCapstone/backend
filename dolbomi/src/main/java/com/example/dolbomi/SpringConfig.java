@@ -1,7 +1,9 @@
 package com.example.dolbomi;
 
 import com.example.dolbomi.repository.*;
+import com.example.dolbomi.service.PickupService;
 import com.example.dolbomi.service.StudentService;
+import com.example.dolbomi.service.StudentStateService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +22,13 @@ public class SpringConfig {
     public StudentService studentService(){
         return new StudentService(studentRepository());
     }
+
+    @Bean
+    public StudentStateService studentStateService(){
+        return new StudentStateService(studentStateRepository());
+    }
+    @Bean
+    public PickupService pickupService() { return new PickupService(studentRepository()); }
     @Bean
     public AfterSchoolClassRepository afterSchoolClassRepository() {
         return new JdbcTemplateAfterSchoolClasstRepository(dataSource);
@@ -37,10 +46,10 @@ public class SpringConfig {
         return new JdbcTemplateStudentStateRepository(dataSource);
     }
     @Bean
-    public StudentTimeRepository studentTimeRepository()
-    {
+    public StudentTimeRepository studentTimeRepository() {
         return new JdbcTemplateStudentTimeRepository(dataSource);
     }
+
     @Bean
     public GuardianRepository guardianRepository() {
         return new JdbcTemplateGuardianRepository(dataSource);

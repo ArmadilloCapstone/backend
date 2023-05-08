@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface StudentStateRepository {
     StudentState save(StudentState studentState);
+    Boolean changeState(Long student_id, int state);
     Optional<StudentState> findById(Long id);
     List<StudentState> findAll();
 }

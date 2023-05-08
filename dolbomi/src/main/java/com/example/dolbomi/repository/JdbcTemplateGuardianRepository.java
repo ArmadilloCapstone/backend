@@ -43,7 +43,6 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
         return result.stream().findAny();
     }
 
-
     @Override
     public List<Guardian> findAll() {
         return jdbcTemplate.query("select * from guardian", memberRowMapper());
