@@ -29,7 +29,7 @@ function App() {
 
     async function getParent(){
         await axios
-            .post("/parent")
+            .post("/studentScheduleFindAll")
             .then((response) => {
                console.log(response.data);
                setParentMessage(response.data);
