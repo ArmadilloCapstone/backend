@@ -37,7 +37,9 @@ create table student_state
 (
     id int primary key,
     student_id int,
-    state int
+    state int,
+    foreign key (student_id)
+        references student(id) on update cascade
 );
 create table student_time
 (
@@ -61,14 +63,12 @@ create table guardian
     name char(5),
     serial_num int,
     info varchar(80)
-
 );
 
 create table student_of_guardian
 (
     guardian_id int,
     student_id int
-
 );
 
 

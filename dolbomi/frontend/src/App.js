@@ -12,6 +12,7 @@ function App() {
           getParent();
           getGuardian();
           getParentRequest();
+      getStudentState();
   },[]);
 
 //    async function getUser(){
@@ -60,6 +61,16 @@ function App() {
                     console.log(error);
                 })
    }
+    async function getStudentState(){
+        await axios
+            .post("/changeStudentState")
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+    }
 
 
 
