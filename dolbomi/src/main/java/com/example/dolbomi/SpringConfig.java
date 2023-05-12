@@ -23,7 +23,9 @@ public class SpringConfig {
     }
 
     @Bean
-    public PickupService pickupService() { return new PickupService(studentRepository()); }
+    public PickupService pickupService() {
+        return new PickupService(studentRepository(), pickupRepository());
+    }
     @Bean
     public AfterSchoolClassRepository afterSchoolClassRepository() {
         return new JdbcTemplateAfterSchoolClasstRepository(dataSource);
@@ -48,5 +50,9 @@ public class SpringConfig {
     @Bean
     public GuardianRepository guardianRepository() {
         return new JdbcTemplateGuardianRepository(dataSource);
+    }
+    @Bean
+    public PickupRepository pickupRepository(){
+        return new MemoryPickupRepository();
     }
 }

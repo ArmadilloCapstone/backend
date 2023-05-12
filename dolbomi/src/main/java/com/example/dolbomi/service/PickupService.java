@@ -5,15 +5,18 @@ import com.example.dolbomi.controller.StudentPickupForm;
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.domain.Student;
+import com.example.dolbomi.repository.PickupRepository;
 import com.example.dolbomi.repository.StudentRepository;
 
 import java.util.*;
 
 public class PickupService {
     private final StudentRepository studentRepository;
+    private final PickupRepository pickupRepository;
 
-    public PickupService(StudentRepository studentRepository){
+    public PickupService(StudentRepository studentRepository, PickupRepository pickupRepository){
         this.studentRepository = studentRepository;
+        this.pickupRepository = pickupRepository;
     }
     public StudentPickupForm selectStudentForParent(Parent parent){
         StudentPickupForm studentPickupForm = new StudentPickupForm();
@@ -48,6 +51,7 @@ public class PickupService {
         pickupRequestForm.setStudentName(studentPickupForm.getName());
         pickupRequestForm.setStudentGrade(studentPickupForm.getGrade());
         pickupRequestForm.setStudentGender(studentPickupForm.getGender());
+        pickupRepository.saveByParent(pickupRequestForm);
         return pickupRequestForm;
     }
 
@@ -64,6 +68,13 @@ public class PickupService {
             pickupRequestForm.setStudentGender(studentPickupFormList.get(i).getGender());
             pickupRequestFormList.add(pickupRequestForm);
         }
+        pickupRepository.saveByGuardian(pickupRequestFormList);
+        return pickupRequestFormList;
+    }
+
+    public List<PickupRequestForm> sendPickupForTeacher(){
+        List<PickupRequestForm> pickupRequestFormList = pickupRepository.findAll();
+        pickupRepository.clearPickupStore();
         return pickupRequestFormList;
     }
 

@@ -5,6 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+frontend
 frontend/build/
 frontend/node_modules/
 dolbomi/src/main/java/com/example/SpringConfig
@@ -41,3 +42,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### application ###
+application.properties
