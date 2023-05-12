@@ -5,7 +5,8 @@ drop table if exists student_state CASCADE;
 drop table if exists student_time CASCADE;
 drop table if exists guardian CASCADE;
 drop table if exists student_of_guardian CASCADE;
-
+drop table if exists dolbom_class CASCADE;
+drop table if exists parent CASCADE;
 
 create table student
 (
@@ -71,6 +72,26 @@ create table student_of_guardian
 
 );
 
+create table dolbom_class
+(
+    id int primary key,
+    class_name char(20),
+    class_num int,
+    year_seme char(10),
+    disable tinyint
+);
+
+create table parent
+(
+    id int primary key,
+    name char(5),
+    phone_num char(11),
+    gender tinyint,
+    birth_date date,
+    child_id int,
+    class_id int,
+    disable tinyint
+);
 
 alter table student convert to charset utf8;
 alter table after_school_class convert to charset utf8;
@@ -79,3 +100,5 @@ alter table student_state convert to charset utf8;
 alter table student_time convert to charset utf8;
 alter table guardian convert to charset utf8;
 alter table student_of_guardian convert to charset utf8;
+alter table dolbom_class convert to charset utf8;
+alter table parent convert to charset utf8;

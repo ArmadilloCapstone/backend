@@ -10,6 +10,7 @@ function App() {
   const [parentRequest, setParentRequest] = useState([]);
   const [guardianRequest, setGuardianRequest] = useState([]);
   const [teacherRequest, setTeacherRequest] = useState([]);
+  const [adminStudentRequest, setAdminStudentRequest] = useState([]);
 
   var id = 15;
   var title = "helloTestTitle";
@@ -27,7 +28,7 @@ function App() {
   var studentPhone_num = "010 - 1234 - 5678";
 
   var teacherId = 2107;
-
+  var adminId = 8805;
 
   useEffect(() => {
           //getUser();
@@ -190,6 +191,18 @@ function App() {
                 console.log("fail!")
             })
         }}> teacherSendbutton </button>
+
+        <button onClick = { () => {
+            axios.post("/admin", {
+                id : adminId,
+            }).then(function(response){
+                console.log(response.data);
+                setAdminStudentRequest(response.data);
+            }).catch(function(){
+                console.log("fail!");
+            })
+        }}> adminStudentbutton </button>
+
         <h1> Teacher Data </h1>
         {
             teacherRequest.map((obj, index) =>

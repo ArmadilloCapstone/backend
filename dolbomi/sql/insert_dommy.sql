@@ -4,6 +4,8 @@ insert into student(id, name, grade, phone_num, gender, class_id, birth_date, di
 values(20230002, '가가나', 1, '01000000002',1 , 1, '2003-01-02',1);
 insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable)
 values(20230003, '가가다', 1, '01000000003',1 , 1, '2003-01-03',1);
+insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable)
+values(20230004, '임꺽정', 2, '01000000004',2 , 0, '2003-01-04',1);
 
 insert into after_school_class(id, class_name, start_time, end_time, day)
 values(001, '종이접기반A', '15:00:00', '17:00:00',1);
@@ -48,3 +50,15 @@ insert into student_of_guardian(guardian_id, student_id)
 values(0001, 20230001);
 insert into student_of_guardian(guardian_id, student_id)
 values(0001, 20230002);
+
+insert into dolbom_class(id, class_name, class_num, year_seme, disable)
+values(001, "돌봄A반", 001, "2023년-1학기",1);
+insert into dolbom_class(id, class_name, class_num, year_seme, disable)
+values(002, "돌봄B반", 002, "2023년-1학기",1);
+
+insert into parent(id, name, phone_num, gender, birth_date, child_id, class_id, disable)
+values(12007050, '가민경', '01055558888', 2,'1973-09-03',20230003,1,1);
+insert into parent(id, name, phone_num, gender, birth_date, child_id, class_id, disable)
+values(12007051, '가민수', '01047579999', 1,'1973-09-01',20230001,1,1);
+insert into parent(id, name, phone_num, gender, birth_date, child_id, class_id, disable)
+values(12007052, '가혜지', '01012345678', 2,'1973-09-02',20230002,1,1);
