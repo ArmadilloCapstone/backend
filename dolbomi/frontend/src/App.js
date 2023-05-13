@@ -28,7 +28,11 @@ function App() {
   var studentPhone_num = "010 - 1234 - 5678";
 
   var teacherId = 2107;
-  var adminId = 8805;
+
+  var adminId = 1;
+  var adminName = '구륜회';
+  var adminUserId = 'abc123';
+  var adminUserPw = 'ddr9856';
 
   useEffect(() => {
           //getUser();
@@ -195,6 +199,9 @@ function App() {
         <button onClick = { () => {
             axios.post("/admin", {
                 id : adminId,
+                name : adminName,
+                user_id : adminUserId,
+                user_pw : adminUserPw,
             }).then(function(response){
                 console.log(response.data);
                 setAdminStudentRequest(response.data);

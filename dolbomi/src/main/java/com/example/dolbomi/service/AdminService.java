@@ -1,9 +1,11 @@
 package com.example.dolbomi.service;
 
 import com.example.dolbomi.controller.StudentManageForm;
+import com.example.dolbomi.domain.AdminAccount;
 import com.example.dolbomi.domain.DolbomClass;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.domain.Student;
+import com.example.dolbomi.repository.AdminAccountRepository;
 import com.example.dolbomi.repository.DolbomClassRepository;
 import com.example.dolbomi.repository.ParentRepository;
 import com.example.dolbomi.repository.StudentRepository;
@@ -16,15 +18,22 @@ public class AdminService {
     private final DolbomClassRepository dolbomClassRepository;
     private final StudentRepository studentRepository;
     private final ParentRepository parentRepository;
+    private final AdminAccountRepository adminAccountRepository;
 
     public AdminService(DolbomClassRepository dolbomClassRepository, StudentRepository studentRepository,
-                        ParentRepository parentRepository) {
+                        ParentRepository parentRepository, AdminAccountRepository adminAccountRepository) {
         this.dolbomClassRepository = dolbomClassRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
+        this.adminAccountRepository = adminAccountRepository;
     }
 
-    public List<StudentManageForm> searchAllStudent(){
+    public List<StudentManageForm> searchAllStudent(AdminAccount adminAccount){
+        boolean validationCheck = isValidationCheck(adminAccount);
+        if(validationCheck == false){
+            System.out.println("등록되지 않은 사용자의 요청");
+            return null;
+        }
         List<StudentManageForm> studentManageFormList = new ArrayList<>();
         List<Student> studentList = studentRepository.findAll();
         int studentCount = studentList.size();
@@ -41,6 +50,23 @@ public class AdminService {
         return studentManageFormList;
     }
 
+    private boolean isValidationCheck(AdminAccount adminAccount) {
+        List<AdminAccount> adminAccountList = adminAccountRepository.findAll();
+        int adminCount = adminAccountList.size();
+        boolean validationCheck = false;
+        for(int i = 0; i < adminCount; i++){
+            if(isRegisterdAdmin(adminAccount, adminAccountList, i)){
+                validationCheck = true;
+                break;
+            }
+        }
+        return validationCheck;
+    }
+
+    private static boolean isRegisterdAdmin(AdminAccount adminAccount, List<AdminAccount> adminAccountList, int i) {
+        return (adminAccount.getUser_id().equals(adminAccountList.get(i).getUser_id())) && (adminAccount.getUser_pw().equals(adminAccountList.get(i).getUser_pw()));
+    }
+
     private void parentSetting(List<Student> studentList, int i, StudentManageForm studentManageForm) {
         Optional<Parent> parent = parentRepository.findByChildId(studentList.get(i).getId());
         if(parent.isPresent()){
@@ -48,8 +74,8 @@ public class AdminService {
             studentManageForm.setParentPhoneNum(parent.get().getPhone_num());
         }
         else{
-            studentManageForm.setParentName("존재하지 않는 학부모 이름입니다.");
-            studentManageForm.setParentPhoneNum("존재하지 않는 학부모 휴대폰번호입니다.");
+            studentManageForm.setParentName("존재하지 않는 학부모 이름");
+            studentManageForm.setParentPhoneNum("존재하지 않는 학부모 휴대폰번호");
         }
     }
 
@@ -59,7 +85,7 @@ public class AdminService {
             studentManageForm.setDolbomClassName(dolbomClass.get().getClass_name());
         }
         else{
-            studentManageForm.setDolbomClassName("미정");
+            studentManageForm.setDolbomClassName("존재하지 않는 돌봄반");
         }
     }
 

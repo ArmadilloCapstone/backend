@@ -28,7 +28,7 @@ public class SpringConfig {
     }
     @Bean
     public AdminService adminService(){
-        return new AdminService(dolbomClassRepository(), studentRepository(), parentRepository());
+        return new AdminService(dolbomClassRepository(), studentRepository(), parentRepository(), adminAccountRepository());
     }
 
     @Bean
@@ -67,4 +67,6 @@ public class SpringConfig {
     public ParentRepository parentRepository(){
         return new JdbcTemplateParentRepository(dataSource);
     }
+    @Bean
+    public AdminAccountRepository adminAccountRepository() { return  new JdbcTemplateAdminAccountRepository(dataSource);}
 }

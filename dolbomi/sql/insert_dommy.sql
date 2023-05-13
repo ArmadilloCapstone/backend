@@ -62,3 +62,6 @@ insert into parent(id, name, phone_num, gender, birth_date, child_id, class_id, 
 values(12007051, '가민수', '01047579999', 1,'1973-09-01',20230001,1,1);
 insert into parent(id, name, phone_num, gender, birth_date, child_id, class_id, disable)
 values(12007052, '가혜지', '01012345678', 2,'1973-09-02',20230002,1,1);
+
+insert into admin_account(id ,name, user_id, user_pw)
+values(001, '구륜회', 'abc123', 'ddr9856');
