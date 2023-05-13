@@ -17,8 +17,8 @@ create table student
     gender tinyint,
     class_id int,
     birth_date date,
-    disable tinyint
-
+    disable tinyint,
+    original_class_num int
 );
 create table after_school_class
 (
@@ -69,7 +69,6 @@ create table student_of_guardian
 (
     guardian_id int,
     student_id int
-
 );
 
 create table dolbom_class

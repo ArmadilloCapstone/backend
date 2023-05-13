@@ -1,11 +1,11 @@
-insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable)
-values(20230001, '가가가', 1, '01000000001',1 , 1, '2003-01-01',1);
-insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable)
-values(20230002, '가가나', 1, '01000000002',1 , 1, '2003-01-02',1);
-insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable)
-values(20230003, '가가다', 1, '01000000003',1 , 1, '2003-01-03',1);
-insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable)
-values(20230004, '임꺽정', 2, '01000000004',2 , 0, '2003-01-04',1);
+insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable, original_class_num)
+values(20230001, '가가가', 1, '01000000001',1 , 1, '2003-01-01',1,1);
+insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable, original_class_num)
+values(20230002, '가가나', 1, '01000000002',1 , 1, '2003-01-02',1,2);
+insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable, original_class_num)
+values(20230003, '가가다', 1, '01000000003',1 , 1, '2003-01-03',1,3);
+insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable, original_class_num)
+values(20230004, '임꺽정', 2, '01000000004',2 , 0, '2003-01-04',1,4);
 
 insert into after_school_class(id, class_name, start_time, end_time, day)
 values(001, '종이접기반A', '15:00:00', '17:00:00',1);

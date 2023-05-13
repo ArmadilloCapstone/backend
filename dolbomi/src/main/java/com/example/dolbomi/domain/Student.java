@@ -12,6 +12,7 @@ public class Student {
     private Long class_id;
     private Date birth_date;
     private Long disable;
+    private Long original_class_num;
 
     public Long getId() {
         return id;
@@ -75,5 +76,11 @@ public class Student {
 
     public void setDisable(Long disable) {
         this.disable = disable;
+    }
+    public Long getOriginal_class_num() {
+        return original_class_num;
+    }
+    public void setOriginal_class_num(Long original_class_num) {
+        this.original_class_num = original_class_num;
     }
 }

@@ -33,7 +33,7 @@ public class AdminService {
             studentManageForm.setStudentName(studentList.get(i).getName());
             studentManageForm.setStudentGender(studentList.get(i).getGender());
             studentManageForm.setStudentGrade(studentList.get(i).getGrade());
-            studentManageForm.setOriginalClassNum(99L); // table 구현 이후 수정할 부분
+            studentManageForm.setOriginalClassNum(studentList.get(i).getOriginal_class_num());
             dolbomClassSetting(studentList, i, studentManageForm);
             parentSetting(studentList, i, studentManageForm);
             studentManageFormList.add(studentManageForm);

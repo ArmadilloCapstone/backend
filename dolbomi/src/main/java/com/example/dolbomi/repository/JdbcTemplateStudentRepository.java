@@ -34,6 +34,7 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
         parameters.put("class_id", student.getClass_id());;
         parameters.put("birth_date", student.getBirth_date());;
         parameters.put("disable", student.getDisable());
+        parameters.put("original_class_num", student.getOriginal_class_num());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         student.setId(key.longValue());
@@ -72,6 +73,7 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
                 student.setClass_id(rs.getLong("class_id"));
                 student.setBirth_date(rs.getDate("birth_date"));
                 student.setDisable(rs.getLong("disable"));
+                student.setOriginal_class_num(rs.getLong("original_class_num"));
 
                 return student;
             }
