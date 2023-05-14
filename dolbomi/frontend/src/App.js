@@ -10,7 +10,8 @@ function App() {
   const [parentRequest, setParentRequest] = useState([]);
   const [guardianRequest, setGuardianRequest] = useState([]);
   const [teacherRequest, setTeacherRequest] = useState([]);
-  const [adminStudentRequest, setAdminStudentRequest] = useState([]);
+  const [adminAddDolbomClassRequest, setAdminDolbomClassRequest] = useState([]);
+
 
   var id = 15;
   var title = "helloTestTitle";
@@ -29,11 +30,9 @@ function App() {
 
   var teacherId = 2107;
 
-  var adminId = 1;
-  var adminName = '구륜회';
-  var adminUserId = 'abc123';
-  var adminUserPw = 'ddr9856';
-
+  var dolbomClassName = "장미반";
+  var dolbomClassNum = 1;
+  var dolbomClassYear_seme = "2023년-2학기";
   useEffect(() => {
           //getUser();
           getParent();
@@ -197,18 +196,27 @@ function App() {
         }}> teacherSendbutton </button>
 
         <button onClick = { () => {
-            axios.post("/admin", {
-                id : adminId,
-                name : adminName,
-                user_id : adminUserId,
-                user_pw : adminUserPw,
+            axios.post("/adminAddNewDolbomClass", {
+                class_name : dolbomClassName,
+                class_num : dolbomClassNum,
+                year_seme : dolbomClassYear_seme,
             }).then(function(response){
                 console.log(response.data);
-                setAdminStudentRequest(response.data);
+                setAdminDolbomClassRequest(response.data);
             }).catch(function(){
                 console.log("fail!");
             })
-        }}> adminStudentbutton </button>
+        }}> AddNewDolbomClass </button>
+
+        <button onClick = { () => {
+            axios.post("/adminDeleteDolbomClass", {
+                class_name : dolbomClassName,
+                class_num : dolbomClassNum,
+                year_seme : dolbomClassYear_seme,
+            }).then(function(response){
+                console.log(response.data);
+            })
+        }}> DeleteDolbomClass </button>
 
         <h1> Teacher Data </h1>
         {

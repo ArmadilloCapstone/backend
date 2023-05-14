@@ -1,92 +1,143 @@
 package com.example.dolbomi.service;
 
-import com.example.dolbomi.controller.StudentManageForm;
-import com.example.dolbomi.domain.AdminAccount;
-import com.example.dolbomi.domain.DolbomClass;
-import com.example.dolbomi.domain.Parent;
-import com.example.dolbomi.domain.Student;
-import com.example.dolbomi.repository.AdminAccountRepository;
-import com.example.dolbomi.repository.DolbomClassRepository;
-import com.example.dolbomi.repository.ParentRepository;
-import com.example.dolbomi.repository.StudentRepository;
+import com.example.dolbomi.domain.*;
+import com.example.dolbomi.repository.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class AdminService {
     private final DolbomClassRepository dolbomClassRepository;
     private final StudentRepository studentRepository;
     private final ParentRepository parentRepository;
-    private final AdminAccountRepository adminAccountRepository;
+    private final TeacherRepository teacherRepository;
 
     public AdminService(DolbomClassRepository dolbomClassRepository, StudentRepository studentRepository,
-                        ParentRepository parentRepository, AdminAccountRepository adminAccountRepository) {
+                        ParentRepository parentRepository, TeacherRepository teacherRepository) {
         this.dolbomClassRepository = dolbomClassRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
-        this.adminAccountRepository = adminAccountRepository;
+        this.teacherRepository = teacherRepository;
     }
-
-    public List<StudentManageForm> searchAllStudent(AdminAccount adminAccount){
-        boolean validationCheck = isValidationCheck(adminAccount);
-        if(validationCheck == false){
-            System.out.println("등록되지 않은 사용자의 요청");
-            return null;
+    public void addNewDolbomClass(DolbomClass dolbomClass){
+        List<DolbomClass> result = dolbomClassRepository.findByClassName(dolbomClass.getClass_name(), dolbomClass.getClass_num());
+        if((result.size() == 1) && (result.get(0).getDisable() == 0)){
+            System.out.println("기존 돌봄학급 활성화");
+            dolbomClassRepository.activationDolbomClass(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1)) {
+            System.out.println("이미 활성화된 돌봄학급입니다");
+        } else if (result.size() == 0) {
+            dolbomClass.setDisable(1L);
+            dolbomClassRepository.save(dolbomClass);
         }
-        List<StudentManageForm> studentManageFormList = new ArrayList<>();
-        List<Student> studentList = studentRepository.findAll();
-        int studentCount = studentList.size();
-        for(int i = 0; i < studentCount; i++){
-            StudentManageForm studentManageForm = new StudentManageForm();
-            studentManageForm.setStudentName(studentList.get(i).getName());
-            studentManageForm.setStudentGender(studentList.get(i).getGender());
-            studentManageForm.setStudentGrade(studentList.get(i).getGrade());
-            studentManageForm.setOriginalClassNum(studentList.get(i).getOriginal_class_num());
-            dolbomClassSetting(studentList, i, studentManageForm);
-            parentSetting(studentList, i, studentManageForm);
-            studentManageFormList.add(studentManageForm);
-        }
-        return studentManageFormList;
     }
-
-    private boolean isValidationCheck(AdminAccount adminAccount) {
-        List<AdminAccount> adminAccountList = adminAccountRepository.findAll();
-        int adminCount = adminAccountList.size();
-        boolean validationCheck = false;
-        for(int i = 0; i < adminCount; i++){
-            if(isRegisterdAdmin(adminAccount, adminAccountList, i)){
-                validationCheck = true;
-                break;
-            }
-        }
-        return validationCheck;
-    }
-
-    private static boolean isRegisterdAdmin(AdminAccount adminAccount, List<AdminAccount> adminAccountList, int i) {
-        return (adminAccount.getUser_id().equals(adminAccountList.get(i).getUser_id())) && (adminAccount.getUser_pw().equals(adminAccountList.get(i).getUser_pw()));
-    }
-
-    private void parentSetting(List<Student> studentList, int i, StudentManageForm studentManageForm) {
-        Optional<Parent> parent = parentRepository.findByChildId(studentList.get(i).getId());
-        if(parent.isPresent()){
-            studentManageForm.setParentName(parent.get().getName());
-            studentManageForm.setParentPhoneNum(parent.get().getPhone_num());
-        }
-        else{
-            studentManageForm.setParentName("존재하지 않는 학부모 이름");
-            studentManageForm.setParentPhoneNum("존재하지 않는 학부모 휴대폰번호");
+    public void deleteDolbomClass(DolbomClass dolbomClass){
+        List<DolbomClass> result = dolbomClassRepository.findByClassName(dolbomClass.getClass_name(), dolbomClass.getClass_num());
+        if((result.size() == 1) && (result.get(0).getDisable() == 1)){
+            System.out.println("기존 돌봄학급 비활성화");
+            dolbomClassRepository.disableDolbomClass(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 0)) {
+            System.out.println("이미 비활성화된 돌봄학급입니다");
+        } else {
+            System.out.println("error");
         }
     }
 
-    private void dolbomClassSetting(List<Student> studentList, int i, StudentManageForm studentManageForm) {
-        Optional<DolbomClass> dolbomClass = dolbomClassRepository.findById(studentList.get(i).getClass_id());
-        if(dolbomClass.isPresent()){
-            studentManageForm.setDolbomClassName(dolbomClass.get().getClass_name());
+    public List<DolbomClass> sendDolbomClassList (){
+        List<DolbomClass> dolbomClassList = dolbomClassRepository.findActivationDolbomClass();
+        return dolbomClassList;
+    }
+
+    public void addNewStudent(Student student){
+        List<Student> result = studentRepository.findByNameGradeGender(student.getName(), student.getGrade(), student.getGender());
+        if((result.size() == 1) && (result.get(0).getDisable() == 0)){
+            System.out.println("기존 돌봄학생 활성화");
+            studentRepository.activationStudent(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
+            System.out.println("이미 활성화된 돌봄학생입니다");
+        } else if (result.size() == 0) {
+            System.out.println("새로운 돌봄학생 추가");
+            student.setDisable(1L);
+            studentRepository.save(student);
         }
-        else{
-            studentManageForm.setDolbomClassName("존재하지 않는 돌봄반");
+    }
+
+    public void deleteStudent(Student student){
+        List<Student> result = studentRepository.findByNameGradeGender(student.getName(), student.getGrade(), student.getGender());
+        if((result.size() == 1) && (result.get(0).getDisable() == 1)){
+            System.out.println("기존 돌봄학생 비활성화");
+            studentRepository.disableStudent(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 0) ) {
+            System.out.println("이미 비활성화된 돌봄학생입니다");
+        } else if (result.size() == 0) {
+            System.out.println("error");
         }
+    }
+
+    public List<Student> sendStudentList(){
+        List<Student> studentList = studentRepository.findActivationStudent();
+        return studentList;
+    }
+
+    public void addNewTeacher(Teacher teacher){
+        List<Teacher> result = teacherRepository.findByNameBirth(teacher.getName(), teacher.getBirth_date());
+        if((result.size() == 1) && (result.get(0).getDisable() == 0)){
+            System.out.println("기존 돌봄교사 활성화");
+            teacherRepository.activationTeacher(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
+            System.out.println("이미 활성화된 돌봄교사입니다");
+        } else if (result.size() == 0) {
+            System.out.println("새로운 돌봄교사 추가");
+            teacher.setDisable(1L);
+            teacherRepository.save(teacher);
+        }
+    }
+
+    public void deleteTeacher(Teacher teacher){
+        List<Teacher> result = teacherRepository.findByNameBirth(teacher.getName(), teacher.getBirth_date());
+        if((result.size() == 1) && (result.get(0).getDisable() == 1)){
+            System.out.println("기존 돌봄교사 비활성화");
+            teacherRepository.disableTeacher(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 0) ) {
+            System.out.println("이미 비활성화된 돌봄교사입니다");
+        } else if (result.size()==0) {
+            System.out.println("error");
+        }
+    }
+
+    public List<Teacher> sendTeacherList(){
+        List<Teacher> teacherList = teacherRepository.findActivationTeacher();
+        return teacherList;
+    }
+
+    public void addNewParent(Parent parent){
+        List<Parent> result = parentRepository.findByNameBirth(parent.getName(), parent.getBirth_date());
+        if((result.size() == 1) && (result.get(0).getDisable()==0)){
+            System.out.println("기존 학부모 활성화");
+            parentRepository.activationParent(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
+            System.out.println("이미 활성화된 학부모입니다");
+        } else if (result.size() == 0) {
+            System.out.println("새로운 학부모 추가");
+            parent.setDisable(1L);
+            parentRepository.save(parent);
+        }
+    }
+
+    public void deleteParent(Parent parent){
+        List<Parent> result = parentRepository.findByNameBirth(parent.getName(), parent.getBirth_date());
+        if((result.size() == 1) && (result.get(0).getDisable()==1)){
+            System.out.println("기존 학부모 비활성화");
+            parentRepository.disableParent(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 0) ) {
+            System.out.println("이미 비활성화된 학부모입니다");
+        } else if (result.size() == 0) {
+            System.out.println("error");
+        }
+    }
+
+    public List<Parent> sendParentList(){
+        List<Parent> parentList = parentRepository.findActivationParent();
+        return parentList;
     }
 
 }

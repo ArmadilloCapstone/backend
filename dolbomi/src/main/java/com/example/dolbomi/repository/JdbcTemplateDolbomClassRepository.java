@@ -23,7 +23,7 @@ public class JdbcTemplateDolbomClassRepository implements DolbomClassRepository{
     @Override
     public DolbomClass save(DolbomClass dolbomClass) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("DolbomClass").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("dolbom_class").usingGeneratedKeyColumns("id");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("class_name",dolbomClass.getClass_name());
         parameters.put("class_num", dolbomClass.getClass_num());
@@ -39,6 +39,37 @@ public class JdbcTemplateDolbomClassRepository implements DolbomClassRepository{
     public Optional<DolbomClass> findById(Long id) {
         List<DolbomClass> result = jdbcTemplate.query("select * from dolbom_class where id = ?",memberRowMapper(), id);
         return result.stream().findAny();
+    }
+
+    @Override
+    public List<DolbomClass> findByClassName(String class_name, Long class_num) {
+        List<DolbomClass> result = jdbcTemplate.query("select * from dolbom_class where class_name = ? and class_num = ?;",
+                memberRowMapper(),class_name, class_num);
+        return result;
+    }
+
+    @Override
+    public boolean activationDolbomClass(Long id) {
+        int result = jdbcTemplate.update("update dolbom_class set disable = ? where id = ?;", 1, id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean disableDolbomClass(Long id) {
+        int result = jdbcTemplate.update("update dolbom_class set disable = ? where id = ?;",0,id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<DolbomClass> findActivationDolbomClass() {
+        List<DolbomClass> result = jdbcTemplate.query("select * from dolbom_class where disable = ?", memberRowMapper(), 1);
+        return result;
     }
 
     @Override

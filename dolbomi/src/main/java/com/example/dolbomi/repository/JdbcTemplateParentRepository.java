@@ -1,6 +1,7 @@
 package com.example.dolbomi.repository;
 
 import com.example.dolbomi.domain.Parent;
+import com.example.dolbomi.domain.Teacher;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -9,10 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class JdbcTemplateParentRepository implements ParentRepository{
     private final JdbcTemplate jdbcTemplate;
@@ -49,6 +47,36 @@ public class JdbcTemplateParentRepository implements ParentRepository{
     public Optional<Parent> findByChildId(Long child_id) {
         List<Parent> result = jdbcTemplate.query("select * from parent where child_id = ?",memberRowMapper(),child_id);
         return result.stream().findAny();
+    }
+
+    @Override
+    public List<Parent> findByNameBirth(String name, Date birth_date) {
+        List<Parent> result = jdbcTemplate.query("select * from parent where name = ? and birth_date = ?",memberRowMapper(),name,birth_date);
+        return result;
+    }
+
+    @Override
+    public boolean activationParent(Long id) {
+        int result = jdbcTemplate.update("update parent set disable = ? where id = ?;",1,id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean disableParent(Long id) {
+        int result = jdbcTemplate.update("update teacher set disable = ? where id = ?;",0,id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Parent> findActivationParent() {
+        List<Parent> result = jdbcTemplate.query("select * from parent where disable = ?", memberRowMapper(),1);
+        return result;
     }
 
     @Override
