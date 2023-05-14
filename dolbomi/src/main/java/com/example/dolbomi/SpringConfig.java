@@ -3,6 +3,8 @@ package com.example.dolbomi;
 import com.example.dolbomi.repository.*;
 import com.example.dolbomi.service.PickupService;
 import com.example.dolbomi.service.StudentService;
+import com.example.dolbomi.service.StudentStateService;
+import com.example.dolbomi.service.TimelineService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +27,14 @@ public class SpringConfig {
     @Bean
     public PickupService pickupService() {
         return new PickupService(studentRepository(), pickupRepository());
+    }
+    @Bean
+    public StudentStateService studentStateService(){
+        return new StudentStateService(studentStateRepository());
+    }
+    @Bean
+    public TimelineService timelineService(){
+        return new TimelineService(studentRepository(), studentScheduleRepository(), afterSchoolClassRepository(), studentTimeRepository());
     }
     @Bean
     public AfterSchoolClassRepository afterSchoolClassRepository() {
