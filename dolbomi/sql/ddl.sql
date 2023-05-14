@@ -7,7 +7,6 @@ drop table if exists guardian CASCADE;
 drop table if exists student_of_guardian CASCADE;
 drop table if exists dolbom_class CASCADE;
 drop table if exists parent CASCADE;
-drop table if exists admin_account CASCADE;
 drop table if exists teacher CASCADE;
 
 create table student
@@ -114,5 +113,4 @@ alter table guardian convert to charset utf8;
 alter table student_of_guardian convert to charset utf8;
 alter table dolbom_class convert to charset utf8;
 alter table parent convert to charset utf8;
-alter table admin_account convert to charset utf8;
 alter table teacher convert to charset utf8;
