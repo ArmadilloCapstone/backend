@@ -1,10 +1,7 @@
 package com.example.dolbomi;
 
 import com.example.dolbomi.repository.*;
-import com.example.dolbomi.service.PickupService;
-import com.example.dolbomi.service.StudentService;
-import com.example.dolbomi.service.StudentStateService;
-import com.example.dolbomi.service.TimelineService;
+import com.example.dolbomi.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,6 +19,10 @@ public class SpringConfig {
     @Bean
     public StudentService studentService(){
         return new StudentService(studentRepository());
+    }
+    @Bean
+    public LoginService loginService(){
+        return new LoginService(teacherAccountRespository(), parentAccountRespository(), guardianRepository(), adminRepository());
     }
 
     @Bean
@@ -43,6 +44,18 @@ public class SpringConfig {
     @Bean
     public StudentRepository studentRepository() {
         return new JdbcTemplateStudentRepository(dataSource);
+    }
+    @Bean
+    public TeacherAccountRespository teacherAccountRespository() {
+        return new JdbcTemplateTeacherAccountRespository(dataSource);
+    }
+    @Bean
+    public ParentAccountRespository parentAccountRespository() {
+        return new JdbcTemplateParentAccountRespository(dataSource);
+    }
+    @Bean
+    public AdminRepository adminRepository() {
+        return new JdbcTemplateAdminRepository(dataSource);
     }
     @Bean
     public StudentScheduleRepository studentScheduleRepository() {

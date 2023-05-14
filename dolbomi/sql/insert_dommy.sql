@@ -1,3 +1,14 @@
+insert into admin(user_id, user_pw, name)
+values('admin', '1234', '관리자');
+
+insert into dolbom_class(id, class_name, class_num, year_seme, disable)
+values(1, '돌봄1반', 1, '2021-1',1);
+insert into dolbom_class(id, class_name, class_num, year_seme, disable)
+values(2, '돌봄2반', 2, '2021-1',1);
+insert into dolbom_class(id, class_name, class_num, year_seme, disable)
+values(3, '돌봄3반', 3, '2021-1',1);
+
+
 insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable)
 values(20230001, '가가가', 1, '01000000001',1 , 1, '2003-01-01',1);
 insert into student(id, name, grade, phone_num, gender, class_id, birth_date, disable)
@@ -48,3 +59,23 @@ insert into student_of_guardian(guardian_id, student_id)
 values(0001, 20230001);
 insert into student_of_guardian(guardian_id, student_id)
 values(0001, 20230002);
+
+insert into parent(id, name, phone_num, gender, child_id ,class_id, birth_date, disable)
+values(1, '가가엄', '01000000001',2 , 20230001, 1, '2003-01-01',1);
+insert into parent(id, name, phone_num, gender, child_id ,class_id, birth_date, disable)
+values(2, '가나엄', '01000000002',2 , 20230002, 1, '2003-01-01',1);
+insert into parent(id, name, phone_num, gender, child_id ,class_id, birth_date, disable)
+values(3, '가다아', '01000000003',1 , 20230003, 1, '2003-01-01',1);
+
+insert into parent_account(id, parent_id, user_id, user_pw)
+values(1, '1', 'test', 'test');
+
+insert into teacher(id, name, phone_num, gender, class_id, birth_date, disable)
+values(1, '정숙히', '01000000001',1 , 1, '2003-01-01',1);
+insert into teacher(id, name, phone_num, gender, class_id, birth_date, disable)
+values(2, '정숙삼', '01000000002',1 , 2, '2003-01-01',1);
+insert into teacher(id, name, phone_num, gender, class_id, birth_date, disable)
+values(3, '정숙사', '01000000003',1 , 3, '2003-01-01',1);
+
+insert into teacher_account(id, teacher_id, user_id, user_pw)
+values(1, '1', 'admin', 'admin');

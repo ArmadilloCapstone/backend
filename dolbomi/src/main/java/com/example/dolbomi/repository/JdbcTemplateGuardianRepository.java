@@ -2,6 +2,7 @@ package com.example.dolbomi.repository;
 
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Student;
+import com.example.dolbomi.domain.Teacher;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -46,6 +47,26 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
     @Override
     public List<Guardian> findAll() {
         return jdbcTemplate.query("select * from guardian", memberRowMapper());
+    }
+
+    @Override
+    public List<Guardian> login(Long serial_num) {
+        return jdbcTemplate.query("select * from guardian where serial_num = ?", memberRowMapper(), serial_num);
+    }
+
+    @Override
+    public Boolean signup(Long serialNum, String name, String info) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("guardian").usingGeneratedKeyColumns("id");
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("serial_num", serialNum);;
+        parameters.put("name", name);;
+        parameters.put("info", info);;
+
+        jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+
+        return true;
     }
 
     private RowMapper<Guardian> memberRowMapper() {
