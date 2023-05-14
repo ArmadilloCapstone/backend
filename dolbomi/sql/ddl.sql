@@ -94,14 +94,6 @@ create table parent
     disable tinyint
 );
 
-create table admin_account
-(
-  id int primary key,
-  name char(5),
-  user_id char(30),
-  user_pw char(30)
-);
-
 create table teacher
 (
     id int primary key,
