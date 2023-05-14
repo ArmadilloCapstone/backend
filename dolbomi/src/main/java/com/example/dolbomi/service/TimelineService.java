@@ -17,7 +17,7 @@ public class TimelineService {
     private final StudentTimeRepository studentTimeRepository;
     private final AfterSchoolClassRepository afterSchoolClassRepository;
 
-    TimelineService(StudentRepository studentRepository, StudentScheduleRepository studentScheduleRepository, AfterSchoolClassRepository afterSchoolClassRepository, StudentTimeRepository studentTimeRepository){
+    public TimelineService(StudentRepository studentRepository, StudentScheduleRepository studentScheduleRepository, AfterSchoolClassRepository afterSchoolClassRepository, StudentTimeRepository studentTimeRepository){
         this.studentRepository = studentRepository;
         this.studentScheduleRepository = studentScheduleRepository;
         this.afterSchoolClassRepository = afterSchoolClassRepository;

@@ -1,5 +1,6 @@
 package com.example.dolbomi.repository;
 
+import com.example.dolbomi.controller.StudentStateForm;
 import com.example.dolbomi.domain.StudentSchedule;
 import com.example.dolbomi.domain.StudentState;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,7 +37,7 @@ public class JdbcTemplateStudentStateRepository implements StudentStateRepositor
     }
 
     @Override
-    public Boolean changeState(Long student_id, int state) {
+    public Boolean changeState(Long student_id, Long state) {
         int result = jdbcTemplate.update("update student_state set state = ? where student_id = ?;", state, student_id);
         if(result == 1){
             return true;
@@ -51,8 +52,8 @@ public class JdbcTemplateStudentStateRepository implements StudentStateRepositor
     }
 
     @Override
-    public List<StudentState> findAll() {
-        return jdbcTemplate.query("select * from student_state", memberRowMapper());
+    public List<StudentStateForm> findAll() {
+        return jdbcTemplate.query("select SS.id, SS.student_id, S.name, SS.state from student_state SS inner join student S on SS.student_id = S.id", memberFormRowMapper());
     }
 
     private RowMapper<StudentState> memberRowMapper() {
@@ -66,6 +67,22 @@ public class JdbcTemplateStudentStateRepository implements StudentStateRepositor
                 studentState.setState(rs.getLong("state"));
 
                 return studentState;
+            }
+        };
+    }
+
+    private RowMapper<StudentStateForm> memberFormRowMapper() {
+        return new RowMapper<StudentStateForm>() {
+            @Override
+            public StudentStateForm mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                StudentStateForm studentStateForm = new StudentStateForm();
+                studentStateForm.setId(rs.getLong("id"));
+                studentStateForm.setStudent_id(rs.getLong("student_id"));
+                studentStateForm.setName(rs.getString("name"));
+                studentStateForm.setState(rs.getLong("state"));
+
+                return studentStateForm;
             }
         };
     }

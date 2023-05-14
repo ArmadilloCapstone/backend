@@ -6,35 +6,40 @@ import com.example.dolbomi.domain.StudentSchedule;
 import com.example.dolbomi.domain.StudentTime;
 import com.example.dolbomi.service.StudentService;
 import com.example.dolbomi.service.TimelineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
 public class TimelineController {
     private final TimelineService timelineService;
 
-    TimelineController(TimelineService timelineService){
+    @Autowired
+    public TimelineController(TimelineService timelineService){
         this.timelineService = timelineService;
     }
 
     //private final StudentService studentService;
 
-    @GetMapping("/studentFindAll")
+    @PostMapping("/studentFindAll")
     public List<Student> studentFindAll() {
         return timelineService.studentFindAll();
     }
 
-    @GetMapping("/studentTimeFindAll")
+    @PostMapping("/studentTimeFindAll")
     public List<StudentTime> studentTimeFindAll() {
         return timelineService.studentTimeFindAll();
     }
 
-    @GetMapping("/studentScheduleFindAll")
+    @PostMapping("/studentScheduleFindAll")
     public List<StudentSchedule> studentScheduleFindAll() {
         return timelineService.studentScheduleFindAll();
     }
 
-    @GetMapping("/AfterSchoolClassFindAll")
+    @PostMapping("/AfterSchoolClassFindAll")
     public List<AfterSchoolClass> AfterSchoolClassFindAll() {
         return timelineService.afterSchoolClassFindAll();
     }
