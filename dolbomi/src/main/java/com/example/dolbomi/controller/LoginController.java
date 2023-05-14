@@ -42,9 +42,9 @@ public class LoginController {
 
 
 
-        Teacher t = new Teacher();
-        t.setName("Error");
-        return t;
+        ErrorObject state = new ErrorObject();
+        state.setState("Error");
+        return state;
     }
 
     @PostMapping("/changepw")
