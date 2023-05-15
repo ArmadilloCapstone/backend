@@ -4,6 +4,7 @@ import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AdminService {
     private final DolbomClassRepository dolbomClassRepository;
@@ -30,12 +31,12 @@ public class AdminService {
             dolbomClassRepository.save(dolbomClass);
         }
     }
-    public void deleteDolbomClass(DolbomClass dolbomClass){
-        List<DolbomClass> result = dolbomClassRepository.findByClassName(dolbomClass.getClass_name(), dolbomClass.getClass_num());
-        if((result.size() == 1) && (result.get(0).getDisable() == 1)){
+    public void deleteDolbomClass(Long id){
+        Optional<DolbomClass> result = dolbomClassRepository.findById(id);
+        if((result.isPresent()) && (result.get().getDisable() == 1)){
             System.out.println("기존 돌봄학급 비활성화");
-            dolbomClassRepository.disableDolbomClass(result.get(0).getId());
-        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 0)) {
+            dolbomClassRepository.disableDolbomClass(result.get().getId());
+        } else if ( (result.isPresent()) && (result.get().getDisable() == 0)) {
             System.out.println("이미 비활성화된 돌봄학급입니다");
         } else {
             System.out.println("error");
@@ -61,14 +62,14 @@ public class AdminService {
         }
     }
 
-    public void deleteStudent(Student student){
-        List<Student> result = studentRepository.findByNameGradeGender(student.getName(), student.getGrade(), student.getGender());
-        if((result.size() == 1) && (result.get(0).getDisable() == 1)){
+    public void deleteStudent(Long id){
+        Optional<Student> result = studentRepository.findById(id);
+        if((result.isPresent()) && (result.get().getDisable() == 1)){
             System.out.println("기존 돌봄학생 비활성화");
-            studentRepository.disableStudent(result.get(0).getId());
-        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 0) ) {
+            studentRepository.disableStudent(result.get().getId());
+        } else if ( (result.isPresent()) && (result.get().getDisable() == 0) ) {
             System.out.println("이미 비활성화된 돌봄학생입니다");
-        } else if (result.size() == 0) {
+        } else {
             System.out.println("error");
         }
     }

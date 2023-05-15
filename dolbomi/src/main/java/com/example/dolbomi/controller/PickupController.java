@@ -42,24 +42,23 @@ public class PickupController {
         return pickupService.selectStudentForGuardian(guardian);
     }
     */
+//    @PostMapping("/requestParent")
+//    public PickupRequestForm parentRequest(){
+//        Parent parent = new Parent();
+//        parent.setId(200L);
+//        parent.setName("박현숙");
+//        StudentPickupForm studentPickupForm = new StudentPickupForm();
+//        studentPickupForm.setId(150L);
+//        studentPickupForm.setName("박미희");
+//        studentPickupForm.setGrade(1L);
+//        studentPickupForm.setGender(1L);
+//        return pickupService.requestPickupByParent(parent.getId());
+//    }
     @PostMapping("/requestParent")
-    public PickupRequestForm parentRequest(){
-        Parent parent = new Parent();
-        parent.setId(200L);
-        parent.setName("박현숙");
-        StudentPickupForm studentPickupForm = new StudentPickupForm();
-        studentPickupForm.setId(150L);
-        studentPickupForm.setName("박미희");
-        studentPickupForm.setGrade(1L);
-        studentPickupForm.setGender(1L);
-        return pickupService.requestPickupByParent(parent,studentPickupForm);
+    public PickupRequestForm parentRequest(@RequestBody Long parent_id){
+        return pickupService.requestPickupByParent(parent_id);
     }
-    /*
-    @PostMapping("/requestParent")
-    public PickupRequestForm parentRequest(@RequestBody Parent parent, @RequestBody StudentPickupForm studentPickupForm){
-        return pickupService.requestPickupByParent(parent,studentPickupForm);
-    }
-    */
+
     @PostMapping("/requestGuardian")
     public List<PickupRequestForm> guardianRequest(){
         Guardian guardian = new Guardian();

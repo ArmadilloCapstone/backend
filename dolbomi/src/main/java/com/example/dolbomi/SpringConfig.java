@@ -24,7 +24,7 @@ public class SpringConfig {
     }
     @Bean
     public PickupService pickupService() {
-        return new PickupService(studentRepository(), pickupRepository());
+        return new PickupService(studentRepository(), pickupRepository(), parentRepository());
     }
     @Bean
     public AdminService adminService(){
