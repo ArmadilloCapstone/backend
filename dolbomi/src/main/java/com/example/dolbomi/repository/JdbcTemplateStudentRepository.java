@@ -34,6 +34,7 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
         parameters.put("class_id", student.getClass_id());;
         parameters.put("birth_date", student.getBirth_date());;
         parameters.put("disable", student.getDisable());
+        parameters.put("original_class_num", student.getOriginal_class_num());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         student.setId(key.longValue());
@@ -46,6 +47,29 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
         return result.stream().findAny();
     }
 
+    @Override
+    public List<Student> findByNameGradeGender(String name, Long grade, Long gender) {
+        List<Student> result = jdbcTemplate.query("select * from student where name = ? and grade = ? and gender = ?",memberRowMapper(),name, grade,gender);
+        return result;
+    }
+
+    @Override
+    public boolean activationStudent(Long id) {
+        int result = jdbcTemplate.update("update student set disable = ? where id = ?;",1, id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean disableStudent(Long id) {
+        int result = jdbcTemplate.update("update student set disable = ? where id = ?;",0,id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public List<Student> findAll() {
@@ -55,6 +79,12 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
     @Override
     public List<Student> findStudent_idById(Long id) {
         List<Student> result = jdbcTemplate.query("select S.* from student_of_guardian SG inner join student S on SG.student_id = S.id where guardian_id = ?", memberRowMapper(), id);
+        return result;
+    }
+
+    @Override
+    public List<Student> findActivationStudent() {
+        List<Student> result = jdbcTemplate.query("select * from student where disable = ?",memberRowMapper(),1);
         return result;
     }
 
@@ -72,6 +102,7 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
                 student.setClass_id(rs.getLong("class_id"));
                 student.setBirth_date(rs.getDate("birth_date"));
                 student.setDisable(rs.getLong("disable"));
+                student.setOriginal_class_num(rs.getLong("original_class_num"));
 
                 return student;
             }

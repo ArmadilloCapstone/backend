@@ -27,7 +27,7 @@ public class SpringConfig {
 
     @Bean
     public PickupService pickupService() {
-        return new PickupService(studentRepository(), pickupRepository());
+        return new PickupService(studentRepository(), pickupRepository(), parentRepository());
     }
     @Bean
     public StudentStateService studentStateService(){
@@ -37,6 +37,11 @@ public class SpringConfig {
     public TimelineService timelineService(){
         return new TimelineService(studentRepository(), studentScheduleRepository(), afterSchoolClassRepository(), studentTimeRepository());
     }
+    @Bean
+    public AdminService adminService(){
+        return new AdminService(dolbomClassRepository(), studentRepository(), parentRepository(), teacherRepository());
+    }
+
     @Bean
     public AfterSchoolClassRepository afterSchoolClassRepository() {
         return new JdbcTemplateAfterSchoolClasstRepository(dataSource);
@@ -69,7 +74,6 @@ public class SpringConfig {
     public StudentTimeRepository studentTimeRepository() {
         return new JdbcTemplateStudentTimeRepository(dataSource);
     }
-
     @Bean
     public GuardianRepository guardianRepository() {
         return new JdbcTemplateGuardianRepository(dataSource);
@@ -78,4 +82,14 @@ public class SpringConfig {
     public PickupRepository pickupRepository(){
         return new MemoryPickupRepository();
     }
+    @Bean
+    public DolbomClassRepository dolbomClassRepository(){
+        return new JdbcTemplateDolbomClassRepository(dataSource);
+    }
+    @Bean
+    public ParentRepository parentRepository(){
+        return new JdbcTemplateParentRepository(dataSource);
+    }
+    @Bean
+    public TeacherRepository teacherRepository() { return new JdbcTemplateTeacherRepository(dataSource); }
 }
