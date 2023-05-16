@@ -77,7 +77,7 @@ public class AdminService {
         List<String> headerList = new ArrayList<String>();
 
         try{
-            BufferedReader br = Files.newBufferedReader(Paths.get("csvFileDirectory"));
+            BufferedReader br = Files.newBufferedReader(Paths.get("$projectDir/csv/inputStudent.csv"));
             String line = "";
 
             while ((line = br.readLine()) != null){
