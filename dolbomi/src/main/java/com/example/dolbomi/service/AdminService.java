@@ -1,5 +1,6 @@
 package com.example.dolbomi.service;
 
+import com.example.dolbomi.controller.ParentManageForm;
 import com.example.dolbomi.controller.StudentScheduleForm;
 import com.example.dolbomi.controller.TeacherManageForm;
 import com.example.dolbomi.domain.*;
@@ -265,12 +266,34 @@ public class AdminService {
     public void addNewParent(Parent parent){
         List<Parent> result = parentRepository.findByNameBirth(parent.getName(), parent.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable()==0)){
-            System.out.println("기존 학부모 활성화");
+            System.out.println("기존 학부모 활성화 csv");
             parentRepository.activationParent(result.get(0).getId());
         } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
-            System.out.println("이미 활성화된 학부모입니다");
+            System.out.println("이미 활성화된 학부모입니다 csv");
         } else if (result.size() == 0) {
+            System.out.println("새로운 학부모 추가 csv");
+            parent.setDisable(1L);
+            parentRepository.save(parent);
+        }
+    }
+
+    public  void addNewParentManageForm(ParentManageForm parentManageForm){
+        List<Parent> result = parentRepository.findByNameBirth(parentManageForm.getName(), parentManageForm.getBirth_date());
+        if((result.size()==1)&&(result.get(0).getDisable()==0)){
+            System.out.println("기존 학부모 활성화");
+            parentRepository.activationParent(result.get(0).getId());
+        } else if ((result.size() == 1) && (result.get(0).getDisable() == 1)) {
+            System.out.println("이미 활성화된 학부모입니다");
+        } else if (result.size()==0) {
             System.out.println("새로운 학부모 추가");
+            Parent parent = new Parent();
+            parent.setId(parentManageForm.getId());
+            parent.setName(parentManageForm.getName());
+            parent.setPhone_num(parentManageForm.getPhone_num());
+            parent.setGender(parentManageForm.getGender());
+            parent.setBirth_date(parentManageForm.getBirth_date());
+            parent.setChild_id(parentManageForm.getChild_id());
+            parent.setClass_id(studentRepository.findById(parentManageForm.getChild_id()).get().getClass_id());
             parent.setDisable(1L);
             parentRepository.save(parent);
         }
@@ -288,9 +311,23 @@ public class AdminService {
         }
     }
 
-    public List<Parent> sendParentList(){
+    public List<ParentManageForm> sendParentList(){
         List<Parent> parentList = parentRepository.findActivationParent();
-        return parentList;
+        List<ParentManageForm> parentManageFormList = new ArrayList<>();
+        int count = parentList.size();
+        for(int i = 0; i<count;i++){
+            ParentManageForm parentManageForm = new ParentManageForm();
+            parentManageForm.setId(parentList.get(i).getId());
+            parentManageForm.setName(parentList.get(i).getName());
+            parentManageForm.setPhone_num(parentList.get(i).getPhone_num());
+            parentManageForm.setGender(parentList.get(i).getGender());
+            parentManageForm.setBirth_date(parentList.get(i).getBirth_date());
+            parentManageForm.setChild_name(studentRepository.findById(parentList.get(i).getChild_id()).get().getName());
+            parentManageForm.setChild_id(parentList.get(i).getChild_id());
+            parentManageFormList.add(parentManageForm);
+        }
+
+        return parentManageFormList;
     }
 
     public void addNewAfterSchoolClass(AfterSchoolClass afterSchoolClass){
@@ -372,5 +409,18 @@ public class AdminService {
             System.out.println("돌봄학생의 돌봄시간 생성");
             studentTimeRepository.save(studentTime);
         }
+    }
+    public void deleteStudentTime(Long id){
+        Optional<StudentTime> result = studentTimeRepository.findById(id);
+        if(result.isPresent()){
+            System.out.println("학생돌봄시간 삭제");
+            studentTimeRepository.deleteStudentTime(id);
+        } else {
+            System.out.println("학생돌봄시간이 존재하지 않아 삭제할 수 없습니다");
+        }
+    }
+    public List<StudentTime> sendStudentTimeList(){
+        List<StudentTime> studentTimeList = studentTimeRepository.findAll();
+        return studentTimeList;
     }
 }

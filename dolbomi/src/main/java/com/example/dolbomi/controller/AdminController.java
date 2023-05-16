@@ -57,11 +57,11 @@ public class AdminController {
     public List<TeacherManageForm> sendTeacher() { return adminService.sendTeacherList(); }
 
     @PostMapping("/parent_submit")
-    public void addNewParent(@RequestBody Parent parent) { adminService.addNewParent(parent); }
+    public void addNewParent(@RequestBody ParentManageForm parentManageForm) { adminService.addNewParentManageForm(parentManageForm); }
     @DeleteMapping("/parent/{productId}")
     public void deleteParent(@PathVariable("productId") Long productId) { adminService.deleteParent(productId); }
     @PostMapping("/parent")
-    public List<Parent> sendParent() { return adminService.sendParentList(); }
+    public List<ParentManageForm> sendParent() { return adminService.sendParentList(); }
 
     @PostMapping("/after_school_class_submit")
     public void addNewAfterSchoolClass(@RequestBody AfterSchoolClass afterSchoolClass) { adminService.addNewAfterSchoolClass(afterSchoolClass); }
@@ -87,5 +87,12 @@ public class AdminController {
     public void deleteStudentSchedule(@PathVariable("productId") Long productId) { adminService.deleteStudentSchedule(productId); }
     @PostMapping("/student_schedule")
     public List<StudentScheduleForm> sendStudentSchedule() { return adminService.sendStudentSchedule(); }
+
+    @PostMapping("/student_time_submit")
+    public void addNewStudentTime(@RequestBody StudentTime studentTime) { adminService.addNewStudentTime(studentTime); }
+    @DeleteMapping("/student_time/{productId}")
+    public void deleteStudentTime(@PathVariable("productId") Long productId) { adminService.deleteStudentTime(productId); }
+    @PostMapping("/student_time")
+    public List<StudentTime> sendStudentTime() { return adminService.sendStudentTimeList(); }
 
 }

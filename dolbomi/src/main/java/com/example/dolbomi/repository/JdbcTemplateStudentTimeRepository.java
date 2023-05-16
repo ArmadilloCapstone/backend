@@ -57,6 +57,15 @@ public class JdbcTemplateStudentTimeRepository implements StudentTimeRepository{
     }
 
     @Override
+    public boolean deleteStudentTime(Long id) {
+        int result = jdbcTemplate.update("delete from student_time where id = ?",id);
+        if(result==1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public List<StudentTime> findAll() {
         return jdbcTemplate.query("select * from student_time", memberRowMapper());
     }
