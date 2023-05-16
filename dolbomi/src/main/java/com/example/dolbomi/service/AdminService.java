@@ -3,6 +3,16 @@ package com.example.dolbomi.service;
 import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +71,48 @@ public class AdminService {
             studentRepository.save(student);
         }
     }
+
+    public void addNewStudentByCsv(){
+
+        List<String> headerList = new ArrayList<String>();
+
+        try{
+            BufferedReader br = Files.newBufferedReader(Paths.get("csvFileDirectory"));
+            String line = "";
+
+            while ((line = br.readLine()) != null){
+                List<String> stringList = new ArrayList<String>();
+                String stringArray[] = line.split(",");
+                stringList = Arrays.asList(stringArray);
+
+                if(headerList.size() ==0) {
+                    headerList = stringList;
+                }
+                else{
+                    Student student = new Student();
+                    student.setId(Long.parseLong(stringList.get(0)));
+                    student.setName(stringList.get(1));
+                    student.setGrade(Long.parseLong(stringList.get(2)));
+                    student.setPhone_num(stringList.get(3));
+                    student.setGender(Long.parseLong(stringList.get(4)));
+                    student.setOriginal_class_num(Long.parseLong(stringList.get(5)));
+                    // 날짜 서식 = yyyy-mm-dd
+                    try {
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+                        student.setBirth_date(formatter.parse(stringList.get(6)));
+                    } catch (ParseException e){
+                        e.printStackTrace();
+                    }
+                    addNewStudent(student);
+                }
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     public void deleteStudent(Long id){
         Optional<Student> result = studentRepository.findById(id);

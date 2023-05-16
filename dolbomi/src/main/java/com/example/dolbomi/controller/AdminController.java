@@ -32,6 +32,10 @@ public class AdminController {
 
     @PostMapping("/student_submit")
     public void addNewStudent(@RequestBody Student student){ adminService.addNewStudent(student);}
+
+    @PostMapping("/student_submit_csv")
+    public void addNewStudeenByCsv() { adminService.addNewStudentByCsv();}
+
     @DeleteMapping("/student/{productId}")
     public void deleteStudent(@PathVariable("productId") Long productId){
         adminService.deleteStudent(productId);
