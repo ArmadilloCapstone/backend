@@ -2,9 +2,11 @@ package com.example.dolbomi.service;
 
 import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -72,12 +74,12 @@ public class AdminService {
         }
     }
 
-    public void addNewStudentByCsv(){
+    public void addNewStudentByCsv(MultipartFile file){
 
         List<String> headerList = new ArrayList<String>();
 
         try{
-            BufferedReader br = Files.newBufferedReader(Paths.get("$projectDir/csv/inputStudent.csv"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"));
             String line = "";
 
             while ((line = br.readLine()) != null){

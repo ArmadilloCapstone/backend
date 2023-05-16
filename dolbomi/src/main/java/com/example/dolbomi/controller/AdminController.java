@@ -5,6 +5,7 @@ import com.example.dolbomi.domain.Student;
 import com.example.dolbomi.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,7 +35,11 @@ public class AdminController {
     public void addNewStudent(@RequestBody Student student){ adminService.addNewStudent(student);}
 
     @PostMapping("/student_submit_csv")
-    public void addNewStudeenByCsv() { adminService.addNewStudentByCsv();}
+    public void addNewStudentByCsv(@RequestParam("file") List<MultipartFile> files) {
+        for(int i = 0; i < files.size(); i++){
+            adminService.addNewStudentByCsv(files.get(i));
+        }
+    }
 
     @DeleteMapping("/student/{productId}")
     public void deleteStudent(@PathVariable("productId") Long productId){
