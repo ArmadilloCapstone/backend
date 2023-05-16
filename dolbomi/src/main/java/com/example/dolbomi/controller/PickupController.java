@@ -77,7 +77,7 @@ public class PickupController {
         return pickupService.requestPickupByGuardian(guardian, studentPickupFormList);
     }
     */
-    @PostMapping("/sendTeacher")
+    @PostMapping("/sendPickupFormToTeacher")
     public List<PickupRequestForm> teacherSend(){
         return pickupService.sendPickupForTeacher();
     }
