@@ -66,7 +66,7 @@ public class JdbcTemplateParentRepository implements ParentRepository{
 
     @Override
     public boolean disableParent(Long id) {
-        int result = jdbcTemplate.update("update teacher set disable = ? where id = ?;",0,id);
+        int result = jdbcTemplate.update("update parent set disable = ? where id = ?;",0,id);
         if(result == 1){
             return true;
         }
