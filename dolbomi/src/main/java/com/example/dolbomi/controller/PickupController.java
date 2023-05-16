@@ -43,7 +43,7 @@ public class PickupController {
     }
     */
     @PostMapping("/requestParent")
-    public PickupRequestForm parentRequest(@RequestBody PickupRequestForm pickupRequestForm){
+    public String parentRequest(@RequestBody PickupRequestForm pickupRequestForm){
         return pickupService.requestPickupByParent(pickupRequestForm.getPickupManId());
     }
 

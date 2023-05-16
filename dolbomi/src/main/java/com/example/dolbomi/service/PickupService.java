@@ -47,7 +47,7 @@ public class PickupService {
         return studentPickupFormList;
     }
 
-    public PickupRequestForm requestPickupByParent(Long parent_id){
+    public String requestPickupByParent(Long parent_id){
         PickupRequestForm pickupRequestForm = new PickupRequestForm();
         Optional<Parent> parent = parentRepository.findById(parent_id);
         if(parent.isPresent()){
@@ -69,7 +69,7 @@ public class PickupService {
             System.out.println("돌봄학생 정보가 없습니다");
             return null;
         }
-        return pickupRequestForm;
+        return "success";
     }
 
     public List<PickupRequestForm> requestPickupByGuardian(Guardian guardian, List<StudentPickupForm> studentPickupFormList){
