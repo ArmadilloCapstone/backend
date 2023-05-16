@@ -2,6 +2,7 @@ package com.example.dolbomi.service;
 
 import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
+import org.aspectj.lang.annotation.After;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -9,9 +10,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,21 +94,64 @@ public class AdminService {
                     headerList = stringList;
                 }
                 else{
-                    Student student = new Student();
-                    student.setId(Long.parseLong(stringList.get(0)));
-                    student.setName(stringList.get(1));
-                    student.setGrade(Long.parseLong(stringList.get(2)));
-                    student.setPhone_num(stringList.get(3));
-                    student.setGender(Long.parseLong(stringList.get(4)));
-                    student.setOriginal_class_num(Long.parseLong(stringList.get(5)));
-                    // 날짜 서식 = yyyy-mm-dd
-                    try {
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-                        student.setBirth_date(formatter.parse(stringList.get(6)));
-                    } catch (ParseException e){
-                        e.printStackTrace();
+                    String filename = file.getOriginalFilename();
+
+                    if(filename.equals("inputStudent.csv")) {
+                        Student student = new Student();
+                        student.setId(Long.parseLong(stringList.get(0)));
+                        student.setName(stringList.get(1));
+                        student.setGrade(Long.parseLong(stringList.get(2)));
+                        student.setPhone_num(stringList.get(3));
+                        student.setGender(Long.parseLong(stringList.get(4)));
+                        student.setOriginal_class_num(Long.parseLong(stringList.get(5)));
+                        student.setBirth_date(java.sql.Date.valueOf(stringList.get(6)));
+                        addNewStudent(student);
                     }
-                    addNewStudent(student);
+                    else if(filename.equals("inputAfterSchool.csv")){
+                        AfterSchoolClass afterSchoolClass = new AfterSchoolClass();
+                        afterSchoolClass.setId(Long.parseLong(stringList.get(0)));
+                        afterSchoolClass.setClass_name(stringList.get(1));
+                        afterSchoolClass.setStart_time(Time.valueOf(stringList.get(2)));
+                        afterSchoolClass.setEnd_time(Time.valueOf(stringList.get(3)));
+                        afterSchoolClass.setDay(Long.parseLong(stringList.get(4)));
+                        addNewAfterSchoolClass(afterSchoolClass);
+                    }
+                    else if(filename.equals("inputClass.csv")){
+                        DolbomClass dolbomClass = new DolbomClass();
+                        dolbomClass.setId(Long.parseLong(stringList.get(0)));
+                        dolbomClass.setClass_name(stringList.get(1));
+                        dolbomClass.setClass_num(Long.parseLong(stringList.get(2)));
+                        dolbomClass.setYear_seme(stringList.get(3));
+                        dolbomClass.setDisable(Long.parseLong(stringList.get(4)));
+                        addNewDolbomClass(dolbomClass);
+                    }
+                    else if(filename.equals("inputStudentTime.csv")){
+                        StudentTime studentTime = new StudentTime();
+                        studentTime.setStudent_id(Long.parseLong(stringList.get(0)));
+                        studentTime.setStudent_id(Long.parseLong(stringList.get(1)));
+                        studentTime.setEntry_1(Time.valueOf(stringList.get(2)));
+                        studentTime.setEntry_2(Time.valueOf(stringList.get(3)));
+                        studentTime.setEntry_3(Time.valueOf(stringList.get(4)));
+                        studentTime.setEntry_4(Time.valueOf(stringList.get(5)));
+                        studentTime.setEntry_5(Time.valueOf(stringList.get(6)));
+                        studentTime.setOff_1(Time.valueOf(stringList.get(7)));
+                        studentTime.setOff_2(Time.valueOf(stringList.get(8)));
+                        studentTime.setOff_3(Time.valueOf(stringList.get(9)));
+                        studentTime.setOff_4(Time.valueOf(stringList.get(10)));
+                        studentTime.setOff_5(Time.valueOf(stringList.get(11)));
+                        addNewStudentTime(studentTime);
+                    }
+                    else if(filename.equals("inputTeacher.csv")){
+                        Teacher teacher = new Teacher();
+                        teacher.setId(Long.parseLong(stringList.get(0)));
+                        teacher.setName(stringList.get(1));
+                        teacher.setPhone_num(stringList.get(2));
+                        teacher.setGender(Long.parseLong(stringList.get(3)));
+                        teacher.setClass_id(Long.parseLong(stringList.get(4)));
+                        teacher.setBirth_date(java.sql.Date.valueOf(stringList.get(5)));
+                        teacher.setDisable(Long.parseLong(stringList.get(6)));
+                        addNewTeacher(teacher);
+                    }
                 }
             }
         } catch (IOException e){
