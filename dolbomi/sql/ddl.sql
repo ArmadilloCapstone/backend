@@ -145,6 +145,12 @@
 			references teacher(id) on update cascade
 	);
 
+    SET FOREIGN_KEY_CHECKS = 0;
+	alter table teacher modify id int not null auto_increment;
+    alter table parent modify id int not null auto_increment;
+    alter table student modify id int not null auto_increment;
+    alter table dolbom_class modify id int not null auto_increment;
+
 	alter table admin convert to charset utf8;
 	alter table dolbom_class convert to charset utf8;
 	alter table student convert to charset utf8;

@@ -60,7 +60,7 @@ import StudentState from './pages/studentstate/StudentState';
 
     async function getParent(){
         await axios
-            .post("/parent")
+            .post("/parentPickup")
             .then((response) => {
                console.log(response.data);
                setParentMessage(response.data);

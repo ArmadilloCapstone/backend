@@ -39,7 +39,8 @@ public class SpringConfig {
     }
     @Bean
     public AdminService adminService(){
-        return new AdminService(dolbomClassRepository(), studentRepository(), parentRepository(), teacherRepository());
+        return new AdminService(dolbomClassRepository(), studentRepository(), parentRepository(),
+                teacherRepository(), afterSchoolClassRepository(), studentScheduleRepository());
     }
 
     @Bean

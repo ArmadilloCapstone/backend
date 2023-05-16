@@ -18,7 +18,7 @@ public class PickupController {
         this.pickupService = pickupService;
     }
 
-    @PostMapping("/parent")
+    @PostMapping("/parentPickup")
     public StudentPickupForm parentPickup(){
         Parent parent = new Parent();
         parent.setChild_id(20230001L);
@@ -42,21 +42,9 @@ public class PickupController {
         return pickupService.selectStudentForGuardian(guardian);
     }
     */
-//    @PostMapping("/requestParent")
-//    public PickupRequestForm parentRequest(){
-//        Parent parent = new Parent();
-//        parent.setId(200L);
-//        parent.setName("박현숙");
-//        StudentPickupForm studentPickupForm = new StudentPickupForm();
-//        studentPickupForm.setId(150L);
-//        studentPickupForm.setName("박미희");
-//        studentPickupForm.setGrade(1L);
-//        studentPickupForm.setGender(1L);
-//        return pickupService.requestPickupByParent(parent.getId());
-//    }
     @PostMapping("/requestParent")
-    public PickupRequestForm parentRequest(@RequestBody Long parent_id){
-        return pickupService.requestPickupByParent(parent_id);
+    public PickupRequestForm parentRequest(@RequestBody PickupRequestForm pickupRequestForm){
+        return pickupService.requestPickupByParent(pickupRequestForm.getPickupManId());
     }
 
     @PostMapping("/requestGuardian")

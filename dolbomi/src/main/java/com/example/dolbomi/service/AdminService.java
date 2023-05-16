@@ -1,8 +1,11 @@
 package com.example.dolbomi.service;
 
+import com.example.dolbomi.controller.StudentScheduleForm;
+import com.example.dolbomi.controller.TeacherManageForm;
 import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,13 +14,18 @@ public class AdminService {
     private final StudentRepository studentRepository;
     private final ParentRepository parentRepository;
     private final TeacherRepository teacherRepository;
+    private final AfterSchoolClassRepository afterSchoolClassRepository;
+    private final StudentScheduleRepository studentScheduleRepository;
 
     public AdminService(DolbomClassRepository dolbomClassRepository, StudentRepository studentRepository,
-                        ParentRepository parentRepository, TeacherRepository teacherRepository) {
+                        ParentRepository parentRepository, TeacherRepository teacherRepository,
+                        AfterSchoolClassRepository afterSchoolClassRepository, StudentScheduleRepository studentScheduleRepository) {
         this.dolbomClassRepository = dolbomClassRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
         this.teacherRepository = teacherRepository;
+        this.afterSchoolClassRepository = afterSchoolClassRepository;
+        this.studentScheduleRepository = studentScheduleRepository;
     }
     public void addNewDolbomClass(DolbomClass dolbomClass){
         List<DolbomClass> result = dolbomClassRepository.findByClassName(dolbomClass.getClass_name(), dolbomClass.getClass_num());
@@ -79,8 +87,8 @@ public class AdminService {
         return studentList;
     }
 
-    public void addNewTeacher(Teacher teacher){
-        List<Teacher> result = teacherRepository.findByNameBirth(teacher.getName(), teacher.getBirth_date());
+    public void addNewTeacher(TeacherManageForm teacherManageForm){
+        List<Teacher> result = teacherRepository.findByNameBirth(teacherManageForm.getName(), teacherManageForm.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable() == 0)){
             System.out.println("기존 돌봄교사 활성화");
             teacherRepository.activationTeacher(result.get(0).getId());
@@ -88,26 +96,47 @@ public class AdminService {
             System.out.println("이미 활성화된 돌봄교사입니다");
         } else if (result.size() == 0) {
             System.out.println("새로운 돌봄교사 추가");
+            Teacher teacher = new Teacher();
+            teacher.setId(teacherManageForm.getId());
+            teacher.setName(teacherManageForm.getName());
+            teacher.setPhone_num(teacherManageForm.getPhone_num());
+            teacher.setGender(teacherManageForm.getGender());
+            teacher.setBirth_date(teacherManageForm.getBirth_date());
+            teacher.setClass_id(teacherManageForm.getClass_id());
             teacher.setDisable(1L);
             teacherRepository.save(teacher);
         }
     }
 
-    public void deleteTeacher(Teacher teacher){
-        List<Teacher> result = teacherRepository.findByNameBirth(teacher.getName(), teacher.getBirth_date());
-        if((result.size() == 1) && (result.get(0).getDisable() == 1)){
+    public void deleteTeacher(Long id){
+        Optional<Teacher> result = teacherRepository.findById(id);
+        if((result.isPresent()) && (result.get().getDisable() == 1)){
             System.out.println("기존 돌봄교사 비활성화");
-            teacherRepository.disableTeacher(result.get(0).getId());
-        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 0) ) {
+            teacherRepository.disableTeacher(result.get().getId());
+        } else if ( (result.isPresent()) && (result.get().getDisable() == 0) ) {
             System.out.println("이미 비활성화된 돌봄교사입니다");
-        } else if (result.size()==0) {
+        } else {
             System.out.println("error");
         }
     }
 
-    public List<Teacher> sendTeacherList(){
+    public List<TeacherManageForm> sendTeacherList(){
         List<Teacher> teacherList = teacherRepository.findActivationTeacher();
-        return teacherList;
+        List<TeacherManageForm> teacherManageFormList = new ArrayList<>();
+        int count = teacherList.size();
+        for(int i = 0; i < count; i++){
+            TeacherManageForm teacherManageForm = new TeacherManageForm();
+            teacherManageForm.setId(teacherList.get(i).getId());
+            teacherManageForm.setName(teacherList.get(i).getName());
+            teacherManageForm.setPhone_num(teacherList.get(i).getPhone_num());
+            teacherManageForm.setGender(teacherList.get(i).getGender());
+            teacherManageForm.setBirth_date(teacherList.get(i).getBirth_date());
+            teacherManageForm.setClass_id(teacherList.get(i).getClass_id());
+            teacherManageForm.setClass_name(dolbomClassRepository.findById(teacherList.get(i).getClass_id()).get().getClass_name());
+            teacherManageForm.setDisable(teacherList.get(i).getDisable());
+            teacherManageFormList.add(teacherManageForm);
+        }
+        return teacherManageFormList;
     }
 
     public void addNewParent(Parent parent){
@@ -124,14 +153,14 @@ public class AdminService {
         }
     }
 
-    public void deleteParent(Parent parent){
-        List<Parent> result = parentRepository.findByNameBirth(parent.getName(), parent.getBirth_date());
-        if((result.size() == 1) && (result.get(0).getDisable()==1)){
+    public void deleteParent(Long id){
+        Optional<Parent> result = parentRepository.findById(id);
+        if((result.isPresent()) && (result.get().getDisable()==1)){
             System.out.println("기존 학부모 비활성화");
-            parentRepository.disableParent(result.get(0).getId());
-        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 0) ) {
+            parentRepository.disableParent(result.get().getId());
+        } else if ( (result.isPresent()) && (result.get().getDisable() == 0) ) {
             System.out.println("이미 비활성화된 학부모입니다");
-        } else if (result.size() == 0) {
+        } else {
             System.out.println("error");
         }
     }
@@ -141,4 +170,74 @@ public class AdminService {
         return parentList;
     }
 
+    public void addNewAfterSchoolClass(AfterSchoolClass afterSchoolClass){
+        List<AfterSchoolClass> result = afterSchoolClassRepository.findByClass_nameDay(afterSchoolClass.getClass_name(), afterSchoolClass.getDay());
+        if(result.size() == 1){
+            System.out.println("이미 존재하는 방과후활동입니다");
+        } else if (result.size() == 0) {
+            System.out.println("새로운 방과후활동 추가");
+            afterSchoolClassRepository.save(afterSchoolClass);
+        }
+    }
+    
+    //학생 스케줄 먼저 구현하고 나머지 구현할것
+    public int deleteAfterSchoolClass(Long id){
+        Optional<AfterSchoolClass> result = afterSchoolClassRepository.findById(id);
+        if(result.isPresent()){
+            Long class_id = result.get().getId();
+            List<StudentSchedule> studentScheduleList = studentScheduleRepository.findByClass_id(class_id);
+            if(studentScheduleList.size() > 0){
+                System.out.println("해당 방과후활동을 듣고있는 학생이 있으므로 삭제할 수 없습니다");
+                return 0;
+            } else if (studentScheduleList.size() == 0) {
+                System.out.println("방과후활동 삭제");
+                afterSchoolClassRepository.deleteAfterSchoolClass(class_id);
+                return 1;
+            }
+        }
+        return 2;
+    }
+    public List<AfterSchoolClass> sendAfterSchoolClassList(){
+        List<AfterSchoolClass> afterSchoolClassList = afterSchoolClassRepository.findAll();
+        return afterSchoolClassList;
+    }
+
+    public void addNewStudentSchedule(StudentScheduleForm studentScheduleForm){
+        List<StudentSchedule> result = studentScheduleRepository.findByStudent_idClass_id(studentScheduleForm.getStudent_id(), studentScheduleForm.getClass_id());
+        if(result.size() == 1){
+            System.out.println("이미 존재하는 학생스케줄입니다");
+        } else if (result.size()==0) {
+            System.out.println("새로운 학생스케줄 추가");
+            StudentSchedule studentSchedule = new StudentSchedule();
+            studentSchedule.setClass_id(studentScheduleForm.getClass_id());
+            studentSchedule.setStudent_id(studentScheduleForm.getStudent_id());
+            studentScheduleRepository.save(studentSchedule);
+        }
+    }
+
+    public void deleteStudentSchedule(Long id){
+        Optional<StudentSchedule> result = studentScheduleRepository.findById(id);
+        if(result.isPresent()){
+            System.out.println("학생스케줄 삭제");
+            studentScheduleRepository.deleteStudentSchedule(id);
+        } else {
+            System.out.println("학생스케줄이 존재하지 않아 삭제할 수 없습니다");
+        }
+    }
+
+    public List<StudentScheduleForm> sendStudentSchedule(){
+        List<StudentSchedule> studentScheduleList = studentScheduleRepository.findAll();
+        List<StudentScheduleForm> studentScheduleFormList = new ArrayList<>();
+        int count = studentScheduleList.size();
+        for(int i = 0; i < count; i++){
+            StudentScheduleForm studentScheduleForm = new StudentScheduleForm();
+            studentScheduleForm.setId(studentScheduleList.get(i).getId());
+            studentScheduleForm.setName(studentRepository.findById(studentScheduleList.get(i).getStudent_id()).get().getName());
+            studentScheduleForm.setStudent_id(studentScheduleList.get(i).getStudent_id());
+            studentScheduleForm.setClass_name(afterSchoolClassRepository.findById(studentScheduleList.get(i).getClass_id()).get().getClass_name());
+            studentScheduleForm.setClass_id(studentScheduleList.get(i).getClass_id());
+            studentScheduleFormList.add(studentScheduleForm);
+        }
+        return studentScheduleFormList;
+    }
 }
