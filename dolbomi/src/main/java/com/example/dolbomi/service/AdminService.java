@@ -98,18 +98,8 @@ public class AdminService {
                 else{
                     String filename = file.getOriginalFilename();
 
-                    if(filename.equals("inputStudent.csv")) {
-                        Student student = new Student();
-                        student.setId(Long.parseLong(stringList.get(0)));
-                        student.setName(stringList.get(1));
-                        student.setGrade(Long.parseLong(stringList.get(2)));
-                        student.setPhone_num(stringList.get(3));
-                        student.setGender(Long.parseLong(stringList.get(4)));
-                        student.setOriginal_class_num(Long.parseLong(stringList.get(5)));
-                        student.setBirth_date(java.sql.Date.valueOf(stringList.get(6)));
-                        addNewStudent(student);
-                    }
-                    else if(filename.equals("inputAfterSchool.csv")){
+
+                    if(filename.equals("inputAfterSchool.csv")){
                         AfterSchoolClass afterSchoolClass = new AfterSchoolClass();
                         afterSchoolClass.setId(Long.parseLong(stringList.get(0)));
                         afterSchoolClass.setClass_name(stringList.get(1));
@@ -126,6 +116,35 @@ public class AdminService {
                         dolbomClass.setYear_seme(stringList.get(3));
                         dolbomClass.setDisable(Long.parseLong(stringList.get(4)));
                         addNewDolbomClass(dolbomClass);
+                    }
+                    else if(filename.equals("inputParent.csv")){
+                        Parent parent = new Parent();
+                        parent.setId(Long.parseLong(stringList.get(0)));
+                        parent.setName(stringList.get(1));
+                        parent.setPhone_num(stringList.get(2));
+                        parent.setGender(Long.parseLong(stringList.get(3)));
+                        parent.setBirth_date(java.sql.Date.valueOf(stringList.get(4)));
+                        parent.setChild_id(Long.parseLong(stringList.get(5)));
+                        parent.setClass_id(Long.parseLong(stringList.get(6)));
+                        parent.setDisable(Long.parseLong(stringList.get(7)));
+                        addNewParent(parent);
+                    }
+                    else if(filename.equals("inputStudent.csv")) {
+                        Student student = new Student();
+                        student.setId(Long.parseLong(stringList.get(0)));
+                        student.setName(stringList.get(1));
+                        student.setGrade(Long.parseLong(stringList.get(2)));
+                        student.setPhone_num(stringList.get(3));
+                        student.setGender(Long.parseLong(stringList.get(4)));
+                        student.setOriginal_class_num(Long.parseLong(stringList.get(5)));
+                        student.setBirth_date(java.sql.Date.valueOf(stringList.get(6)));
+                        addNewStudent(student);
+                    }
+                    else if(filename.equals("inputStudentSchedule.csv")){
+                        StudentSchedule studentSchedule = new StudentSchedule();
+                        studentSchedule.setId(Long.parseLong(stringList.get(0)));
+                        studentSchedule.setStudent_id(Long.parseLong(stringList.get(1)));
+                        studentSchedule.setClass_id(Long.parseLong(stringList.get(2)));
                     }
                     else if(filename.equals("inputStudentTime.csv")){
                         StudentTime studentTime = new StudentTime();
