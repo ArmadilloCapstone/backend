@@ -47,3 +47,5 @@ out/
 
 ### application ###
 application.properties
+
+build.gradle

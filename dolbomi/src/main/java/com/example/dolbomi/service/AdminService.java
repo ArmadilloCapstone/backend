@@ -22,16 +22,19 @@ public class AdminService {
     private final TeacherRepository teacherRepository;
     private final AfterSchoolClassRepository afterSchoolClassRepository;
     private final StudentScheduleRepository studentScheduleRepository;
+    private final StudentTimeRepository studentTimeRepository;
 
     public AdminService(DolbomClassRepository dolbomClassRepository, StudentRepository studentRepository,
                         ParentRepository parentRepository, TeacherRepository teacherRepository,
-                        AfterSchoolClassRepository afterSchoolClassRepository, StudentScheduleRepository studentScheduleRepository) {
+                        AfterSchoolClassRepository afterSchoolClassRepository,
+                        StudentScheduleRepository studentScheduleRepository, StudentTimeRepository studentTimeRepository) {
         this.dolbomClassRepository = dolbomClassRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
         this.teacherRepository = teacherRepository;
         this.afterSchoolClassRepository = afterSchoolClassRepository;
         this.studentScheduleRepository = studentScheduleRepository;
+        this.studentTimeRepository = studentTimeRepository;
     }
     public void addNewDolbomClass(DolbomClass dolbomClass){
         List<DolbomClass> result = dolbomClassRepository.findByClassName(dolbomClass.getClass_name(), dolbomClass.getClass_num());
@@ -156,10 +159,7 @@ public class AdminService {
         } catch (IOException e){
             e.printStackTrace();
         }
-
     }
-
-
 
     public void deleteStudent(Long id){
         Optional<Student> result = studentRepository.findById(id);
@@ -343,5 +343,15 @@ public class AdminService {
             studentScheduleFormList.add(studentScheduleForm);
         }
         return studentScheduleFormList;
+    }
+
+    public void addNewStudentTime(StudentTime studentTime){
+        List<StudentTime> result = studentTimeRepository.findByStudent_id(studentTime.getStudent_id());
+        if(result.size() == 1){
+            System.out.println("이미 존재하는 학생돌봄시간입니다");
+        } else if (result.size()==0) {
+            System.out.println("돌봄학생의 돌봄시간 생성");
+            studentTimeRepository.save(studentTime);
+        }
     }
 }
