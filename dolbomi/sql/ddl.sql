@@ -150,6 +150,8 @@ alter table parent modify id int not null auto_increment;
 alter table student modify id int not null auto_increment;
 alter table dolbom_class modify id int not null auto_increment;
 alter table after_school_class modify id int not null auto_increment;
+alter table student_schedule modify id int not null auto_increment;
+alter table student_time modify id int not null auto_increment;
 
 alter table admin convert to charset utf8;
 alter table dolbom_class convert to charset utf8;

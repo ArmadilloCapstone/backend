@@ -100,7 +100,7 @@ public class AdminService {
                     String filename = file.getOriginalFilename();
 
 
-                    if(filename.equals("inputAfterSchool.csv")){
+                    if(filename.equals("5.inputAfterSchool.csv")){
                         AfterSchoolClass afterSchoolClass = new AfterSchoolClass();
                         afterSchoolClass.setId(Long.parseLong(stringList.get(0)));
                         afterSchoolClass.setClass_name(stringList.get(1));
@@ -109,7 +109,7 @@ public class AdminService {
                         afterSchoolClass.setDay(Long.parseLong(stringList.get(4)));
                         addNewAfterSchoolClass(afterSchoolClass);
                     }
-                    else if(filename.equals("inputClass.csv")){
+                    else if(filename.equals("1.inputClass.csv")){
                         DolbomClass dolbomClass = new DolbomClass();
                         dolbomClass.setId(Long.parseLong(stringList.get(0)));
                         dolbomClass.setClass_name(stringList.get(1));
@@ -118,7 +118,7 @@ public class AdminService {
                         dolbomClass.setDisable(Long.parseLong(stringList.get(4)));
                         addNewDolbomClass(dolbomClass);
                     }
-                    else if(filename.equals("inputParent.csv")){
+                    else if(filename.equals("4.inputParent.csv")){
                         Parent parent = new Parent();
                         parent.setId(Long.parseLong(stringList.get(0)));
                         parent.setName(stringList.get(1));
@@ -130,24 +130,26 @@ public class AdminService {
                         parent.setDisable(Long.parseLong(stringList.get(7)));
                         addNewParent(parent);
                     }
-                    else if(filename.equals("inputStudent.csv")) {
+                    else if(filename.equals("2.inputStudent.csv")) {
                         Student student = new Student();
                         student.setId(Long.parseLong(stringList.get(0)));
                         student.setName(stringList.get(1));
                         student.setGrade(Long.parseLong(stringList.get(2)));
                         student.setPhone_num(stringList.get(3));
                         student.setGender(Long.parseLong(stringList.get(4)));
-                        student.setOriginal_class_num(Long.parseLong(stringList.get(5)));
-                        student.setBirth_date(java.sql.Date.valueOf(stringList.get(6)));
+                        student.setClass_id(Long.parseLong(stringList.get(5)));
+                        student.setOriginal_class_num(Long.parseLong(stringList.get(6)));
+                        student.setBirth_date(java.sql.Date.valueOf(stringList.get(7)));
                         addNewStudent(student);
                     }
-                    else if(filename.equals("inputStudentSchedule.csv")){
+                    else if(filename.equals("7.inputStudentSchedule.csv")){
                         StudentSchedule studentSchedule = new StudentSchedule();
                         studentSchedule.setId(Long.parseLong(stringList.get(0)));
                         studentSchedule.setStudent_id(Long.parseLong(stringList.get(1)));
                         studentSchedule.setClass_id(Long.parseLong(stringList.get(2)));
+                        studentScheduleRepository.save(studentSchedule);
                     }
-                    else if(filename.equals("inputStudentTime.csv")){
+                    else if(filename.equals("6.inputStudentTime.csv")){
                         StudentTime studentTime = new StudentTime();
                         studentTime.setStudent_id(Long.parseLong(stringList.get(0)));
                         studentTime.setStudent_id(Long.parseLong(stringList.get(1)));
@@ -163,7 +165,7 @@ public class AdminService {
                         studentTime.setOff_5(Time.valueOf(stringList.get(11)));
                         addNewStudentTime(studentTime);
                     }
-                    else if(filename.equals("inputTeacher.csv")){
+                    else if(filename.equals("3.inputTeacher.csv")){
                         Teacher teacher = new Teacher();
                         teacher.setId(Long.parseLong(stringList.get(0)));
                         teacher.setName(stringList.get(1));
@@ -198,6 +200,7 @@ public class AdminService {
         return studentList;
     }
     public void addNewTeacher(Teacher teacher){
+        System.out.println(teacher.getName());
         List<Teacher> result = teacherRepository.findByNameBirth(teacher.getName(), teacher.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable() == 0)){
             System.out.println("기존 돌봄교사 활성화 csv");
