@@ -1,5 +1,6 @@
 package com.example.dolbomi.service;
 
+import com.example.dolbomi.controller.ParentManageForm;
 import com.example.dolbomi.controller.StudentScheduleForm;
 import com.example.dolbomi.controller.TeacherManageForm;
 import com.example.dolbomi.domain.*;
@@ -23,11 +24,12 @@ public class AdminService {
     private final AfterSchoolClassRepository afterSchoolClassRepository;
     private final StudentScheduleRepository studentScheduleRepository;
     private final StudentTimeRepository studentTimeRepository;
+    private final StudentStateRepository studentStateRepository;
 
     public AdminService(DolbomClassRepository dolbomClassRepository, StudentRepository studentRepository,
                         ParentRepository parentRepository, TeacherRepository teacherRepository,
-                        AfterSchoolClassRepository afterSchoolClassRepository,
-                        StudentScheduleRepository studentScheduleRepository, StudentTimeRepository studentTimeRepository) {
+                        AfterSchoolClassRepository afterSchoolClassRepository, StudentScheduleRepository studentScheduleRepository,
+                        StudentTimeRepository studentTimeRepository, StudentStateRepository studentStateRepository) {
         this.dolbomClassRepository = dolbomClassRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
@@ -35,6 +37,7 @@ public class AdminService {
         this.afterSchoolClassRepository = afterSchoolClassRepository;
         this.studentScheduleRepository = studentScheduleRepository;
         this.studentTimeRepository = studentTimeRepository;
+        this.studentStateRepository = studentStateRepository;
     }
     public void addNewDolbomClass(DolbomClass dolbomClass){
         List<DolbomClass> result = dolbomClassRepository.findByClassName(dolbomClass.getClass_name(), dolbomClass.getClass_num());
@@ -75,7 +78,11 @@ public class AdminService {
         } else if (result.size() == 0) {
             System.out.println("새로운 돌봄학생 추가");
             student.setDisable(1L);
-            studentRepository.save(student);
+            Student registerdStudent = studentRepository.save(student);
+            StudentState studentState = new StudentState();
+            studentState.setStudent_id(registerdStudent.getId());
+            studentState.setState(1L);
+            studentStateRepository.save(studentState);
         }
     }
 
@@ -99,7 +106,7 @@ public class AdminService {
                     String filename = file.getOriginalFilename();
 
 
-                    if(filename.equals("inputAfterSchool.csv")){
+                    if(filename.equals("5.inputAfterSchool.csv")){
                         AfterSchoolClass afterSchoolClass = new AfterSchoolClass();
                         afterSchoolClass.setId(Long.parseLong(stringList.get(0)));
                         afterSchoolClass.setClass_name(stringList.get(1));
@@ -108,7 +115,7 @@ public class AdminService {
                         afterSchoolClass.setDay(Long.parseLong(stringList.get(4)));
                         addNewAfterSchoolClass(afterSchoolClass);
                     }
-                    else if(filename.equals("inputClass.csv")){
+                    else if(filename.equals("1.inputClass.csv")){
                         DolbomClass dolbomClass = new DolbomClass();
                         dolbomClass.setId(Long.parseLong(stringList.get(0)));
                         dolbomClass.setClass_name(stringList.get(1));
@@ -117,7 +124,7 @@ public class AdminService {
                         dolbomClass.setDisable(Long.parseLong(stringList.get(4)));
                         addNewDolbomClass(dolbomClass);
                     }
-                    else if(filename.equals("inputParent.csv")){
+                    else if(filename.equals("4.inputParent.csv")){
                         Parent parent = new Parent();
                         parent.setId(Long.parseLong(stringList.get(0)));
                         parent.setName(stringList.get(1));
@@ -129,24 +136,26 @@ public class AdminService {
                         parent.setDisable(Long.parseLong(stringList.get(7)));
                         addNewParent(parent);
                     }
-                    else if(filename.equals("inputStudent.csv")) {
+                    else if(filename.equals("2.inputStudent.csv")) {
                         Student student = new Student();
                         student.setId(Long.parseLong(stringList.get(0)));
                         student.setName(stringList.get(1));
                         student.setGrade(Long.parseLong(stringList.get(2)));
                         student.setPhone_num(stringList.get(3));
                         student.setGender(Long.parseLong(stringList.get(4)));
-                        student.setOriginal_class_num(Long.parseLong(stringList.get(5)));
-                        student.setBirth_date(java.sql.Date.valueOf(stringList.get(6)));
+                        student.setClass_id(Long.parseLong(stringList.get(5)));
+                        student.setOriginal_class_num(Long.parseLong(stringList.get(6)));
+                        student.setBirth_date(java.sql.Date.valueOf(stringList.get(7)));
                         addNewStudent(student);
                     }
-                    else if(filename.equals("inputStudentSchedule.csv")){
+                    else if(filename.equals("7.inputStudentSchedule.csv")){
                         StudentSchedule studentSchedule = new StudentSchedule();
                         studentSchedule.setId(Long.parseLong(stringList.get(0)));
                         studentSchedule.setStudent_id(Long.parseLong(stringList.get(1)));
                         studentSchedule.setClass_id(Long.parseLong(stringList.get(2)));
+                        studentScheduleRepository.save(studentSchedule);
                     }
-                    else if(filename.equals("inputStudentTime.csv")){
+                    else if(filename.equals("6.inputStudentTime.csv")){
                         StudentTime studentTime = new StudentTime();
                         studentTime.setStudent_id(Long.parseLong(stringList.get(0)));
                         studentTime.setStudent_id(Long.parseLong(stringList.get(1)));
@@ -162,7 +171,7 @@ public class AdminService {
                         studentTime.setOff_5(Time.valueOf(stringList.get(11)));
                         addNewStudentTime(studentTime);
                     }
-                    else if(filename.equals("inputTeacher.csv")){
+                    else if(filename.equals("3.inputTeacher.csv")){
                         Teacher teacher = new Teacher();
                         teacher.setId(Long.parseLong(stringList.get(0)));
                         teacher.setName(stringList.get(1));
@@ -197,6 +206,7 @@ public class AdminService {
         return studentList;
     }
     public void addNewTeacher(Teacher teacher){
+        System.out.println(teacher.getName());
         List<Teacher> result = teacherRepository.findByNameBirth(teacher.getName(), teacher.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable() == 0)){
             System.out.println("기존 돌봄교사 활성화 csv");
@@ -265,12 +275,34 @@ public class AdminService {
     public void addNewParent(Parent parent){
         List<Parent> result = parentRepository.findByNameBirth(parent.getName(), parent.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable()==0)){
-            System.out.println("기존 학부모 활성화");
+            System.out.println("기존 학부모 활성화 csv");
             parentRepository.activationParent(result.get(0).getId());
         } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
-            System.out.println("이미 활성화된 학부모입니다");
+            System.out.println("이미 활성화된 학부모입니다 csv");
         } else if (result.size() == 0) {
+            System.out.println("새로운 학부모 추가 csv");
+            parent.setDisable(1L);
+            parentRepository.save(parent);
+        }
+    }
+
+    public  void addNewParentManageForm(ParentManageForm parentManageForm){
+        List<Parent> result = parentRepository.findByNameBirth(parentManageForm.getName(), parentManageForm.getBirth_date());
+        if((result.size()==1)&&(result.get(0).getDisable()==0)){
+            System.out.println("기존 학부모 활성화");
+            parentRepository.activationParent(result.get(0).getId());
+        } else if ((result.size() == 1) && (result.get(0).getDisable() == 1)) {
+            System.out.println("이미 활성화된 학부모입니다");
+        } else if (result.size()==0) {
             System.out.println("새로운 학부모 추가");
+            Parent parent = new Parent();
+            parent.setId(parentManageForm.getId());
+            parent.setName(parentManageForm.getName());
+            parent.setPhone_num(parentManageForm.getPhone_num());
+            parent.setGender(parentManageForm.getGender());
+            parent.setBirth_date(parentManageForm.getBirth_date());
+            parent.setChild_id(parentManageForm.getChild_id());
+            parent.setClass_id(studentRepository.findById(parentManageForm.getChild_id()).get().getClass_id());
             parent.setDisable(1L);
             parentRepository.save(parent);
         }
@@ -288,9 +320,23 @@ public class AdminService {
         }
     }
 
-    public List<Parent> sendParentList(){
+    public List<ParentManageForm> sendParentList(){
         List<Parent> parentList = parentRepository.findActivationParent();
-        return parentList;
+        List<ParentManageForm> parentManageFormList = new ArrayList<>();
+        int count = parentList.size();
+        for(int i = 0; i<count;i++){
+            ParentManageForm parentManageForm = new ParentManageForm();
+            parentManageForm.setId(parentList.get(i).getId());
+            parentManageForm.setName(parentList.get(i).getName());
+            parentManageForm.setPhone_num(parentList.get(i).getPhone_num());
+            parentManageForm.setGender(parentList.get(i).getGender());
+            parentManageForm.setBirth_date(parentList.get(i).getBirth_date());
+            parentManageForm.setChild_name(studentRepository.findById(parentList.get(i).getChild_id()).get().getName());
+            parentManageForm.setChild_id(parentList.get(i).getChild_id());
+            parentManageFormList.add(parentManageForm);
+        }
+
+        return parentManageFormList;
     }
 
     public void addNewAfterSchoolClass(AfterSchoolClass afterSchoolClass){
@@ -372,5 +418,18 @@ public class AdminService {
             System.out.println("돌봄학생의 돌봄시간 생성");
             studentTimeRepository.save(studentTime);
         }
+    }
+    public void deleteStudentTime(Long id){
+        Optional<StudentTime> result = studentTimeRepository.findById(id);
+        if(result.isPresent()){
+            System.out.println("학생돌봄시간 삭제");
+            studentTimeRepository.deleteStudentTime(id);
+        } else {
+            System.out.println("학생돌봄시간이 존재하지 않아 삭제할 수 없습니다");
+        }
+    }
+    public List<StudentTime> sendStudentTimeList(){
+        List<StudentTime> studentTimeList = studentTimeRepository.findAll();
+        return studentTimeList;
     }
 }
