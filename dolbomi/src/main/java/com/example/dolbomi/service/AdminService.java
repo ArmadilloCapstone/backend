@@ -24,11 +24,12 @@ public class AdminService {
     private final AfterSchoolClassRepository afterSchoolClassRepository;
     private final StudentScheduleRepository studentScheduleRepository;
     private final StudentTimeRepository studentTimeRepository;
+    private final StudentStateRepository studentStateRepository;
 
     public AdminService(DolbomClassRepository dolbomClassRepository, StudentRepository studentRepository,
                         ParentRepository parentRepository, TeacherRepository teacherRepository,
-                        AfterSchoolClassRepository afterSchoolClassRepository,
-                        StudentScheduleRepository studentScheduleRepository, StudentTimeRepository studentTimeRepository) {
+                        AfterSchoolClassRepository afterSchoolClassRepository, StudentScheduleRepository studentScheduleRepository,
+                        StudentTimeRepository studentTimeRepository, StudentStateRepository studentStateRepository) {
         this.dolbomClassRepository = dolbomClassRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
@@ -36,6 +37,7 @@ public class AdminService {
         this.afterSchoolClassRepository = afterSchoolClassRepository;
         this.studentScheduleRepository = studentScheduleRepository;
         this.studentTimeRepository = studentTimeRepository;
+        this.studentStateRepository = studentStateRepository;
     }
     public void addNewDolbomClass(DolbomClass dolbomClass){
         List<DolbomClass> result = dolbomClassRepository.findByClassName(dolbomClass.getClass_name(), dolbomClass.getClass_num());
@@ -76,7 +78,11 @@ public class AdminService {
         } else if (result.size() == 0) {
             System.out.println("새로운 돌봄학생 추가");
             student.setDisable(1L);
-            studentRepository.save(student);
+            Student registerdStudent = studentRepository.save(student);
+            StudentState studentState = new StudentState();
+            studentState.setStudent_id(registerdStudent.getId());
+            studentState.setState(1L);
+            studentStateRepository.save(studentState);
         }
     }
 

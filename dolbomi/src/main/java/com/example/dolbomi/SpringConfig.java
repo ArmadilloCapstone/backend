@@ -41,7 +41,7 @@ public class SpringConfig {
     public AdminService adminService(){
         return new AdminService(dolbomClassRepository(), studentRepository(), parentRepository(),
                 teacherRepository(), afterSchoolClassRepository(), studentScheduleRepository(),
-                studentTimeRepository());
+                studentTimeRepository(), studentStateRepository());
     }
 
     @Bean
