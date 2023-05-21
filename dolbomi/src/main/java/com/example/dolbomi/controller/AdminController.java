@@ -45,7 +45,7 @@ public class AdminController {
     public List<Student> sendStudent(){
         return adminService.sendStudentList();
     }
-    @PostMapping("/student_dolbom_classList")
+    @PostMapping("/student/dolbom_classList")
     public List<DolbomClass> sendDolbomClassForStudent() { return adminService.sendDolbomClassList(); }
 
     @PostMapping("/teacher_submit")
@@ -54,6 +54,8 @@ public class AdminController {
     public void deleteTeacher(@PathVariable("productId") Long productId) { adminService.deleteTeacher(productId); }
     @PostMapping("/teacher")
     public List<TeacherManageForm> sendTeacher() { return adminService.sendTeacherList(); }
+    @PostMapping("/teacher/dolbom_classList")
+    public List<DolbomClass> sendDolbomClassForTeacher() { return adminService.sendDolbomClassList(); }
 
     @PostMapping("/parent_submit")
     public void addNewParentManageForm(@RequestBody ParentManageForm parentManageForm) { adminService.addNewParentManageForm(parentManageForm); }
@@ -61,6 +63,8 @@ public class AdminController {
     public void deleteParent(@PathVariable("productId") Long productId) { adminService.deleteParent(productId); }
     @PostMapping("/parent")
     public List<ParentManageForm> sendParent() { return adminService.sendParentList(); }
+    @PostMapping("/parent/studentList")
+    public List<Student> sendStudentForParent() { return adminService.sendStudentList(); }
 
     @PostMapping("/after_school_class_submit")
     public void addNewAfterSchoolClass(@RequestBody AfterSchoolClass afterSchoolClass) { adminService.addNewAfterSchoolClass(afterSchoolClass); }
