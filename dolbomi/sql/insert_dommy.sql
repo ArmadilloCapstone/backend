@@ -58,9 +58,9 @@ insert into guardian(id, name, serial_num ,info)
 values(0001,"하루윌", 1750298361, "가나다 태권도장의 셔틀버스 기사");
 
 insert into student_of_guardian(guardian_id, student_id)
-values(0001, 20230001);
+values(1750298361, 1);
 insert into student_of_guardian(guardian_id, student_id)
-values(0001, 20230002);
+values(1750298361, 2);
 
 
 insert into parent(id, name, phone_num, gender, birth_date, child_id, class_id, disable)
