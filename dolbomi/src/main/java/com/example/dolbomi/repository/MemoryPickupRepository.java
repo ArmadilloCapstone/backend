@@ -8,32 +8,42 @@ import java.util.List;
 import java.util.Map;
 
 public class MemoryPickupRepository implements PickupRepository{
-    private static Map<Long, PickupRequestForm> store= new HashMap<>();
-    private static long sequence = 0L;
+    private static Map<Long, Map<Long, PickupRequestForm>> store= new HashMap<>();
+    private static int MAXCLASS = 100;
+    private static long[] sequence = new long[MAXCLASS];
+
     @Override
-    public PickupRequestForm saveByParent(PickupRequestForm pickupRequestForm) {
-        store.put(sequence, pickupRequestForm);
-        sequence++;
+    public PickupRequestForm saveByParent(PickupRequestForm pickupRequestForm, Long class_id) {
+        if (store.get(class_id).isEmpty() == true){
+            Map<Long, PickupRequestForm> subStore = new HashMap<>();
+            store.put(class_id, subStore);
+            sequence[class_id.intValue()] = 0;
+        }
+        store.get(class_id).put(sequence[class_id.intValue()], pickupRequestForm);
+        sequence[class_id.intValue()]++;
         return pickupRequestForm;
     }
 
     @Override
-    public List<PickupRequestForm> saveByGuardian(List<PickupRequestForm> pickupRequestFormList) {
-        int count = pickupRequestFormList.size();
-        for(int i = 0; i < count; i++){
-            store.put(sequence,pickupRequestFormList.get(i));
-            sequence++;
+    public PickupRequestForm saveByGuardian(PickupRequestForm pickupRequestForm, Long class_id) {
+        if (store.get(class_id).isEmpty() == true){
+            Map<Long, PickupRequestForm> subStore = new HashMap<>();
+            store.put(class_id, subStore);
+            sequence[class_id.intValue()] = 0;
         }
-        return pickupRequestFormList;
+        store.get(class_id).put(sequence[class_id.intValue()], pickupRequestForm);
+        sequence[class_id.intValue()]++;
+        return pickupRequestForm;
     }
 
     @Override
-    public List<PickupRequestForm> findAll() {
-        return new ArrayList<>(store.values());
+    public List<PickupRequestForm> findAll(Long class_id) {
+        return new ArrayList<>(store.get(class_id).values());
     }
 
-    public void clearPickupStore(){
-        store.clear();
-        sequence = 0L;
+    public void clearPickupStore(Long class_id){
+        store.get(class_id).clear();
+        sequence[class_id.intValue()] = 0;
     }
 }
+
