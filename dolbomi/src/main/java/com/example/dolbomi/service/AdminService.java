@@ -1,6 +1,7 @@
 package com.example.dolbomi.service;
 
 import com.example.dolbomi.controller.ParentManageForm;
+import com.example.dolbomi.controller.StudentManageForm;
 import com.example.dolbomi.controller.StudentScheduleForm;
 import com.example.dolbomi.controller.TeacherManageForm;
 import com.example.dolbomi.domain.*;
@@ -78,6 +79,41 @@ public class AdminService {
         } else if (result.size() == 0) {
             System.out.println("새로운 돌봄학생 추가");
             student.setDisable(1L);
+            Student registerdStudent = studentRepository.save(student);
+            StudentState studentState = new StudentState();
+            studentState.setStudent_id(registerdStudent.getId());
+            studentState.setState(1L);
+            studentStateRepository.save(studentState);
+        }
+    }
+    public void addNewStudentManageForm(StudentManageForm studentManageForm){
+        Long gender = 0L;
+        if(studentManageForm.getGender() == "남"){
+            gender = 1L;
+        } else if (studentManageForm.getGender() == "여") {
+            gender = 2L;
+        } else {
+            System.out.println("존재하지 않는 성별입니다");
+            return;
+        }
+        List<Student> result = studentRepository.findByNameGradeGender(studentManageForm.getName(), studentManageForm.getGrade(), gender);
+        if((result.size() == 1) && (result.get(0).getDisable() == 0)){
+            System.out.println("기존 돌봄학생 활성화");
+            studentRepository.activationStudent(result.get(0).getId());
+        } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
+            System.out.println("이미 활성화된 돌봄학생입니다");
+        } else if (result.size() == 0) {
+            System.out.println("새로운 돌봄학생 추가");
+            Student student = new Student();
+            student.setId(studentManageForm.getId());
+            student.setName(studentManageForm.getName());
+            student.setGrade(studentManageForm.getGrade());
+            student.setPhone_num(studentManageForm.getPhone_num());
+            student.setGender(gender);
+            student.setClass_id(studentManageForm.getClass_id());
+            student.setBirth_date(studentManageForm.getBirth_date());
+            student.setDisable(1L);
+            student.setOriginal_class_num(studentManageForm.getOriginal_class_num());
             Student registerdStudent = studentRepository.save(student);
             StudentState studentState = new StudentState();
             studentState.setStudent_id(registerdStudent.getId());
@@ -221,6 +257,15 @@ public class AdminService {
     }
 
     public void addNewTeacherManageForm(TeacherManageForm teacherManageForm){
+        Long gender = 0L;
+        if(teacherManageForm.getGender() == "남"){
+            gender = 1L;
+        } else if (teacherManageForm.getGender() == "여") {
+            gender = 2L;
+        } else {
+            System.out.println("존재하지 않는 성별입니다");
+            return;
+        }
         List<Teacher> result = teacherRepository.findByNameBirth(teacherManageForm.getName(), teacherManageForm.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable() == 0)){
             System.out.println("기존 돌봄교사 활성화");
@@ -233,7 +278,7 @@ public class AdminService {
             teacher.setId(teacherManageForm.getId());
             teacher.setName(teacherManageForm.getName());
             teacher.setPhone_num(teacherManageForm.getPhone_num());
-            teacher.setGender(teacherManageForm.getGender());
+            teacher.setGender(gender);
             teacher.setBirth_date(teacherManageForm.getBirth_date());
             teacher.setClass_id(teacherManageForm.getClass_id());
             teacher.setDisable(1L);
@@ -262,7 +307,15 @@ public class AdminService {
             teacherManageForm.setId(teacherList.get(i).getId());
             teacherManageForm.setName(teacherList.get(i).getName());
             teacherManageForm.setPhone_num(teacherList.get(i).getPhone_num());
-            teacherManageForm.setGender(teacherList.get(i).getGender());
+            Long gender = teacherList.get(i).getGender();
+            if(gender == 1L) {
+                teacherManageForm.setGender("남");
+            } else if (gender == 2L) {
+                teacherManageForm.setGender("여");
+            } else {
+                System.out.println("DB에 저장된 성별값 오류");
+                teacherManageForm.setGender("오류");
+            }
             teacherManageForm.setBirth_date(teacherList.get(i).getBirth_date());
             teacherManageForm.setClass_id(teacherList.get(i).getClass_id());
             teacherManageForm.setClass_name(dolbomClassRepository.findById(teacherList.get(i).getClass_id()).get().getClass_name());
@@ -287,6 +340,15 @@ public class AdminService {
     }
 
     public  void addNewParentManageForm(ParentManageForm parentManageForm){
+        Long gender = 0L;
+        if(parentManageForm.getGender() == "남"){
+            gender = 1L;
+        } else if (parentManageForm.getGender() == "여") {
+            gender = 2L;
+        } else {
+            System.out.println("존재하지 않는 성별입니다");
+            return;
+        }
         List<Parent> result = parentRepository.findByNameBirth(parentManageForm.getName(), parentManageForm.getBirth_date());
         if((result.size()==1)&&(result.get(0).getDisable()==0)){
             System.out.println("기존 학부모 활성화");
@@ -299,7 +361,7 @@ public class AdminService {
             parent.setId(parentManageForm.getId());
             parent.setName(parentManageForm.getName());
             parent.setPhone_num(parentManageForm.getPhone_num());
-            parent.setGender(parentManageForm.getGender());
+            parent.setGender(gender);
             parent.setBirth_date(parentManageForm.getBirth_date());
             parent.setChild_id(parentManageForm.getChild_id());
             parent.setClass_id(studentRepository.findById(parentManageForm.getChild_id()).get().getClass_id());
@@ -329,13 +391,20 @@ public class AdminService {
             parentManageForm.setId(parentList.get(i).getId());
             parentManageForm.setName(parentList.get(i).getName());
             parentManageForm.setPhone_num(parentList.get(i).getPhone_num());
-            parentManageForm.setGender(parentList.get(i).getGender());
+            Long gender = parentList.get(i).getGender();
+            if(gender == 1L){
+                parentManageForm.setGender("남");
+            } else if (gender == 2L) {
+                parentManageForm.setGender("여");
+            } else {
+                System.out.println("DB에 저장된 성별값 오류");
+                parentManageForm.setGender("오류");
+            }
             parentManageForm.setBirth_date(parentList.get(i).getBirth_date());
             parentManageForm.setChild_name(studentRepository.findById(parentList.get(i).getChild_id()).get().getName());
             parentManageForm.setChild_id(parentList.get(i).getChild_id());
             parentManageFormList.add(parentManageForm);
         }
-
         return parentManageFormList;
     }
 

@@ -6,7 +6,7 @@ public class ParentManageForm {
     private Long id;
     private String name;
     private String phone_num;
-    private Long gender;
+    private String gender;
     private Date birth_date;
     private String child_name;
     private Long child_id;
@@ -29,10 +29,10 @@ public class ParentManageForm {
     public void setPhone_num(String phone_num) {
         this.phone_num = phone_num;
     }
-    public Long getGender() {
+    public String getGender() {
         return gender;
     }
-    public void setGender(Long gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
     public Date getBirth_date() {

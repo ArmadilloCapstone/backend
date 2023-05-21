@@ -2,15 +2,16 @@ package com.example.dolbomi.controller;
 
 import java.sql.Date;
 
-public class TeacherManageForm {
+public class StudentManageForm {
     private Long id;
     private String name;
+    private Long grade;
     private String phone_num;
     private String gender;
-    private Date birth_date;
-    private String class_name;
     private Long class_id;
+    private Date birth_date;
     private Long disable;
+    private Long original_class_num;
 
     public Long getId() {
         return id;
@@ -26,6 +27,14 @@ public class TeacherManageForm {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Long grade) {
+        this.grade = grade;
     }
 
     public String getPhone_num() {
@@ -44,14 +53,6 @@ public class TeacherManageForm {
         this.gender = gender;
     }
 
-    public Date getBirth_date() {
-        return birth_date;
-    }
-
-    public void setBirth_date(Date birth_date) {
-        this.birth_date = birth_date;
-    }
-
     public Long getClass_id() {
         return class_id;
     }
@@ -60,12 +61,12 @@ public class TeacherManageForm {
         this.class_id = class_id;
     }
 
-    public String getClass_name() {
-        return class_name;
+    public Date getBirth_date() {
+        return birth_date;
     }
 
-    public void setClass_name(String class_name) {
-        this.class_name = class_name;
+    public void setBirth_date(Date birth_date) {
+        this.birth_date = birth_date;
     }
 
     public Long getDisable() {
@@ -76,4 +77,11 @@ public class TeacherManageForm {
         this.disable = disable;
     }
 
+    public Long getOriginal_class_num() {
+        return original_class_num;
+    }
+
+    public void setOriginal_class_num(Long original_class_num) {
+        this.original_class_num = original_class_num;
+    }
 }

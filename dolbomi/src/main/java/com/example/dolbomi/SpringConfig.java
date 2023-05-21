@@ -31,7 +31,7 @@ public class SpringConfig {
     }
     @Bean
     public StudentStateService studentStateService(){
-        return new StudentStateService(studentStateRepository());
+        return new StudentStateService(studentStateRepository(), parentRepository(), studentRepository());
     }
     @Bean
     public TimelineService timelineService(){
