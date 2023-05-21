@@ -10,5 +10,6 @@ public interface StudentStateRepository {
     StudentState save(StudentState studentState);
     Boolean changeState(Long student_id, Long state);
     Optional<StudentState> findById(Long id);
+    List<StudentState> findByStudentId(Long student_id);
     List<StudentStateForm> findAll();
 }
