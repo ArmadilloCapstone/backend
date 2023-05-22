@@ -1,13 +1,13 @@
 package com.example.dolbomi.service;
 
+import com.example.dolbomi.controller.PickupListRequestForm;
 import com.example.dolbomi.controller.PickupRequestForm;
 import com.example.dolbomi.controller.StudentPickupForm;
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.domain.Student;
-import com.example.dolbomi.repository.ParentRepository;
-import com.example.dolbomi.repository.PickupRepository;
-import com.example.dolbomi.repository.StudentRepository;
+import com.example.dolbomi.domain.Teacher;
+import com.example.dolbomi.repository.*;
 
 import java.util.*;
 
@@ -15,12 +15,17 @@ public class PickupService {
     private final StudentRepository studentRepository;
     private final PickupRepository pickupRepository;
     private final ParentRepository parentRepository;
+    private final GuardianRepository guardianRepository;
+    private final TeacherRepository teacherRepository;
 
     public PickupService(StudentRepository studentRepository, PickupRepository pickupRepository,
-                         ParentRepository parentRepository){
+                         ParentRepository parentRepository, GuardianRepository guardianRepository,
+                         TeacherRepository teacherRepository){
         this.studentRepository = studentRepository;
         this.pickupRepository = pickupRepository;
         this.parentRepository = parentRepository;
+        this.guardianRepository = guardianRepository;
+        this.teacherRepository = teacherRepository;
     }
     public StudentPickupForm selectStudentForParent(Parent parent){
         StudentPickupForm studentPickupForm = new StudentPickupForm();
@@ -64,7 +69,7 @@ public class PickupService {
             pickupRequestForm.setStudentName(student.get().getName());
             pickupRequestForm.setStudentGrade(student.get().getGrade());
             pickupRequestForm.setStudentGender(student.get().getGender());
-            pickupRepository.saveByParent(pickupRequestForm);
+            pickupRepository.saveByParent(pickupRequestForm, student.get().getClass_id());
         } else{
             System.out.println("돌봄학생 정보가 없습니다");
             return null;
@@ -72,27 +77,43 @@ public class PickupService {
         return "success";
     }
 
-    public List<PickupRequestForm> requestPickupByGuardian(Guardian guardian, List<StudentPickupForm> studentPickupFormList){
-        List<PickupRequestForm> pickupRequestFormList = new ArrayList<>();
-        int studentCount = studentPickupFormList.size();
+    public String requestPickupByGuardian(PickupListRequestForm pickupListRequestForm){
+        int studentCount = pickupListRequestForm.getStudentPickupFormList().size();
         for(int i = 0; i<studentCount;i++){
             PickupRequestForm pickupRequestForm = new PickupRequestForm();
-            pickupRequestForm.setPickupManId(guardian.getId());
-            pickupRequestForm.setPickupManName(guardian.getName());
-            pickupRequestForm.setStudentId(studentPickupFormList.get(i).getId());
-            pickupRequestForm.setStudentName(studentPickupFormList.get(i).getName());
-            pickupRequestForm.setStudentGrade(studentPickupFormList.get(i).getGrade());
-            pickupRequestForm.setStudentGender(studentPickupFormList.get(i).getGender());
-            pickupRequestFormList.add(pickupRequestForm);
+            Optional<Guardian> guardian = guardianRepository.findById(pickupListRequestForm.getPickupManId());
+            if(guardian.isPresent()){
+                pickupRequestForm.setPickupManId(guardian.get().getId());
+                pickupRequestForm.setPickupManName(guardian.get().getName());
+            } else{
+                System.out.println("보호자 정보가 없습니다");
+                return null;
+            }
+            Optional<Student> student = studentRepository.findById(pickupListRequestForm.getStudentPickupFormList().get(i).getId());
+            if(student.isPresent()){
+                pickupRequestForm.setStudentId(student.get().getId());
+                pickupRequestForm.setStudentName(student.get().getName());
+                pickupRequestForm.setStudentGrade(student.get().getGrade());
+                pickupRequestForm.setStudentGender(student.get().getGender());
+                pickupRepository.saveByGuardian(pickupRequestForm, student.get().getClass_id());
+            } else{
+                System.out.println("돌봄학생 정보가 없습니다");
+                return null;
+            }
         }
-        pickupRepository.saveByGuardian(pickupRequestFormList);
-        return pickupRequestFormList;
+        return "success";
     }
 
-    public List<PickupRequestForm> sendPickupForTeacher(){
-        List<PickupRequestForm> pickupRequestFormList = pickupRepository.findAll();
-        pickupRepository.clearPickupStore();
-        return pickupRequestFormList;
+    public List<PickupRequestForm> sendPickupForTeacher(Long teacher_id){
+        Optional<Teacher> teacher = teacherRepository.findById(teacher_id);
+        if(teacher.isPresent()){
+            List<PickupRequestForm> pickupRequestFormList = pickupRepository.findAll(teacher.get().getClass_id());
+            pickupRepository.clearPickupStore(teacher.get().getClass_id());
+            return pickupRequestFormList;
+        } else {
+            System.out.println("유효하지 않은 돌봄교사 id입니다");
+            return null;
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.service.PickupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,13 +45,12 @@ public class PickupController {
     }
 
     @PostMapping("/requestGuardian")
-    public List<PickupRequestForm> guardianRequest(@RequestBody Guardian guardian,
-                                                   @RequestBody List<StudentPickupForm> studentPickupFormList){
-        return pickupService.requestPickupByGuardian(guardian, studentPickupFormList);
+    public String guardianRequest(@RequestBody PickupListRequestForm pickupListRequestForm){
+        return pickupService.requestPickupByGuardian(pickupListRequestForm);
     }
 
-    @PostMapping("/sendPickupFormToTeacher")
-    public List<PickupRequestForm> teacherSend(){
-        return pickupService.sendPickupForTeacher();
+    @PostMapping("/sendPickupFormToTeacher/{teacher_id}")
+    public List<PickupRequestForm> teacherSend(@PathVariable("teacher_id") Long teacher_id){
+        return pickupService.sendPickupForTeacher(teacher_id);
     }
 }
