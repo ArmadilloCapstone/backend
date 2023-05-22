@@ -7,12 +7,14 @@ import com.example.dolbomi.domain.StudentTime;
 import com.example.dolbomi.service.StudentService;
 import com.example.dolbomi.service.TimelineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class TimelineController {
     private final TimelineService timelineService;

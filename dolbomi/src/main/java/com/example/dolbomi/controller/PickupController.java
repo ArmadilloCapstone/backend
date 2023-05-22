@@ -4,12 +4,15 @@ import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.service.PickupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+
+@CrossOrigin
 @RestController
 public class PickupController {
     private final PickupService pickupService;
