@@ -83,6 +83,12 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
     }
 
     @Override
+    public Student findStudent_idByParentId(Long id) {
+        List<Student> result = jdbcTemplate.query("select S.* from parent P inner join student S on P.id = S.id where P.id = ?", memberRowMapper(), id);
+        return result.get(0);
+    }
+
+    @Override
     public List<Student> findActivationStudent() {
         List<Student> result = jdbcTemplate.query("select * from student where disable = ?",memberRowMapper(),1);
         return result;

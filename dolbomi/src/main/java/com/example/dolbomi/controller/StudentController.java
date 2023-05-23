@@ -5,16 +5,12 @@ import com.example.dolbomi.domain.StudentState;
 import com.example.dolbomi.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/timeline")
 public class StudentController {
 
     @Autowired
@@ -22,6 +18,10 @@ public class StudentController {
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
+    }
+    @PostMapping("/getStudent/{parent_id}")
+    public Student getStudentInfo(@PathVariable("parent_id") Long parent_id){
+        return studentService.findStudent_idByParentId(parent_id);
     }
 
     @PostMapping("/getStudent")

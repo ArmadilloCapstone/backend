@@ -8,6 +8,7 @@ package com.example.dolbomi.repository;
 public interface StudentRepository {
     Student save(Student student);
     Optional<Student> findById(Long id);
+    Student findStudent_idByParentId(Long id);
     List<Student> findByNameGradeGender(String name, Long grade, Long gender);
     boolean activationStudent(Long id);
     boolean disableStudent(Long id);
