@@ -12,6 +12,14 @@ import java.util.Map;
 @RestController
 public class NewsController {
 
+    /*
+    private AdminService adminService;
+
+    @Autowired
+    public AdminController(AdminService adminService){
+        this.adminService = adminService;
+    }
+     */
     private NewsService newsService;
 
     @Autowired
@@ -31,13 +39,13 @@ public class NewsController {
 
     @GetMapping("/news/{no}")
     public ResponseEntity<News> getNewsByNo(
-            @PathVariable Integer no){
+            @PathVariable Long no){
         return newsService.getNews(no);
     }
 
     @DeleteMapping("/news/{no}")
     public ResponseEntity<Map<String, Boolean>> deleteBoardByNo(
-        @PathVariable Integer no){
+        @PathVariable Long no){
         return newsService.deleteNews(no);
     }
 
