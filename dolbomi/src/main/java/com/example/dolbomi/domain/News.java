@@ -31,11 +31,11 @@ public class News {
 
     public Date getDate() { return uploaded_date;  }
 
-    public void setDate(Date date) {   this.uploaded_date = uploaded_date;    }
+    public void setDate(Date uploaded_date) {   this.uploaded_date = uploaded_date;    }
 
     public String getText() {  return contents;  }
 
-    public void setText(String text) {  this.contents = contents;  }
+    public void setText(String contents) {  this.contents = contents;  }
 
     public String getFile_url() { return file_url; }
 

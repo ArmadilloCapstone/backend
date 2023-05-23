@@ -34,6 +34,7 @@ public class NewsController {
     public List<News> getAllNews(@RequestBody Teacher teacher)
     {
         System.out.println("hi");
+        System.out.println(newsService.getAllNewsByTeacherID(teacher.getId()).get(0).getDate());
         return newsService.getAllNewsByTeacherID(teacher.getId());
     }
 
@@ -42,13 +43,13 @@ public class NewsController {
         return newsService.createNews(news);
     }
 
-    @PostMapping("/BbsList/{no}")
+    @PostMapping("/news/{no}")
     public ResponseEntity<News> getNewsByNo(
             @PathVariable Long no){
         return newsService.getNews(no);
     }
 
-    @DeleteMapping("/BbsList/{no}")
+    @DeleteMapping("/news/{no}")
     public ResponseEntity<Map<String, Boolean>> deleteBoardByNo(
         @PathVariable Long no){
         return newsService.deleteNews(no);
