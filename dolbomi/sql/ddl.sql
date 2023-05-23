@@ -11,14 +11,13 @@ drop table if exists after_school_class CASCADE;
 drop table if exists student CASCADE;
 drop table if exists dolbom_class CASCADE;
 drop table if exists admin CASCADE;
-
+drop table if exists news CASCADE;
 create table admin
 (
     user_id char(20),
     user_pw char(20),
     name char(5)
 );
-
 create table dolbom_class
 (
     id int primary key,
@@ -27,7 +26,6 @@ create table dolbom_class
     year_seme char(10),
     disable tinyint
 );
-
 create table student
 (
     id int primary key,
@@ -41,7 +39,6 @@ create table student
     original_class_num int,
     foreign key (class_id)
         references dolbom_class(id) on update cascade
-
 );
 create table after_school_class
 (
@@ -80,7 +77,6 @@ create table student_time
     off4 time,
     off5 time
 );
-
 create table guardian
 (
     id int primary key,
@@ -88,13 +84,11 @@ create table guardian
     serial_num int,
     info varchar(80)
 );
-
 create table student_of_guardian
 (
     guardian_id int,
     student_id int
 );
-
 create table parent
 (
     id int primary key,
@@ -110,7 +104,6 @@ create table parent
     foreign key (class_id)
         references dolbom_class(id) on update cascade
 );
-
 create table parent_account
 (
     id int primary key,
@@ -120,7 +113,6 @@ create table parent_account
     foreign key (parent_id)
         references parent(id) on update cascade
 );
-
 create table teacher
 (
     id int primary key,
@@ -131,7 +123,6 @@ create table teacher
     class_id int,
     disable tinyint
 );
-
 create table teacher_account
 (
     id int primary key,
@@ -144,6 +135,17 @@ create table teacher_account
     foreign key (teacher_id)
         references teacher(id) on update cascade
 );
+create table news
+(
+    id int primary key,
+    title char(100),
+    writer_id int,
+    class_id int,
+    uploaded_date date,
+    contents char(100),
+    file_url char(100)
+
+);
 SET FOREIGN_KEY_CHECKS = 0;
 alter table teacher modify id int not null auto_increment;
 alter table parent modify id int not null auto_increment;
@@ -153,7 +155,6 @@ alter table after_school_class modify id int not null auto_increment;
 alter table student_schedule modify id int not null auto_increment;
 alter table student_state modify id int not null auto_increment;
 alter table student_time modify id int not null auto_increment;
-
 alter table admin convert to charset utf8;
 alter table dolbom_class convert to charset utf8;
 alter table student convert to charset utf8;
