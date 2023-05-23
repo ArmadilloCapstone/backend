@@ -1,5 +1,5 @@
 server:
-  port : 8080 # 포트는 자기 마음대로..
+  port : 80 # 포트는 자기 마음대로..
 
 spring:
   profiles.active: dev
