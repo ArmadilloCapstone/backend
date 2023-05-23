@@ -1,9 +1,11 @@
 package com.example.dolbomi;
 
+import com.example.dolbomi.domain.News;
 import com.example.dolbomi.repository.*;
 import com.example.dolbomi.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -44,6 +46,13 @@ public class SpringConfig {
                 teacherRepository(), afterSchoolClassRepository(), studentScheduleRepository(),
                 studentTimeRepository(), studentStateRepository());
     }
+
+    @Bean
+    public NewsService newsService(){
+        return new NewsService(newsRepository());
+    }
+
+
 
     @Bean
     public AfterSchoolClassRepository afterSchoolClassRepository() {
@@ -95,4 +104,7 @@ public class SpringConfig {
     }
     @Bean
     public TeacherRepository teacherRepository() { return new JdbcTemplateTeacherRepository(dataSource); }
+
+    @Bean
+    public NewsRepository newsRepository() { return new JdbcTemplateNewsRepository(dataSource);    }
 }
