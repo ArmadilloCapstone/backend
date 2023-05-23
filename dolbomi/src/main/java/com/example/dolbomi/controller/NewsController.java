@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 public class NewsController {
 
@@ -27,23 +28,23 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-    @GetMapping("/news")
+    @GetMapping("/BbsList")
     public List<News> getAllNews() {
         return newsService.getAllNews();
     }
 
-    @PostMapping("/news")
+    @PostMapping("/BbsList")
     public News createNews(@RequestBody News news){
         return newsService.createNews(news);
     }
 
-    @GetMapping("/news/{no}")
+    @GetMapping("/BbsList/{no}")
     public ResponseEntity<News> getNewsByNo(
             @PathVariable Long no){
         return newsService.getNews(no);
     }
 
-    @DeleteMapping("/news/{no}")
+    @DeleteMapping("/BbsList/{no}")
     public ResponseEntity<Map<String, Boolean>> deleteBoardByNo(
         @PathVariable Long no){
         return newsService.deleteNews(no);

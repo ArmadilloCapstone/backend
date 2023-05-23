@@ -9,8 +9,8 @@ public class News {
     private String title;
     private long writer_id;
     private long class_id;
-    private Date date;
-    private String text;
+    private Date uploaded_date;
+    private String contents;
     private String file_url;
 
     public long getId() { return id; }
@@ -29,13 +29,13 @@ public class News {
 
     public void setClass_id(long class_id) { this.class_id = class_id; }
 
-    public Date getDate() { return date;  }
+    public Date getDate() { return uploaded_date;  }
 
-    public void setDate(Date date) {   this.date = date;    }
+    public void setDate(Date date) {   this.uploaded_date = uploaded_date;    }
 
-    public String getText() {  return text;  }
+    public String getText() {  return contents;  }
 
-    public void setText(String text) {  this.text = text;  }
+    public void setText(String text) {  this.contents = contents;  }
 
     public String getFile_url() { return file_url; }
 

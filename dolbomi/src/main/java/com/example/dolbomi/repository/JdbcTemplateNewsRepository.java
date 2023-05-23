@@ -36,8 +36,8 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
                 news.setTitle(rs.getString("title"));
                 news.setWriter_id(rs.getLong("writer_id"));
                 news.setClass_id(rs.getLong("class_id"));
-                news.setDate(rs.getDate("Date"));
-                news.setText(rs.getString("text"));
+                news.setDate(rs.getDate("uploaded_date"));
+                news.setText(rs.getString("contents"));
                 news.setFile_url(rs.getString("file_url"));
 
                 return news;
@@ -70,20 +70,13 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         parameters.put("title", news.getTitle());
         parameters.put("writer_id",news.getWriter_id());
         parameters.put("class_id",news.getClass_id());
-        parameters.put("date",news.getDate());
-        parameters.put("text",news.getText());
+        parameters.put("uploaded_date",news.getDate());
+        parameters.put("contents",news.getText());
         parameters.put("file_url",news.getFile_url());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         news.setId(key.longValue());
         return news;
     }
-
-
-
-
-
-
-
 
 }
