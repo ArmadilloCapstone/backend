@@ -58,7 +58,7 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
 
     public void delete(Long id) {
         //List<News> result =
-        jdbcTemplate.update("delete from news where id = ?",memberRowMapper(), id);
+        jdbcTemplate.update("delete from news where id = ?", id);
         //return result.stream().findAny();
     }
 
