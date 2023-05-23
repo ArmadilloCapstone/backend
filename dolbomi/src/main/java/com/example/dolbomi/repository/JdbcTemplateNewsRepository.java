@@ -56,9 +56,10 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         return result.stream().findAny();
     }
 
-    public Optional<News> delete(Long id) {
-        List<News> result = jdbcTemplate.query("delete from news where id = ?",memberRowMapper(), id);
-        return result.stream().findAny();
+    public void delete(Long id) {
+        //List<News> result =
+        jdbcTemplate.update("delete from news where id = ?",memberRowMapper(), id);
+        //return result.stream().findAny();
     }
 
     @Override

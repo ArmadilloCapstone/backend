@@ -37,10 +37,9 @@ public class NewsService {
     }
 
 
-    public ResponseEntity<Map<String, Boolean>> deleteNews(
-            Long no) {
-        News news = newsRepository.findById(no)
-                .orElseThrow(() -> new RuntimeException("Not exist Board Data by no : ["+no+"]"));
+    public ResponseEntity<Map<String, Boolean>> deleteNews(Long no) {
+        News news = newsRepository.findById(no).orElseThrow(
+                () -> new RuntimeException("Not exist Board Data by no : ["+no+"]"));
         newsRepository.delete(no);
         Map<String, Boolean> response = new HashMap<>();
         response.put("Deleted Board Data by id : ["+no+"]", Boolean.TRUE);
