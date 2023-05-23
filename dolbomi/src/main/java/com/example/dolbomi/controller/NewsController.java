@@ -34,7 +34,7 @@ public class NewsController {
     public List<News> getAllNews(@RequestBody Teacher teacher)
     {
         System.out.println("hi");
-        return newsService.getAllNews(teacher.getId());
+        return newsService.getAllNewsByTeacherID(teacher.getId());
     }
 
     @PostMapping("/BbsList/create")

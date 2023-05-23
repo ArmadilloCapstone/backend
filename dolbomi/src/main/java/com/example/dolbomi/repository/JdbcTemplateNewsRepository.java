@@ -46,8 +46,8 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
     }
 
     @Override
-    public List<News> findAll() {
-        return jdbcTemplate.query("select * from news",memberRowMapper());
+    public List<News> findAllByTeacherID(Long id) {
+        return jdbcTemplate.query("select * from news where id = ?",memberRowMapper(), id);
     }
 
     @Override

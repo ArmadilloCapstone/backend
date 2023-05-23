@@ -22,8 +22,8 @@ public class NewsService {
         this.newsRepository = newsRepository;
     }
 
-    public List<News> getAllNews(){
-        return newsRepository.findAll();
+    public List<News> getAllNewsByTeacherID(long id){
+        return newsRepository.findAllByTeacherID(id);
     }
 
     public News createNews(News news){

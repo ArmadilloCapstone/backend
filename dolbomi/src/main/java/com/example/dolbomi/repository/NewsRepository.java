@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface NewsRepository {
 
-    List<News> findAll();
+    List<News> findAllByTeacherID(Long id);
     Optional<News> findById(Long id);
     News save(News news);
     Optional<News> delete(Long no);
