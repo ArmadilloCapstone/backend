@@ -26,7 +26,7 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Optional<Student> findOne(Long memberId) {
-        return studentRepository.findById(memberId);
+    public Student findStudent_idByParentId(Long memberId) {
+        return studentRepository.findStudent_idByParentId(memberId);
     }
 }
