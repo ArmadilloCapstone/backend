@@ -44,6 +44,12 @@ public class JdbcTemplateAfterSchoolClasstRepository implements AfterSchoolClass
     }
 
     @Override
+    public List<AfterSchoolClass> findByClassName(String class_name) {
+        List<AfterSchoolClass> result = jdbcTemplate.query("select * from after_school_class where class_name = ?",memberRowMapper(), class_name);
+        return result;
+    }
+
+    @Override
     public List<AfterSchoolClass> findByClass_nameDay(String class_name, Long day) {
         List<AfterSchoolClass> result = jdbcTemplate.query("select * from after_school_class where class_name = ? and day = ?",memberRowMapper(), class_name, day);
         return result;

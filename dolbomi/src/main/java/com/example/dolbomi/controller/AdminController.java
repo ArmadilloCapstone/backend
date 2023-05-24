@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -34,6 +33,11 @@ public class AdminController {
         return adminService.sendDolbomClassList();
     }
 
+    @PostMapping("/student_original_class")
+    public List<Student> sendOriginal_class_num(){
+        return adminService.sendOriginal_class_num();
+    }
+
     @PostMapping("/student_submit")
     public void addNewStudentManageForm(@RequestBody StudentManageForm studentManageForm) {
         adminService.addNewStudentManageForm(studentManageForm);
@@ -52,8 +56,8 @@ public class AdminController {
     }
 
     @PostMapping("/student")
-    public List<Student> sendStudent() {
-        return adminService.sendStudentList();
+    public List<StudentManageForm> sendStudentManageFormList() {
+       return adminService.sendStudentManageFormList();
     }
 
     @PostMapping("/student/dolbom_classList")
@@ -102,8 +106,8 @@ public class AdminController {
     }
 
     @PostMapping("/after_school_class_submit")
-    public void addNewAfterSchoolClass(@RequestBody AfterSchoolClass afterSchoolClass) {
-        adminService.addNewAfterSchoolClass(afterSchoolClass);
+    public void addNewAfterSchoolClass(@RequestBody AfterSchoolClassManageForm afterSchoolClassManageForm) {
+        adminService.addNewAfterSchoolClassManageForm(afterSchoolClassManageForm);
     }
 
     @DeleteMapping("/after_school_class/{productId}")
@@ -119,13 +123,13 @@ public class AdminController {
     }
 
     @PostMapping("/after_school_class")
-    public List<AfterSchoolClass> sendAfterSchoolClass() {
-        return adminService.sendAfterSchoolClassList();
+    public List<AfterSchoolClassManageForm> sendAfterSchoolClass() {
+        return adminService.sendAfterSchoolClassManageForm();
     }
 
     @PostMapping("/student_schedule_submit")
-    public void addNewStudentSchedule(@RequestBody StudentScheduleForm studentScheduleForm) {
-        adminService.addNewStudentSchedule(studentScheduleForm);
+    public void addNewStudentScheduleManageForm(@RequestBody StudentScheduleManageForm studentScheduleManageForm) {
+        adminService.addNewStudentScheduleManageForm(studentScheduleManageForm);
     }
 
     @DeleteMapping("/student_schedule/{productId}")
@@ -134,13 +138,19 @@ public class AdminController {
     }
 
     @PostMapping("/student_schedule")
-    public List<StudentScheduleForm> sendStudentSchedule() {
+    public List<StudentScheduleManageForm> sendStudentSchedule() {
         return adminService.sendStudentSchedule();
     }
 
+    @PostMapping("/student_schedule/studentList")
+    public List<Student> sendStudentForStudentSchedule(){ return adminService.sendStudentList(); }
+
+    @PostMapping("/student_schedule/AfterSchoolClassList")
+    public List<AfterSchoolClass> sendAfterSchoolClassForStudentSchedule() { return adminService.sendAfterSchoolClassList(); }
+
     @PostMapping("/student_time_submit")
-    public void addNewStudentTime(@RequestBody StudentTime studentTime) {
-        adminService.addNewStudentTime(studentTime);
+    public void addNewStudentTimeManageForm(@RequestBody StudentTimeManageForm studentTimeManageForm) {
+        adminService.addNewStudentTimeManageForm(studentTimeManageForm);
     }
 
     @DeleteMapping("/student_time/{productId}")
@@ -149,8 +159,12 @@ public class AdminController {
     }
 
     @PostMapping("/student_time")
-    public List<StudentTime> sendStudentTime() {
-        return adminService.sendStudentTimeList();
+    public List<StudentTimeManageForm> sendStudentTimeManageForm() {
+        return adminService.sendStudentTimeManageFormList();
     }
+
+    @PostMapping("/student_time/studentList")
+    public List<Student> sendStudentForStudentTime() { return adminService.sendStudentList(); }
+
 
 }

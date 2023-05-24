@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -48,8 +49,8 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
     }
 
     @Override
-    public List<Student> findByNameGradeGender(String name, Long grade, Long gender) {
-        List<Student> result = jdbcTemplate.query("select * from student where name = ? and grade = ? and gender = ?",memberRowMapper(),name, grade,gender);
+    public List<Student> findByName(String name) {
+        List<Student> result = jdbcTemplate.query("select * from student where name = ?",memberRowMapper(), name);
         return result;
     }
 
@@ -86,6 +87,12 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
     public Student findStudent_idByParentId(Long id) {
         List<Student> result = jdbcTemplate.query("select S.* from parent P inner join student S on P.id = S.id where P.id = ?", memberRowMapper(), id);
         return result.get(0);
+    }
+
+    @Override
+    public List<Student> findByNameBirth(String name, Date birth_date) {
+        List<Student> result = jdbcTemplate.query("select * from student where name = ? and birth_date = ?",memberRowMapper(),name,birth_date);
+        return result;
     }
 
     @Override

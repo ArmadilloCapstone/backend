@@ -9,8 +9,6 @@ public class TeacherManageForm {
     private String gender;
     private Date birth_date;
     private String class_name;
-    private Long class_id;
-    private Long disable;
 
     public Long getId() {
         return id;
@@ -52,14 +50,6 @@ public class TeacherManageForm {
         this.birth_date = birth_date;
     }
 
-    public Long getClass_id() {
-        return class_id;
-    }
-
-    public void setClass_id(Long class_id) {
-        this.class_id = class_id;
-    }
-
     public String getClass_name() {
         return class_name;
     }
@@ -68,12 +58,5 @@ public class TeacherManageForm {
         this.class_name = class_name;
     }
 
-    public Long getDisable() {
-        return disable;
-    }
-
-    public void setDisable(Long disable) {
-        this.disable = disable;
-    }
 
 }

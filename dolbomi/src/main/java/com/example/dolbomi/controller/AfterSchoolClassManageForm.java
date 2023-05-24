@@ -1,18 +1,17 @@
-package com.example.dolbomi.domain;
+package com.example.dolbomi.controller;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Time;
-import java.util.Date;
 
-public class AfterSchoolClass {
+public class AfterSchoolClassManageForm {
     private Long id;
     private String class_name;
     @DateTimeFormat(pattern = "kk:mm")
     private Time start_time;
     @DateTimeFormat(pattern = "kk:mm")
     private Time end_time;
-    private Long day;
+    private String day;
 
     public Long getId() {
         return id;
@@ -46,11 +45,11 @@ public class AfterSchoolClass {
         this.end_time = end_time;
     }
 
-    public Long getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(Long day) {
+    public void setDay(String day) {
         this.day = day;
     }
 }

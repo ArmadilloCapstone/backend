@@ -8,9 +8,8 @@ public class StudentManageForm {
     private Long grade;
     private String phone_num;
     private String gender;
-    private Long class_id;
+    private String class_name;
     private Date birth_date;
-    private Long disable;
     private Long original_class_num;
 
     public Long getId() {
@@ -53,12 +52,12 @@ public class StudentManageForm {
         this.gender = gender;
     }
 
-    public Long getClass_id() {
-        return class_id;
+    public String getClass_name() {
+        return class_name;
     }
 
-    public void setClass_id(Long class_id) {
-        this.class_id = class_id;
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
     }
 
     public Date getBirth_date() {
@@ -67,14 +66,6 @@ public class StudentManageForm {
 
     public void setBirth_date(Date birth_date) {
         this.birth_date = birth_date;
-    }
-
-    public Long getDisable() {
-        return disable;
-    }
-
-    public void setDisable(Long disable) {
-        this.disable = disable;
     }
 
     public Long getOriginal_class_num() {

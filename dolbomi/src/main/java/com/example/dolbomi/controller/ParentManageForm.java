@@ -9,7 +9,6 @@ public class ParentManageForm {
     private String gender;
     private Date birth_date;
     private String child_name;
-    private Long child_id;
 
     public Long getId() {
         return id;
@@ -46,12 +45,6 @@ public class ParentManageForm {
     }
     public void setChild_name(String child_name) {
         this.child_name = child_name;
-    }
-    public Long getChild_id() {
-        return child_id;
-    }
-    public void setChild_id(Long child_id) {
-        this.child_id = child_id;
     }
 
 }

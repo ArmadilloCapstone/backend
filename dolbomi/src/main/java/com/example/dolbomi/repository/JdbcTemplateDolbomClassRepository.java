@@ -42,9 +42,21 @@ public class JdbcTemplateDolbomClassRepository implements DolbomClassRepository{
     }
 
     @Override
-    public List<DolbomClass> findByClassName(String class_name, Long class_num) {
+    public List<DolbomClass> findByClassNameClassNum(String class_name, Long class_num) {
         List<DolbomClass> result = jdbcTemplate.query("select * from dolbom_class where class_name = ? and class_num = ?;",
                 memberRowMapper(),class_name, class_num);
+        return result;
+    }
+
+    @Override
+    public List<DolbomClass> findByClassName(String class_name) {
+        List<DolbomClass> result = jdbcTemplate.query("select * from dolbom_class where class_name = ?",memberRowMapper(), class_name);
+        return result;
+    }
+
+    @Override
+    public List<DolbomClass> findByClassNum(Long class_num) {
+        List<DolbomClass> result = jdbcTemplate.query("select * from dolbom_class where class_num = ?",memberRowMapper(),class_num);
         return result;
     }
 
@@ -60,6 +72,15 @@ public class JdbcTemplateDolbomClassRepository implements DolbomClassRepository{
     @Override
     public boolean disableDolbomClass(Long id) {
         int result = jdbcTemplate.update("update dolbom_class set disable = ? where id = ?;",0,id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateDolbomClass(Long id, String year_seme) {
+        int result = jdbcTemplate.update("update dolbom_class set year_seme = ? where id = ?;",year_seme,id);
         if(result == 1){
             return true;
         }
