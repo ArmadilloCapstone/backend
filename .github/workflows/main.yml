@@ -25,7 +25,7 @@ jobs:
       
     - name: Grant execute permission for gradlew
       run: chmod +x dolbomi/gradlew
-    - name: go working directory
-      run: cd dolbomi
     - name: Build with Gradle
-      run: ./gradlew clean build -x test
+      run: |
+        cd dolbomi
+        ./gradlew clean build -x test
