@@ -26,7 +26,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-def frontendDir = "C:/Users/user/Desktop/Capstone_0502/frontend"
+def frontendDir = "$projectDir/frontend"
 sourceSets {
 	main {
 		resources {
