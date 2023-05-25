@@ -46,8 +46,8 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
     }
 
     @Override
-    public List<News> findAll() {
-        return jdbcTemplate.query("select * from news",memberRowMapper());
+    public List<News> findAllByTeacherID(Long id) {
+        return jdbcTemplate.query("select * from news where class_id = ?",memberRowMapper(), id);
     }
 
     @Override
@@ -56,9 +56,10 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         return result.stream().findAny();
     }
 
-    public Optional<News> delete(Long id) {
-        List<News> result = jdbcTemplate.query("delete from news where id = ?",memberRowMapper(), id);
-        return result.stream().findAny();
+    public void delete(Long id) {
+        //List<News> result =
+        jdbcTemplate.update("delete from news where id = ?", id);
+        //return result.stream().findAny();
     }
 
     @Override
