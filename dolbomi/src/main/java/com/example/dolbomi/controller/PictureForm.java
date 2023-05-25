@@ -2,10 +2,12 @@ package com.example.dolbomi.controller;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public class PictureForm {
     private String title;
     private String text;
-    private MultipartFile multipartFile;
+    private List<MultipartFile> file;
 
     public String getTitle() {
         return title;
@@ -23,11 +25,11 @@ public class PictureForm {
         this.text = text;
     }
 
-    public MultipartFile getMultipartFile() {
-        return multipartFile;
+    public List<MultipartFile> getFile() {
+        return file;
     }
 
-    public void setMultipartFile(MultipartFile multipartFile) {
-        this.multipartFile = multipartFile;
+    public void setFile(List<MultipartFile> file) {
+        this.file = file;
     }
 }

@@ -39,8 +39,10 @@ public class NewsController {
     }
 
     @PostMapping("/BbsList/create")
-    public News createNews(@RequestBody News news){
-        return newsService.createNews(news);
+    public News createNews(@RequestBody PictureForm pictureForm){
+        System.out.println(pictureForm);
+        return null;
+        //return newsService.createNews(news);
     }
 
     @PostMapping("/news/{no}")

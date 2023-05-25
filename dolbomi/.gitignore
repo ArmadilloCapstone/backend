@@ -6,7 +6,6 @@ build/
 !**/src/test/**/build/
 
 
-frontend/
 frontend/build/
 frontend/node_modules/
 dolbomi/src/main/java/com/example/SpringConfig
