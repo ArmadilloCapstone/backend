@@ -500,7 +500,7 @@ public class AdminService {
             System.out.println("Day doesn't exist");
             return;
         }
-        List<AfterSchoolClass> result = afterSchoolClassRepository.findByClass_nameDay(afterSchoolClassManageForm.getClass_name(), day);
+        List<AfterSchoolClass> result = afterSchoolClassRepository.findByClassName(afterSchoolClassManageForm.getClass_name());
         if(result.size() == 1){
             System.out.println("This AfterSchoolClass is already existing");
         } else if (result.size() == 0) {
@@ -508,8 +508,13 @@ public class AdminService {
             AfterSchoolClass afterSchoolClass = new AfterSchoolClass();
             afterSchoolClass.setId(afterSchoolClassManageForm.getId());
             afterSchoolClass.setClass_name(afterSchoolClassManageForm.getClass_name());
-            afterSchoolClass.setStart_time(afterSchoolClassManageForm.getStart_time());
-            afterSchoolClass.setEnd_time(afterSchoolClassManageForm.getEnd_time());
+            if((afterSchoolClassManageForm.getStart_time().isAfter(afterSchoolClassManageForm.getEnd_time())) ||
+            afterSchoolClassManageForm.getStart_time().equals(afterSchoolClassManageForm.getEnd_time())){
+                System.out.println("start time is equal or after than end time");
+                return;
+            }
+            afterSchoolClass.setStart_time(Time.valueOf(afterSchoolClassManageForm.getStart_time()));
+            afterSchoolClass.setEnd_time(Time.valueOf(afterSchoolClassManageForm.getEnd_time()));
             afterSchoolClass.setDay(day);
             afterSchoolClassRepository.save(afterSchoolClass);
         }
@@ -545,8 +550,8 @@ public class AdminService {
             AfterSchoolClassManageForm afterSchoolClassManageForm = new AfterSchoolClassManageForm();
             afterSchoolClassManageForm.setId(afterSchoolClassList.get(i).getId());
             afterSchoolClassManageForm.setClass_name(afterSchoolClassList.get(i).getClass_name());
-            afterSchoolClassManageForm.setStart_time(afterSchoolClassList.get(i).getStart_time());
-            afterSchoolClassManageForm.setEnd_time(afterSchoolClassList.get(i).getEnd_time());
+            afterSchoolClassManageForm.setStart_time(afterSchoolClassList.get(i).getStart_time().toLocalTime());
+            afterSchoolClassManageForm.setEnd_time(afterSchoolClassList.get(i).getEnd_time().toLocalTime());
             Long day = afterSchoolClassList.get(i).getDay();
             if(day == 1L){
                 afterSchoolClassManageForm.setDay("월");
@@ -641,16 +646,41 @@ public class AdminService {
                 StudentTime studentTime = new StudentTime();
                 studentTime.setId(studentTimeManageForm.getId());
                 studentTime.setStudent_id(isStudent.get(0).getId());
-                studentTime.setEntry_1(studentTimeManageForm.getEntry_1());
-                studentTime.setEntry_2(studentTimeManageForm.getEntry_2());
-                studentTime.setEntry_3(studentTimeManageForm.getEntry_3());
-                studentTime.setEntry_4(studentTimeManageForm.getEntry_4());
-                studentTime.setEntry_5(studentTimeManageForm.getEntry_5());
-                studentTime.setOff_1(studentTimeManageForm.getOff_1());
-                studentTime.setOff_2(studentTimeManageForm.getOff_2());
-                studentTime.setOff_3(studentTimeManageForm.getOff_3());
-                studentTime.setOff_4(studentTimeManageForm.getOff_4());
-                studentTime.setOff_5(studentTimeManageForm.getOff_5());
+                if((studentTimeManageForm.getEntry_1().isAfter(studentTimeManageForm.getOff_1())) ||
+                        studentTimeManageForm.getEntry_1().equals(studentTimeManageForm.getOff_1())){
+                    System.out.println("entry time1 is equal or after than off time1");
+                    return;
+                }
+                if((studentTimeManageForm.getEntry_2().isAfter(studentTimeManageForm.getOff_2())) ||
+                        studentTimeManageForm.getEntry_2().equals(studentTimeManageForm.getOff_2())){
+                    System.out.println("entry time2 is equal or after than off time2");
+                    return;
+                }
+                if((studentTimeManageForm.getEntry_3().isAfter(studentTimeManageForm.getOff_3())) ||
+                        studentTimeManageForm.getEntry_3().equals(studentTimeManageForm.getOff_3())){
+                    System.out.println("entry time3 is equal or after than off time3");
+                    return;
+                }
+                if((studentTimeManageForm.getEntry_4().isAfter(studentTimeManageForm.getOff_4())) ||
+                        studentTimeManageForm.getEntry_4().equals(studentTimeManageForm.getOff_4())){
+                    System.out.println("entry time4 is equal or after than off time4");
+                    return;
+                }
+                if((studentTimeManageForm.getEntry_5().isAfter(studentTimeManageForm.getOff_5())) ||
+                        studentTimeManageForm.getEntry_5().equals(studentTimeManageForm.getOff_5())){
+                    System.out.println("entry time5 is equal or after than off time5");
+                    return;
+                }
+                studentTime.setEntry_1(Time.valueOf(studentTimeManageForm.getEntry_1()));
+                studentTime.setEntry_2(Time.valueOf(studentTimeManageForm.getEntry_2()));
+                studentTime.setEntry_3(Time.valueOf(studentTimeManageForm.getEntry_3()));
+                studentTime.setEntry_4(Time.valueOf(studentTimeManageForm.getEntry_4()));
+                studentTime.setEntry_5(Time.valueOf(studentTimeManageForm.getEntry_5()));
+                studentTime.setOff_1(Time.valueOf(studentTimeManageForm.getOff_1()));
+                studentTime.setOff_2(Time.valueOf(studentTimeManageForm.getOff_2()));
+                studentTime.setOff_3(Time.valueOf(studentTimeManageForm.getOff_3()));
+                studentTime.setOff_4(Time.valueOf(studentTimeManageForm.getOff_4()));
+                studentTime.setOff_5(Time.valueOf(studentTimeManageForm.getOff_5()));
                 studentTimeRepository.save(studentTime);
             }
         } else if (isStudent.size()==0) {
@@ -678,16 +708,16 @@ public class AdminService {
             StudentTimeManageForm studentTimeManageForm = new StudentTimeManageForm();
             studentTimeManageForm.setId(studentTimeList.get(i).getId());
             studentTimeManageForm.setName(studentRepository.findById(studentTimeList.get(i).getStudent_id()).get().getName());
-            studentTimeManageForm.setEntry_1(studentTimeList.get(i).getEntry_1());
-            studentTimeManageForm.setEntry_2(studentTimeList.get(i).getEntry_2());
-            studentTimeManageForm.setEntry_3(studentTimeList.get(i).getEntry_3());
-            studentTimeManageForm.setEntry_4(studentTimeList.get(i).getEntry_4());
-            studentTimeManageForm.setEntry_5(studentTimeList.get(i).getEntry_5());
-            studentTimeManageForm.setOff_1(studentTimeList.get(i).getOff_1());
-            studentTimeManageForm.setOff_2(studentTimeList.get(i).getOff_4());
-            studentTimeManageForm.setOff_3(studentTimeList.get(i).getOff_3());
-            studentTimeManageForm.setOff_4(studentTimeList.get(i).getOff_4());
-            studentTimeManageForm.setOff_5(studentTimeList.get(i).getOff_5());
+            studentTimeManageForm.setEntry_1(studentTimeList.get(i).getEntry_1().toLocalTime());
+            studentTimeManageForm.setEntry_2(studentTimeList.get(i).getEntry_2().toLocalTime());
+            studentTimeManageForm.setEntry_3(studentTimeList.get(i).getEntry_3().toLocalTime());
+            studentTimeManageForm.setEntry_4(studentTimeList.get(i).getEntry_4().toLocalTime());
+            studentTimeManageForm.setEntry_5(studentTimeList.get(i).getEntry_5().toLocalTime());
+            studentTimeManageForm.setOff_1(studentTimeList.get(i).getOff_1().toLocalTime());
+            studentTimeManageForm.setOff_2(studentTimeList.get(i).getOff_4().toLocalTime());
+            studentTimeManageForm.setOff_3(studentTimeList.get(i).getOff_3().toLocalTime());
+            studentTimeManageForm.setOff_4(studentTimeList.get(i).getOff_4().toLocalTime());
+            studentTimeManageForm.setOff_5(studentTimeList.get(i).getOff_5().toLocalTime());
             studentTimeManageFormList.add(studentTimeManageForm);
         }
         return studentTimeManageFormList;

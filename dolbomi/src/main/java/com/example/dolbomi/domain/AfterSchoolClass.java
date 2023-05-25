@@ -8,9 +8,7 @@ import java.util.Date;
 public class AfterSchoolClass {
     private Long id;
     private String class_name;
-    @DateTimeFormat(pattern = "kk:mm")
     private Time start_time;
-    @DateTimeFormat(pattern = "kk:mm")
     private Time end_time;
     private Long day;
 

@@ -3,14 +3,13 @@ package com.example.dolbomi.controller;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Time;
+import java.time.LocalTime;
 
 public class AfterSchoolClassManageForm {
     private Long id;
     private String class_name;
-    @DateTimeFormat(pattern = "kk:mm")
-    private Time start_time;
-    @DateTimeFormat(pattern = "kk:mm")
-    private Time end_time;
+    private LocalTime start_time;
+    private LocalTime end_time;
     private String day;
 
     public Long getId() {
@@ -29,19 +28,19 @@ public class AfterSchoolClassManageForm {
         this.class_name = class_name;
     }
 
-    public Time getStart_time() {
+    public LocalTime getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(Time start_time) {
+    public void setStart_time(LocalTime start_time) {
         this.start_time = start_time;
     }
 
-    public Time getEnd_time() {
+    public LocalTime getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Time end_time) {
+    public void setEnd_time(LocalTime end_time) {
         this.end_time = end_time;
     }
 
