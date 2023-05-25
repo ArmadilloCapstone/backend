@@ -52,6 +52,10 @@ public class SpringConfig {
         return new NewsService(newsRepository());
     }
 
+    @Bean
+    public GuardianManageService guardianManageService() { return new GuardianManageService(guardianRepository(), studentRepository(),
+            studentOfGuardianRepository());}
+
 
 
     @Bean
@@ -107,4 +111,7 @@ public class SpringConfig {
 
     @Bean
     public NewsRepository newsRepository() { return new JdbcTemplateNewsRepository(dataSource);    }
+
+    @Bean
+    public StudentOfGuardianRepository studentOfGuardianRepository() { return new JdbcTemplateStudentOfGuardianRepository(dataSource); }
 }

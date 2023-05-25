@@ -50,6 +50,21 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
     }
 
     @Override
+    public List<Guardian> findBySerialNum(Long serial_num) {
+        List<Guardian> result = jdbcTemplate.query("select * from guardian where serial_num = ?",memberRowMapper(),serial_num);
+        return result;
+    }
+
+    @Override
+    public boolean deleteGuardian(Long id) {
+        int result = jdbcTemplate.update("delete from guardian where id = ?",id);
+        if(result == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public List<Guardian> login(Long serial_num) {
         return jdbcTemplate.query("select * from guardian where serial_num = ?", memberRowMapper(), serial_num);
     }
