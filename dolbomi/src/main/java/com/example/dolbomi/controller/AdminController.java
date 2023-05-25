@@ -19,8 +19,8 @@ public class AdminController {
     }
 
     @PostMapping("/dolbom_class_submit")
-    public void addNewDolbomClass(@RequestBody DolbomClass dolbomClass) {
-        adminService.addNewDolbomClass(dolbomClass);
+    public String addNewDolbomClass(@RequestBody DolbomClass dolbomClass) {
+        return adminService.addNewDolbomClass(dolbomClass);
     }
 
     @DeleteMapping("/dolbom_class/{productId}")
@@ -39,8 +39,8 @@ public class AdminController {
     }
 
     @PostMapping("/student_submit")
-    public void addNewStudentManageForm(@RequestBody StudentManageForm studentManageForm) {
-        adminService.addNewStudentManageForm(studentManageForm);
+    public String addNewStudentManageForm(@RequestBody StudentManageForm studentManageForm) {
+        return adminService.addNewStudentManageForm(studentManageForm);
     }
 
     @PostMapping("/student_submit_csv")
@@ -66,8 +66,8 @@ public class AdminController {
     }
 
     @PostMapping("/teacher_submit")
-    public void addNewTeacherManageForm(@RequestBody TeacherManageForm teacherManageForm) {
-        adminService.addNewTeacherManageForm(teacherManageForm);
+    public String addNewTeacherManageForm(@RequestBody TeacherManageForm teacherManageForm) {
+        return adminService.addNewTeacherManageForm(teacherManageForm);
     }
 
     @DeleteMapping("/teacher/{productId}")
@@ -86,8 +86,8 @@ public class AdminController {
     }
 
     @PostMapping("/parent_submit")
-    public void addNewParentManageForm(@RequestBody ParentManageForm parentManageForm) {
-        adminService.addNewParentManageForm(parentManageForm);
+    public String addNewParentManageForm(@RequestBody ParentManageForm parentManageForm) {
+        return adminService.addNewParentManageForm(parentManageForm);
     }
 
     @DeleteMapping("/parent/{productId}")
@@ -106,8 +106,8 @@ public class AdminController {
     }
 
     @PostMapping("/after_school_class_submit")
-    public void addNewAfterSchoolClass(@RequestBody AfterSchoolClassManageForm afterSchoolClassManageForm) {
-        adminService.addNewAfterSchoolClassManageForm(afterSchoolClassManageForm);
+    public String addNewAfterSchoolClass(@RequestBody AfterSchoolClassManageForm afterSchoolClassManageForm) {
+        return adminService.addNewAfterSchoolClassManageForm(afterSchoolClassManageForm);
     }
 
     @DeleteMapping("/after_school_class/{productId}")
@@ -128,8 +128,8 @@ public class AdminController {
     }
 
     @PostMapping("/student_schedule_submit")
-    public void addNewStudentScheduleManageForm(@RequestBody StudentScheduleManageForm studentScheduleManageForm) {
-        adminService.addNewStudentScheduleManageForm(studentScheduleManageForm);
+    public String addNewStudentScheduleManageForm(@RequestBody StudentScheduleManageForm studentScheduleManageForm) {
+        return adminService.addNewStudentScheduleManageForm(studentScheduleManageForm);
     }
 
     @DeleteMapping("/student_schedule/{productId}")
@@ -149,8 +149,8 @@ public class AdminController {
     public List<AfterSchoolClass> sendAfterSchoolClassForStudentSchedule() { return adminService.sendAfterSchoolClassList(); }
 
     @PostMapping("/student_time_submit")
-    public void addNewStudentTimeManageForm(@RequestBody StudentTimeManageForm studentTimeManageForm) {
-        adminService.addNewStudentTimeManageForm(studentTimeManageForm);
+    public String addNewStudentTimeManageForm(@RequestBody StudentTimeManageForm studentTimeManageForm) {
+        return adminService.addNewStudentTimeManageForm(studentTimeManageForm);
     }
 
     @DeleteMapping("/student_time/{productId}")
@@ -165,6 +165,5 @@ public class AdminController {
 
     @PostMapping("/student_time/studentList")
     public List<Student> sendStudentForStudentTime() { return adminService.sendStudentList(); }
-
 
 }
