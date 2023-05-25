@@ -57,11 +57,11 @@ public class AdminService {
     }
 
     public void deleteDolbomClass(Long id){
-        Optional<DolbomClass> result = dolbomClassRepository.findById(id);
-        if((result.isPresent()) && (result.get().getDisable() == 1)){
+        List<DolbomClass> result = dolbomClassRepository.findById(id);
+        if((result.size()==1) && (result.get(0).getDisable() == 1)){
             System.out.println("Disable the existing dolbom class");
-            dolbomClassRepository.disableDolbomClass(result.get().getId());
-        } else if ( (result.isPresent()) && (result.get().getDisable() == 0)) {
+            dolbomClassRepository.disableDolbomClass(result.get(0).getId());
+        } else if ( (result.size()==1) && (result.get(0).getDisable() == 0)) {
             System.out.println("This dolbom class is already inactive");
         } else {
             System.out.println("error in deleteDolbomClass");
@@ -282,7 +282,7 @@ public class AdminService {
                 System.out.println("Gender value error stored in DB");
                 studentManageForm.setGender("error in sendStudentManageFormList");
             }
-            studentManageForm.setClass_name(dolbomClassRepository.findById(studentList.get(i).getClass_id()).get().getClass_name());
+            studentManageForm.setClass_name(dolbomClassRepository.findById(studentList.get(i).getClass_id()).get(0).getClass_name());
             studentManageForm.setBirth_date(studentList.get(i).getBirth_date());
             studentManageForm.setOriginal_class_num(studentList.get(i).getOriginal_class_num());
             studentManageFormList.add(studentManageForm);
@@ -374,7 +374,7 @@ public class AdminService {
                 teacherManageForm.setGender("error in sendTeacherList");
             }
             teacherManageForm.setBirth_date(teacherList.get(i).getBirth_date());
-            teacherManageForm.setClass_name(dolbomClassRepository.findById(teacherList.get(i).getClass_id()).get().getClass_name());
+            teacherManageForm.setClass_name(dolbomClassRepository.findById(teacherList.get(i).getClass_id()).get(0).getClass_name());
             teacherManageFormList.add(teacherManageForm);
         }
         return teacherManageFormList;
@@ -426,9 +426,9 @@ public class AdminService {
             } else{
                 System.out.println("Duplicate dolbom student in addNewParentManageForm");
             }
-            Optional<DolbomClass> isDolbomClass = dolbomClassRepository.findById(isStudent.get(0).getClass_id());
-            if(isDolbomClass.isPresent()){
-                parent.setClass_id(isDolbomClass.get().getId());
+            List<DolbomClass> isDolbomClass = dolbomClassRepository.findById(isStudent.get(0).getClass_id());
+            if(isDolbomClass.size()==1){
+                parent.setClass_id(isDolbomClass.get(0).getId());
             } else {
                 System.out.println("There is no dolbom class in addNewParentManageForm");
             }

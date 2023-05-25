@@ -36,9 +36,9 @@ public class JdbcTemplateDolbomClassRepository implements DolbomClassRepository{
     }
 
     @Override
-    public Optional<DolbomClass> findById(Long id) {
+    public List<DolbomClass> findById(Long id) {
         List<DolbomClass> result = jdbcTemplate.query("select * from dolbom_class where id = ?",memberRowMapper(), id);
-        return result.stream().findAny();
+        return result;
     }
 
     @Override
