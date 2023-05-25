@@ -579,12 +579,55 @@ public class AdminService {
             List<StudentSchedule> result = studentScheduleRepository.findByStudent_idClass_id(isStudent.get(0).getId(),isAfterSchoolClass.get(0).getId());
             if(result.size()==1){
                 System.out.println("This student schedule is already existing");
-            } else if (result.size()==0) {
-                System.out.println("Add new student schedule");
-                StudentSchedule studentSchedule = new StudentSchedule();
-                studentSchedule.setStudent_id(isStudent.get(0).getId());
-                studentSchedule.setClass_id(isAfterSchoolClass.get(0).getId());
-                studentScheduleRepository.save(studentSchedule);
+            }
+            else if (result.size()==0) {
+                List<StudentTime> isStudentTime = studentTimeRepository.findByStudent_id(isStudent.get(0).getId());
+                if(isStudentTime.size()==0){
+                    System.out.println("There is no entry and off time for student. Please add entry and off time first.");
+                    return;
+                }
+                else if (isStudentTime.size()==1) {
+                    switch (isAfterSchoolClass.get(0).getDay().intValue()){
+                        case 1: if(isAfterSchoolClass.get(0).getStart_time().before(isStudentTime.get(0).getEntry_1()) ||
+                        isAfterSchoolClass.get(0).getEnd_time().after(isStudentTime.get(0).getOff_1())){
+                            System.out.println("Invalid afterschoolclass time in day1");
+                            return;
+                        } else break;
+
+                        case 2: if(isAfterSchoolClass.get(0).getStart_time().before(isStudentTime.get(0).getEntry_2()) ||
+                                isAfterSchoolClass.get(0).getEnd_time().after(isStudentTime.get(0).getOff_2())){
+                            System.out.println("Invalid afterschoolclass time in day2");
+                            return;
+                        } else break;
+
+                        case 3: if(isAfterSchoolClass.get(0).getStart_time().before(isStudentTime.get(0).getEntry_3()) ||
+                                isAfterSchoolClass.get(0).getEnd_time().after(isStudentTime.get(0).getOff_3())){
+                            System.out.println("Invalid afterschoolclass time in day3");
+                            return;
+                        } else break;
+
+                        case 4: if(isAfterSchoolClass.get(0).getStart_time().before(isStudentTime.get(0).getEntry_4()) ||
+                                isAfterSchoolClass.get(0).getEnd_time().after(isStudentTime.get(0).getOff_4())){
+                            System.out.println("Invalid afterschoolclass time in day4");
+                            return;
+                        } else break;
+
+                        case 5: if(isAfterSchoolClass.get(0).getStart_time().before(isStudentTime.get(0).getEntry_5()) ||
+                                isAfterSchoolClass.get(0).getEnd_time().after(isStudentTime.get(0).getOff_5())){
+                            System.out.println("Invalid afterschoolclass time in day5");
+                            return;
+                        } else break;
+
+                        default: System.out.println("Invalid day");
+                        return;
+                    }
+                    //Required after school class duplicate time check
+                    System.out.println("Add new student schedule");
+                    StudentSchedule studentSchedule = new StudentSchedule();
+                    studentSchedule.setStudent_id(isStudent.get(0).getId());
+                    studentSchedule.setClass_id(isAfterSchoolClass.get(0).getId());
+                    studentScheduleRepository.save(studentSchedule);
+                }
             } else {
                 System.out.println("Duplicate student schedule in add NewStudentScheduleManageForm");
             }

@@ -54,6 +54,12 @@ public class JdbcTemplateStudentScheduleRepository implements StudentScheduleRep
     }
 
     @Override
+    public List<StudentSchedule> findByStudent_id(Long student_id) {
+        List<StudentSchedule> result = jdbcTemplate.query("select * from student_schedule where student_id = ?",memberRowMapper(),student_id);
+        return result;
+    }
+
+    @Override
     public boolean deleteStudentSchedule(Long id) {
         int result = jdbcTemplate.update("delete from student_schedule where id = ?",id);
         if(result == 1){
