@@ -68,9 +68,11 @@ insert into teacher(id, name, phone_num, gender, class_id, birth_date, disable)
 values(3, '정숙사', '01000000003',1 , 3, '2003-01-01',1);
 insert into teacher_account(id, teacher_id, user_id, user_pw)
 values(1, '1', 'admin', 'admin');
-insert into news(id, title, writer_id, class_id, uploaded_date, contents, file_url)
-values(1, 'newstitle1', 1, 1, '2023-05-23', 'newstextnewstext', 'fileurl');
-insert into news(id, title, writer_id, class_id, uploaded_date, contents, file_url)
-values(2, 'newstitle2', 1, 1, '2023-05-23', 'newstextnewstext', 'fileurl');
-insert into news(id, title, writer_id, class_id, uploaded_date, contents, file_url)
+insert into news(id, title, writer_id, class_id, uploaded_date, contents)
+values(1, 'newstitle1', 1, 1, '2023-05-23', 'newstextnewstext');
+insert into news(id, title, writer_id, class_id, uploaded_date, contents)
+values(2, 'newstitle2', 1, 1, '2023-05-23', 'newstextnewstext');
+insert into news(id, title, writer_id, class_id, uploaded_date, contents)
+values(3, 'newstitle3', 1, 1, '2023-05-23', 'newstextnewstext');
+insert into album(id, title, writer_id, class_id, uploaded_date, contents, file_url)
 values(3, 'newstitle3', 1, 1, '2023-05-23', 'newstextnewstext', 'fileurl');

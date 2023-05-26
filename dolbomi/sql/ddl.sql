@@ -13,6 +13,7 @@ drop table if exists dolbom_class CASCADE;
 drop table if exists admin CASCADE;
 drop table if exists news CASCADE;
 drop table if exists uploaded_file CASCADE;
+drop table if exists album CASCADE;
 create table admin
 (
     user_id char(20),
@@ -153,6 +154,17 @@ create table uploaded_file
     originFileName char(100)
 
 );
+create table album
+(
+    id int primary key,
+    title char(100),
+    writer_id int,
+    class_id int,
+    uploaded_date date,
+    contents char(100),
+    file_url char(100)
+
+);
 SET FOREIGN_KEY_CHECKS = 0;
 alter table teacher modify id int not null auto_increment;
 alter table parent modify id int not null auto_increment;
@@ -163,6 +175,7 @@ alter table student_schedule modify id int not null auto_increment;
 alter table student_state modify id int not null auto_increment;
 alter table student_time modify id int not null auto_increment;
 alter table news modify id int not null auto_increment;
+alter table album modify id int not null auto_increment;
 alter table news convert to charset utf8;
 alter table uploaded_file modify id int not null auto_increment;
 alter table uploaded_file convert to charset utf8;
@@ -174,6 +187,7 @@ alter table student_schedule convert to charset utf8;
 alter table student_state convert to charset utf8;
 alter table student_time convert to charset utf8;
 alter table uploaded_file convert to charset utf8;
+alter table album convert to charset utf8;
 alter table guardian convert to charset utf8;
 alter table guardian modify id int not null auto_increment;
 alter table student_of_guardian convert to charset utf8;
