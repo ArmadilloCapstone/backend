@@ -54,6 +54,9 @@ public class SpringConfig {
     @Bean FileService fileService(){
         return new FileService((fileRepository()));
     }
+    @Bean AlbumService albumService(){
+        return new AlbumService(albumRepository());
+    }
 
 
 
@@ -111,5 +114,9 @@ public class SpringConfig {
     @Bean
     public NewsRepository newsRepository() { return new JdbcTemplateNewsRepository(dataSource);    }
 
-    @Bean FileRepository fileRepository() { return new JdbcTemplateFileRepository(dataSource);}
+    @Bean
+    public FileRepository fileRepository() { return new JdbcTemplateFileRepository(dataSource);}
+
+    @Bean
+    public AlbumRepository albumRepository() { return new JdbcTemplateAlbumRepository(dataSource);}
 }

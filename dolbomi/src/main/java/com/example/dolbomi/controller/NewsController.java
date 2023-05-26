@@ -28,14 +28,7 @@ import java.util.Map;
 @RestController
 public class NewsController {
 
-    /*
-    private AdminService adminService;
 
-    @Autowired
-    public AdminController(AdminService adminService){
-        this.adminService = adminService;
-    }
-     */
     private NewsService newsService;
     private FileService fileService;
 
@@ -163,17 +156,5 @@ public class NewsController {
         return "test-form";
     }
 
-    /*
-    @PostMapping("/upload")
-    public String addFile(@RequestParam String bbs_id, @RequestParam MultipartFile file) throws IOException {
-        System.out.println("username = "+ bbs_id);
-
-        if(!file.isEmpty()){
-            String fullPath = "C:/images/"+file.getOriginalFilename();
-            file.transferTo(new File(fullPath));
-        }
-        return "test-form";
-    }
-    */
 
 }
