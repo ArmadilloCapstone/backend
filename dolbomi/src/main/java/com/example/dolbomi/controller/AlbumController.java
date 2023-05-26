@@ -58,25 +58,23 @@ public class AlbumController {
         album.setWriter_id(teacher_id);
         album.setClass_id(teacher_id);
         album.setUploaded_date(Date.valueOf(LocalDate.now()));
-        albumService.createAlbum(album);
-
         for (MultipartFile file : files) {
             Long albumId = album.getId();
             if (!file.isEmpty()) {
                 String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
                 file.transferTo(new File(fullPath));
-                fileService.saveFileInfo(albumId, file.getOriginalFilename());
+                //fileService.saveFileInfo(albumId, file.getOriginalFilename());
+                album.setFile_url(file.getOriginalFilename());
             }
         }
+        albumService.createAlbum(album);
         return album;
     }
 
     @PostMapping("/GalleryList/update/nofile")
     public String updateAlbum(@RequestParam Long album_id, @RequestParam String title,
                               @RequestParam String text) throws IOException{
-
         albumService.updateAlbum(album_id, title, text, false, null);
-
         return "updated";
     }
 
@@ -85,12 +83,12 @@ public class AlbumController {
                              @RequestParam String text, @RequestParam List<MultipartFile> files) throws IOException{
         albumService.updateAlbum(album_id, title, text, true, files);
         fileService.removeFileById(album_id);
-        fileService.deleteFileInfo(album_id);
+        //fileService.deleteFileInfo(album_id);
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
                 file.transferTo(new File(fullPath));
-                fileService.saveFileInfo(album_id, file.getOriginalFilename());
+                //fileService.saveFileInfo(album_id, file.getOriginalFilename());
             }
         }
         return "updated";

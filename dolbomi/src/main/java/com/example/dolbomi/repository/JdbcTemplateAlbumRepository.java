@@ -79,7 +79,10 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
 
     @Override
     public Album updateAlbum(Long album_id, String title, String text, Boolean file_changed, List<MultipartFile> files){
-        jdbcTemplate.update("update album set title = ?, contents = ?  where id = ?;", title, text, album_id);
+        if(file_changed==false)
+            jdbcTemplate.update("update album set title = ?, contents = ?  where id = ?;", title, text, album_id);
+        else
+            jdbcTemplate.update("update album set title = ?, contents = ?, file_url = ? where id = ?;", title, text, files.get(0).getOriginalFilename(), album_id);
         return new Album();
     }
 
