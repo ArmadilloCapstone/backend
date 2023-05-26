@@ -67,7 +67,7 @@ public class NewsController {
             Long newsId = news.getId();
 
             if (!file.isEmpty()) {
-                String fullPath = "D:큰창고\\Git 저장고\\armadillo\\backend\\" + file.getOriginalFilename();
+                String fullPath = "D:\\큰창고\\Git 저장고\\armadillo\\backend\\" + file.getOriginalFilename();
                 file.transferTo(new File(fullPath));
 
                 fileService.saveFileInfo(newsId, file.getOriginalFilename());
@@ -84,7 +84,7 @@ public class NewsController {
         return newsService.getNews(no);
     }
 
-    @PostMapping("/news/{no}")
+    @PostMapping("/news/files/{no}")
     public List<UploadedFile> getFilesByNo(
             @PathVariable Long no){
         return fileService.getFilesByNo(no);

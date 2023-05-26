@@ -38,7 +38,6 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
                 news.setClass_id(rs.getLong("class_id"));
                 news.setDate(rs.getDate("uploaded_date"));
                 news.setText(rs.getString("contents"));
-                news.setFile_url(rs.getString("file_url"));
 
                 return news;
             }
@@ -47,7 +46,7 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
 
     @Override
     public List<News> findAllByTeacherID(Long id) {
-        return jdbcTemplate.query("select * from news where class_id = ?",memberRowMapper(), id);
+        return jdbcTemplate.query("select N.* from news N inner join teacher T on N.class_id = T.class_id where T.id = ?",memberRowMapper(), id);
     }
 
     @Override
@@ -73,7 +72,6 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         parameters.put("class_id",news.getClass_id());
         parameters.put("uploaded_date",news.getDate());
         parameters.put("contents",news.getText());
-        parameters.put("file_url",news.getFile_url());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         news.setId(key.longValue());

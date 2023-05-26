@@ -33,7 +33,7 @@ public class JdbcTemplateFileRepository implements FileRepository {
 
                 UploadedFile file = new UploadedFile();
                 file.setId(rs.getLong("id"));
-                file.setNewsId(rs.getLong("newsid"));
+                file.setNewsId(rs.getLong("newsId"));
                 file.setOriginFileName(rs.getString("originFileName"));
 
                 return file;
@@ -45,7 +45,7 @@ public class JdbcTemplateFileRepository implements FileRepository {
     @Override
     public UploadedFile saveFileInfo(Long newsId, String originfilename){
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("uploadedfile").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("uploaded_file").usingGeneratedKeyColumns("id");
 
         UploadedFile file = new UploadedFile();
         file.setNewsId(newsId);
@@ -67,7 +67,7 @@ public class JdbcTemplateFileRepository implements FileRepository {
         // id로 테이블 접근 - 원본파일명 획득 - multipartfile로 get
 
         List<UploadedFile> origin_files =
-                jdbcTemplate.query("select originFileName from uploaded_file where id = ?",memberRowMapper(), id);
+                jdbcTemplate.query("select * from uploaded_file where newsId = ?",memberRowMapper(), id);
 
         return origin_files;
 
