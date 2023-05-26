@@ -76,16 +76,18 @@ public class NewsController {
         return news;
     }
 
-    @PostMapping("/BbsList/update")
+    @PostMapping("/BbsList/update/nofile")
     public String updateNews(@RequestParam Long news_id, @RequestParam String title,
-                           @RequestParam String text, @RequestParam Boolean file_changed, @RequestParam List<MultipartFile> files) throws IOException{
+                             @RequestParam String text) throws IOException{
 
-        newsService.updateNews(news_id, title, text, file_changed, files);
+        newsService.updateNews(news_id, title, text, false, null);
 
-        if(file_changed==true){
-            // 로컬저장소에서 파일 삭제
-            // 파일인포에서 파일정보삭제
-            // 파일 업로드
+        return "updated";
+    }
+    @PostMapping("/BbsList/update/file")
+    public String updateNews(@RequestParam Long news_id, @RequestParam String title,
+                           @RequestParam String text, @RequestParam List<MultipartFile> files) throws IOException{
+            newsService.updateNews(news_id, title, text, true, files);
             fileService.removeFileById(news_id);
             fileService.deleteFileInfo(news_id);
             for (MultipartFile file : files) {
@@ -96,7 +98,6 @@ public class NewsController {
                     fileService.saveFileInfo(newsId, file.getOriginalFilename());
                 }
             }
-        }
         return "updated";
     }
 

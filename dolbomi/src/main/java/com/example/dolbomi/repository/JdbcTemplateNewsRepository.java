@@ -84,7 +84,7 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         //jdbcTemplate.update("delete from news where id = ?", id)
         //jdbcTemplate.update("update admin set user_pw = ? where user_id = ? and user_pw = ?;", user_new_pw, user_id, user_pw);
 
-        jdbcTemplate.update("update news set title = ?, contents = ?,  where id = ?;", title, text, news_id);
+        jdbcTemplate.update("update news set title = ?, contents = ?  where id = ?;", title, text, news_id);
 
         if(file_changed==true){
 
