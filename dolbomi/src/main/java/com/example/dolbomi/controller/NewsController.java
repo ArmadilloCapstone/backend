@@ -126,7 +126,7 @@ public class NewsController {
             @PathVariable Long no){
         return fileService.getFilesByNo(no);
     }
-    @RequestMapping("/download/{file}")
+    @RequestMapping("/download/news/{file}")
     public void fileDownload(@PathVariable String file,
                              HttpServletResponse response) throws IOException {
         File f = new File("C:\\build\\resources\\main\\static\\static\\media\\news\\", file);

@@ -1,14 +1,17 @@
 package com.example.dolbomi.repository;
 
 import com.example.dolbomi.domain.Album;
-import com.example.dolbomi.domain.News;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JdbcTemplateAlbumRepository implements  AlbumRepository{
 
@@ -40,6 +43,35 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
     @Override
     public List<Album> findAllByTeacherID(Long id){
         return jdbcTemplate.query("select A.* from album A inner join teacher T on A.class_id = T.class_id where T.id = ?",memberRowMapper(), id);
+    }
+
+    @Override
+    public List<Album> searchAlbum(Long teacher_id, String keyword, String option){
+        if(option.equals("title")) {
+            return jdbcTemplate.query("select A.* from album A inner join teacher T on A.class_id = T.class_id where T.id = ? and A.title like '%" + keyword + "%'",
+                    memberRowMapper(), teacher_id);
+        }
+        else {
+            return jdbcTemplate.query("select A.* from album A inner join teacher T on A.class_id = T.class_id where T.id = ? and A.contents like '%" + keyword + "%'",
+                    memberRowMapper(), teacher_id);
+        }
+    }
+
+    @Override
+    public Album save(Album album) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("album").usingGeneratedKeyColumns("id");
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("title", album.getTitle());
+        parameters.put("writer_id",album.getWriter_id());
+        parameters.put("class_id",album.getClass_id());
+        parameters.put("uploaded_date",album.getUploaded_date());
+        parameters.put("contents",album.getContents());
+
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+        album.setId(key.longValue());
+        return album;
     }
 
 
