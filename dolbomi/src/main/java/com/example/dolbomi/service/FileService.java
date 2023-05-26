@@ -24,4 +24,12 @@ public class FileService {
         List<UploadedFile> files= fileRepository.getFilesByNo(no);
         return files;
     }
+
+    public void removeFileById(Long newsid){
+        fileRepository.removeFileById(newsid);
+    }
+
+    public void deleteFileInfo(Long newsid){
+        fileRepository.deleteFileInfo(newsid);
+    }
 }

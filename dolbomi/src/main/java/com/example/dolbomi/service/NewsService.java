@@ -9,7 +9,9 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.channels.MulticastChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,10 @@ public class NewsService {
 
     public News createNews(News news){
         return newsRepository.save(news);
+    }
+
+    public News updateNews(Long news_id, String title, String text, Boolean file_changed, List<MultipartFile> files) {
+        return newsRepository.updateNews(news_id, title, text, file_changed, files);
     }
 
     public ResponseEntity<News> getNews(Long no){

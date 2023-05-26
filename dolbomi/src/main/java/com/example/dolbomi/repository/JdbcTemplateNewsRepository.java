@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -76,6 +77,21 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         news.setId(key.longValue());
         return news;
+    }
+
+    @Override
+    public News updateNews(Long news_id, String title, String text, Boolean file_changed, List<MultipartFile> files){
+        //jdbcTemplate.update("delete from news where id = ?", id)
+        //jdbcTemplate.update("update admin set user_pw = ? where user_id = ? and user_pw = ?;", user_new_pw, user_id, user_pw);
+
+        jdbcTemplate.update("update news set title = ?, contents = ?,  where id = ?;", title, text, news_id);
+
+        if(file_changed==true){
+
+
+        }
+
+        return new News();
     }
 
 }

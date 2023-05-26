@@ -64,22 +64,40 @@ public class NewsController {
         news.setDate(Date.valueOf(LocalDate.now()));
         newsService.createNews(news);
 
-
-
         for (MultipartFile file : files) {
-
             Long newsId = news.getId();
-
             if (!file.isEmpty()) {
                 String fullPath = "D:\\큰창고\\Git 저장고\\armadillo\\backend\\" + file.getOriginalFilename();
                 file.transferTo(new File(fullPath));
-
                 fileService.saveFileInfo(newsId, file.getOriginalFilename());
             }
         }
 
         return news;
+    }
 
+    @PostMapping("/BbsList/update")
+    public String updateNews(@RequestParam Long news_id, @RequestParam String title,
+                           @RequestParam String text, @RequestParam Boolean file_changed, @RequestParam List<MultipartFile> files) throws IOException{
+
+        newsService.updateNews(news_id, title, text, file_changed, files);
+
+        if(file_changed==true){
+            // 로컬저장소에서 파일 삭제
+            // 파일인포에서 파일정보삭제
+            // 파일 업로드
+            fileService.removeFileById(news_id);
+            fileService.deleteFileInfo(news_id);
+            for (MultipartFile file : files) {
+                Long newsId = news_id;
+                if (!file.isEmpty()) {
+                    String fullPath = "D:\\큰창고\\Git 저장고\\armadillo\\backend\\" + file.getOriginalFilename();
+                    file.transferTo(new File(fullPath));
+                    fileService.saveFileInfo(newsId, file.getOriginalFilename());
+                }
+            }
+        }
+        return "updated";
     }
 
     @PostMapping("/news/{no}")

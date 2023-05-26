@@ -63,14 +63,31 @@ public class JdbcTemplateFileRepository implements FileRepository {
 
     @Override
     public List<UploadedFile> getFilesByNo(Long id) {
-
         // id로 테이블 접근 - 원본파일명 획득 - multipartfile로 get
-
         List<UploadedFile> origin_files =
                 jdbcTemplate.query("select * from uploaded_file where newsId = ?",memberRowMapper(), id);
 
         return origin_files;
 
+    }
+
+    @Override
+    public void removeFileById(Long newsid){
+        //news_id로 파일명 가져와서 로컬 경로 들어가서 파일 삭제
+        List<UploadedFile> origin_files =
+                jdbcTemplate.query("select * from uploaded_file where newsId = ?",memberRowMapper(), newsid);
+
+        for (UploadedFile uploadedFile : origin_files){
+            String file_name = uploadedFile.getOriginFileName();
+            String path = "D:\\";
+            File file = new File(path + file_name);
+            file.delete();
+        }
+    }
+
+    @Override
+    public void deleteFileInfo(Long newsid){
+        jdbcTemplate.update("delete from uploaded_file where newsId = ?", newsid);
     }
 
 
