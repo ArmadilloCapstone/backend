@@ -93,10 +93,10 @@ public class NewsController {
         return fileService.getFilesByNo(no);
     }
 
-    @GetMapping("/download/${filename}")
-    public void download(HttpServletResponse response) throws Exception {
+    @GetMapping("/download/{filename}")
+    public void download(HttpServletResponse response, @PathVariable String filename) throws Exception {
         try {
-            String path = "D:큰창고\\Git 저장고\\armadillo\\backend\\"; // 경로에 접근할 때 역슬래시('\') 사용
+            String path = "D:큰창고\\Git 저장고\\armadillo\\backend\\" + filename; // 경로에 접근할 때 역슬래시('\') 사용
 
             File file = new File(path);
             response.setHeader("Content-Disposition", "attachment;filename=" + file.getName()); // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
