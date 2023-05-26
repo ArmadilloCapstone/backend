@@ -51,6 +51,22 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
     }
 
     @Override
+    public List<News> searchNews(Long teacher_id, String keyword, String option){
+        if(option.equals("title")) {
+            return jdbcTemplate.query("" +
+                            "select N.* from news N inner join teacher T on N.class_id = T.class_id where T.id = ?" +
+                            "and N.title like '%" + keyword + "%'",
+                    memberRowMapper(), teacher_id);
+        }
+        else {
+            return jdbcTemplate.query("" +
+                            "select N.* from news N inner join teacher T on N.class_id = T.class_id where T.id = ?" +
+                            "and N.contents like '%" + keyword + "%'",
+                    memberRowMapper(), teacher_id);
+        }
+    }
+
+    @Override
     public Optional<News> findById(Long id) {
         List<News> result = jdbcTemplate.query("select * from news where id = ?",memberRowMapper(), id);
         return result.stream().findAny();

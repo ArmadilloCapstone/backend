@@ -28,6 +28,10 @@ public class NewsService {
         return newsRepository.findAllByTeacherID(id);
     }
 
+    public List<News> searchNews(Long teacher_id, String keyword, String option) {
+        return newsRepository.searchNews(teacher_id, keyword, option);
+    }
+
     public News createNews(News news){
         return newsRepository.save(news);
     }

@@ -90,5 +90,4 @@ public class JdbcTemplateFileRepository implements FileRepository {
         jdbcTemplate.update("delete from uploaded_file where newsId = ?", newsid);
     }
 
-
 }
