@@ -51,6 +51,9 @@ public class SpringConfig {
     public NewsService newsService(){
         return new NewsService(newsRepository());
     }
+    @Bean FileService fileService(){
+        return new FileService((fileRepository()));
+    }
 
 
 
@@ -107,4 +110,6 @@ public class SpringConfig {
 
     @Bean
     public NewsRepository newsRepository() { return new JdbcTemplateNewsRepository(dataSource);    }
+
+    @Bean FileRepository fileRepository() { return new JdbcTemplateFileRepository(dataSource);}
 }

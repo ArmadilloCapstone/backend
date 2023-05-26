@@ -1,10 +1,13 @@
 package com.example.dolbomi.controller;
 
 import com.example.dolbomi.domain.News;
+import com.example.dolbomi.domain.UploadedFile;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.domain.Teacher;
+import com.example.dolbomi.service.FileService;
 import com.example.dolbomi.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +33,12 @@ public class NewsController {
     }
      */
     private NewsService newsService;
+    private FileService fileService;
 
     @Autowired
-    public NewsController(NewsService newsService){
+    public NewsController(NewsService newsService, FileService fileService){
         this.newsService = newsService;
+        this.fileService = fileService;
     }
 
     @PostMapping("/BbsList")
@@ -43,10 +50,32 @@ public class NewsController {
     }
 
     @PostMapping("/BbsList/create")
-    public News createNews(@RequestBody PictureForm pictureForm){
-        System.out.println(pictureForm);
-        return null;
-        //return newsService.createNews(news);
+    public News createNews(@RequestParam String title, @RequestParam String text,
+                           @RequestParam Long teacher_id, @RequestParam List<MultipartFile> files) throws IOException {
+        News news = new News();
+        news.setTitle(title);
+        news.setText(text);
+        news.setWriter_id(teacher_id);
+        news.setClass_id(teacher_id);
+        news.setDate(Date.valueOf(LocalDate.now()));
+        newsService.createNews(news);
+
+
+
+        for (MultipartFile file : files) {
+
+            Long newsId = news.getId();
+
+            if (!file.isEmpty()) {
+                String fullPath = "C:\\" + file.getOriginalFilename();
+                file.transferTo(new File(fullPath));
+
+                fileService.saveFileInfo(newsId, file.getOriginalFilename());
+            }
+        }
+
+        return news;
+
     }
 
     @PostMapping("/news/{no}")
@@ -62,14 +91,16 @@ public class NewsController {
     }
 
 
+
     @GetMapping("/upload")
     public String test(){
         return "test-form";
     }
 
+    /*
     @PostMapping("/upload")
-    public String addFile(@RequestParam String username, @RequestParam MultipartFile file) throws IOException {
-        System.out.println("username = "+ username);
+    public String addFile(@RequestParam String bbs_id, @RequestParam MultipartFile file) throws IOException {
+        System.out.println("username = "+ bbs_id);
 
         if(!file.isEmpty()){
             String fullPath = "C:/images/"+file.getOriginalFilename();
@@ -77,5 +108,6 @@ public class NewsController {
         }
         return "test-form";
     }
+    */
 
 }
