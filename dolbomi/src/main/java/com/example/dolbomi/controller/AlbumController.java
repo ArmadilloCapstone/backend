@@ -3,17 +3,24 @@ package com.example.dolbomi.controller;
 import com.example.dolbomi.domain.Album;
 import com.example.dolbomi.domain.News;
 import com.example.dolbomi.domain.Teacher;
+import com.example.dolbomi.domain.UploadedFile;
 import com.example.dolbomi.service.AlbumService;
 import com.example.dolbomi.service.FileService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -54,11 +61,11 @@ public class AlbumController {
         albumService.createAlbum(album);
 
         for (MultipartFile file : files) {
-            Long newsId = album.getId();
+            Long albumId = album.getId();
             if (!file.isEmpty()) {
                 String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
                 file.transferTo(new File(fullPath));
-                fileService.saveFileInfo(newsId, file.getOriginalFilename());
+                fileService.saveFileInfo(albumId, file.getOriginalFilename());
             }
         }
         return album;
@@ -87,6 +94,41 @@ public class AlbumController {
             }
         }
         return "updated";
+    }
+
+    @PostMapping("/album/{no}")
+    public ResponseEntity<Album> getAlbumByNo(
+            @PathVariable Long no){
+        return albumService.getAlbum(no);
+    }
+
+    @PostMapping("/album/files/{no}")
+    public List<UploadedFile> getFilesByNo(
+            @PathVariable Long no){
+        return fileService.getFilesByNo(no);
+    }
+
+    @RequestMapping("/download/album/{file}")
+    public void fileDownload(@PathVariable String file,
+                             HttpServletResponse response) throws IOException {
+        File f = new File("C:\\build\\resources\\main\\static\\static\\media\\album\\", file);
+        // file 다운로드 설정
+        response.setContentType("application/download");
+        response.setContentLength((int)f.length());
+        response.setHeader("Content-disposition", "attachment;filename=\"" + file + "\"");
+        // response 객체를 통해서 서버로부터 파일 다운로드
+        OutputStream os = response.getOutputStream();
+        // 파일 입력 객체 생성
+        FileInputStream fis = new FileInputStream(f);
+        FileCopyUtils.copy(fis, os);
+        fis.close();
+        os.close();
+    }
+
+    @DeleteMapping("/album/{no}")
+    public ResponseEntity<Map<String, Boolean>> deleteBoardByNo(
+            @PathVariable Long no){
+        return albumService.deleteAlbum(no);
     }
 
 

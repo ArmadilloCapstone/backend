@@ -5,6 +5,7 @@ import com.example.dolbomi.domain.News;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AlbumRepository {
 
@@ -15,4 +16,8 @@ public interface AlbumRepository {
     Album save(Album album);
 
     Album updateAlbum(Long album_id, String title, String text, Boolean file_changed, List<MultipartFile> files);
+
+    Optional<Album> findById(Long id);
+
+    void delete(Long no);
 }

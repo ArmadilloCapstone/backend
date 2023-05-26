@@ -1,6 +1,7 @@
 package com.example.dolbomi.repository;
 
 import com.example.dolbomi.domain.Album;
+import com.example.dolbomi.domain.News;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class JdbcTemplateAlbumRepository implements  AlbumRepository{
 
@@ -79,6 +81,16 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
     public Album updateAlbum(Long album_id, String title, String text, Boolean file_changed, List<MultipartFile> files){
         jdbcTemplate.update("update album set title = ?, contents = ?  where id = ?;", title, text, album_id);
         return new Album();
+    }
+
+    @Override
+    public Optional<Album> findById(Long id) {
+        List<Album> result = jdbcTemplate.query("select * from album where id = ?", memberRowMapper(), id);
+        return result.stream().findAny();
+    }
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("delete from album where id = ?", id);
     }
 
 
