@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -92,27 +93,21 @@ public class NewsController {
             @PathVariable Long no){
         return fileService.getFilesByNo(no);
     }
-
-    @GetMapping("/download/{filename}")
-    public void download(HttpServletResponse response, @PathVariable String filename) throws Exception {
-        try {
-            String path = "D:큰창고\\Git 저장고\\armadillo\\backend\\" + filename; // 경로에 접근할 때 역슬래시('\') 사용
-
-            File file = new File(path);
-            response.setHeader("Content-Disposition", "attachment;filename=" + file.getName()); // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
-
-            FileInputStream fileInputStream = new FileInputStream(path); // 파일 읽어오기
-            OutputStream out = response.getOutputStream();
-
-            int read = 0;
-            byte[] buffer = new byte[1024];
-            while ((read = fileInputStream.read(buffer)) != -1) { // 1024바이트씩 계속 읽으면서 outputStream에 저장, -1이 나오면 더이상 읽을 파일이 없음
-                out.write(buffer, 0, read);
-            }
-
-        } catch (Exception e) {
-            throw new Exception("download error");
-        }
+    @RequestMapping("/download/{file}")
+    public void fileDownload(@PathVariable String file,
+                             HttpServletResponse response) throws IOException {
+        File f = new File("D:\\", file);
+        // file 다운로드 설정
+        response.setContentType("application/download");
+        response.setContentLength((int)f.length());
+        response.setHeader("Content-disposition", "attachment;filename=\"" + file + "\"");
+        // response 객체를 통해서 서버로부터 파일 다운로드
+        OutputStream os = response.getOutputStream();
+        // 파일 입력 객체 생성
+        FileInputStream fis = new FileInputStream(f);
+        FileCopyUtils.copy(fis, os);
+        fis.close();
+        os.close();
     }
 
     @DeleteMapping("/news/{no}")
