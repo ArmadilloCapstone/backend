@@ -54,13 +54,27 @@ public class NewsController {
     }
 
     @PostMapping("/BbsList/search")
-    public List<News> searchNews(@RequestParam Long teacher_id, @RequestParam String keyword, @RequestParam String option){
+    public List<News> searchNews(@RequestBody SearchForm searchForm){
         // option="title" 제목검색
         // option="text 내용검색
-        return newsService.searchNews(teacher_id, keyword, option);
+        return newsService.searchNews(searchForm.getTeacher_id(), searchForm.getKeyword(), searchForm.getOption());
     }
 
-    @PostMapping("/BbsList/create")
+    @PostMapping("/BbsList/create/nofile")
+    public News createNews(@RequestParam String title, @RequestParam String text,
+                           @RequestParam Long teacher_id) throws IOException {
+        News news = new News();
+        news.setTitle(title);
+        news.setText(text);
+        news.setWriter_id(teacher_id);
+        news.setClass_id(teacher_id);
+        news.setDate(Date.valueOf(LocalDate.now()));
+        newsService.createNews(news);
+
+        return news;
+    }
+
+    @PostMapping("/BbsList/create/file")
     public News createNews(@RequestParam String title, @RequestParam String text,
                            @RequestParam Long teacher_id, @RequestParam List<MultipartFile> files) throws IOException {
         News news = new News();
