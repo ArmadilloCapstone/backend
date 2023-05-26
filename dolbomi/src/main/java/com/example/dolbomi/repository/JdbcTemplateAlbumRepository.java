@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -72,6 +73,12 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         album.setId(key.longValue());
         return album;
+    }
+
+    @Override
+    public Album updateAlbum(Long album_id, String title, String text, Boolean file_changed, List<MultipartFile> files){
+        jdbcTemplate.update("update album set title = ?, contents = ?  where id = ?;", title, text, album_id);
+        return new Album();
     }
 
 

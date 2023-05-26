@@ -7,7 +7,9 @@ import com.example.dolbomi.service.AlbumService;
 import com.example.dolbomi.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -40,9 +42,9 @@ public class AlbumController {
         return albumService.searchAlbum(searchForm.getTeacher_id(), searchForm.getKeyword(), searchForm.getOption());
     }
 
-    @PostMapping("/GalleryList/create/nofile")
+    @PostMapping("/GalleryList/create/file")
     public Album createAlbum(@RequestParam String title, @RequestParam String text,
-                           @RequestParam Long teacher_id) throws IOException {
+                           @RequestParam Long teacher_id, @RequestParam List<MultipartFile> files) throws IOException {
         Album album = new Album();
         album.setTitle(title);
         album.setContents(text);
@@ -51,7 +53,40 @@ public class AlbumController {
         album.setUploaded_date(Date.valueOf(LocalDate.now()));
         albumService.createAlbum(album);
 
+        for (MultipartFile file : files) {
+            Long newsId = album.getId();
+            if (!file.isEmpty()) {
+                String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
+                file.transferTo(new File(fullPath));
+                fileService.saveFileInfo(newsId, file.getOriginalFilename());
+            }
+        }
         return album;
+    }
+
+    @PostMapping("/GalleryList/update/nofile")
+    public String updateAlbum(@RequestParam Long album_id, @RequestParam String title,
+                              @RequestParam String text) throws IOException{
+
+        albumService.updateAlbum(album_id, title, text, false, null);
+
+        return "updated";
+    }
+
+    @PostMapping("/GalleryList/update/file")
+    public String updateAlbum(@RequestParam Long album_id, @RequestParam String title,
+                             @RequestParam String text, @RequestParam List<MultipartFile> files) throws IOException{
+        albumService.updateAlbum(album_id, title, text, true, files);
+        fileService.removeFileById(album_id);
+        fileService.deleteFileInfo(album_id);
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
+                file.transferTo(new File(fullPath));
+                fileService.saveFileInfo(album_id, file.getOriginalFilename());
+            }
+        }
+        return "updated";
     }
 
 

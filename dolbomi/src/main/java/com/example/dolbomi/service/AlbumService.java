@@ -3,6 +3,7 @@ package com.example.dolbomi.service;
 import com.example.dolbomi.domain.Album;
 import com.example.dolbomi.domain.News;
 import com.example.dolbomi.repository.AlbumRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,5 +24,9 @@ public class AlbumService {
 
     public Album createAlbum(Album album){
         return albumRepository.save(album);
+    }
+
+    public Album updateAlbum(Long album_id, String title, String text, Boolean file_changed, List<MultipartFile> files) {
+        return albumRepository.updateAlbum(album_id, title, text, file_changed, files);
     }
 }
