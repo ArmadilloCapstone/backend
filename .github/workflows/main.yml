@@ -35,7 +35,9 @@ jobs:
         ./gradlew clean build -x test
         
     - name: Make Diretory
-      run: mkdir -p deploy
+      run: |
+        cd dolbomi
+        mkdir -p deploy
       
     - name: Copy Build
       run: |
