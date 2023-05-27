@@ -48,7 +48,7 @@ jobs:
     - name: Make zip file
       run: |
         cd dolbomi
-        zip -r ./dolbomi.zip ./deploy
+        tar -cvzf ./dolbomi.zip ./deploy
       shell: bash
       
     - name: Configure AWS credentials
