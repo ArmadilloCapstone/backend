@@ -1,5 +1,7 @@
 name: Dolbomi server CI/CD
-
+env:
+  CI: false
+  
 on:
   push:
     branches: [ main ]
