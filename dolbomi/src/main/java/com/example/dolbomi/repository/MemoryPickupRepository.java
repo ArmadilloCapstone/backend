@@ -38,12 +38,20 @@ public class MemoryPickupRepository implements PickupRepository{
 
     @Override
     public List<PickupRequestForm> findAll(Long class_id) {
-        return new ArrayList<>(store.get(class_id).values());
+        System.out.println(class_id);
+        if(store.get(class_id) == null){
+            return null;
+        }
+        else{
+            return new ArrayList<>(store.get(class_id).values());
+        }
     }
 
     public void clearPickupStore(Long class_id){
-        store.get(class_id).clear();
-        sequence[class_id.intValue()] = 0;
+        if(store.get(class_id) != null){
+            store.get(class_id).clear();
+            sequence[class_id.intValue()] = 0;
+        }
     }
 }
 

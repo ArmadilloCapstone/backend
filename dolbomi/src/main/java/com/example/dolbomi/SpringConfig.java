@@ -1,11 +1,14 @@
 package com.example.dolbomi;
 
-import com.example.dolbomi.domain.News;
 import com.example.dolbomi.repository.*;
 import com.example.dolbomi.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import javax.sql.DataSource;
 
