@@ -61,4 +61,4 @@ jobs:
     - name: Upload to S3
       run: |
         cd dolbomi
-        aws s3 cp --region ap-northeast-2 ./dolbomi.zip s3://$S3_BUCKET_NAME/
+        aws s3 cp --region ap-northeast-2 ./dolbomi.zip s3://dolbomi-deploy/
