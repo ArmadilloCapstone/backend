@@ -1,0 +1,3 @@
+[submodule "dolbomi/frontend"]
+	path = dolbomi/frontend
+	url = https://github.com/ArmadilloCapstone/frontend.git
