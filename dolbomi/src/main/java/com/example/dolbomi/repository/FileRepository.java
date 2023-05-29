@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface FileRepository {
     UploadedFile saveFileInfo(Long newsId, String originfilename);
     List<UploadedFile> getFilesByNo(Long no);
-    void removeFileById(Long newsid);
-    void deleteFileInfo(Long newsid);
+    void removeFileById(String domain, Long newsid);
+    void deleteFileInfo(String domain, Long newsid);
 }

@@ -32,7 +32,6 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         return new RowMapper<News>() {
             @Override
             public News mapRow(ResultSet rs, int rowNum) throws SQLException {
-
                 News news = new News();
                 news.setId(rs.getLong("id"));
                 news.setTitle(rs.getString("title"));

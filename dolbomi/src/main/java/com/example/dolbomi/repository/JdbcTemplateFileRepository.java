@@ -41,6 +41,24 @@ public class JdbcTemplateFileRepository implements FileRepository {
         };
     }
 
+    private RowMapper<News> newsRowMapper() {
+        return new RowMapper<News>() {
+            @Override
+            public News mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                News news = new News();
+                news.setId(rs.getLong("id"));
+                news.setTitle(rs.getString("title"));
+                news.setWriter_id(rs.getLong("writer_id"));
+                news.setClass_id(rs.getLong("class_id"));
+                news.setDate(rs.getDate("uploaded_date"));
+                news.setText(rs.getString("contents"));
+
+                return news;
+            }
+        };
+    }
+
 
     @Override
     public UploadedFile saveFileInfo(Long newsId, String originfilename){
@@ -72,21 +90,28 @@ public class JdbcTemplateFileRepository implements FileRepository {
     }
 
     @Override
-    public void removeFileById(Long newsid){
+    public void removeFileById(String domain, Long newsid){
         //news_id로 파일명 가져와서 로컬 경로 들어가서 파일 삭제
-        List<UploadedFile> origin_files =
-                jdbcTemplate.query("select * from uploaded_file where newsId = ?",memberRowMapper(), newsid);
 
-        for (UploadedFile uploadedFile : origin_files){
-            String file_name = uploadedFile.getOriginFileName();
-            String path = "D:\\";
-            File file = new File(path + file_name);
-            file.delete();
+        if(domain.equals("news")) {
+            List<UploadedFile> origin_files =
+                    jdbcTemplate.query("select * from uploaded_file where newsId = ?", memberRowMapper(), newsid);
+            List<News> news_list =
+                    jdbcTemplate.query("select * from news where id = ?", newsRowMapper(), newsid);
+
+            String title = news_list.get(0).getTitle();
+            for (UploadedFile uploadedFile : origin_files) {
+                String file_name = uploadedFile.getOriginFileName();
+                File file = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\" + title + "\\" + file_name);
+                file.delete();
+            }
+            File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\" + title + "\\");
+            folder.delete();
         }
     }
 
     @Override
-    public void deleteFileInfo(Long newsid){
+    public void deleteFileInfo(String domain, Long newsid){
         jdbcTemplate.update("delete from uploaded_file where newsId = ?", newsid);
     }
 

@@ -107,7 +107,7 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
             jdbcTemplate.update("update album set title = ?, contents = ?  where id = ?;", title, text, album_id);
         else {
             Album this_album = jdbcTemplate.query("select * from album where id = ?", memberRowMapper(), album_id).get(0);
-            String before_file_path = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\" + this_album.getFile_url();
+            String before_file_path = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+this_album.getTitle()+"\\"+this_album.getFile_url();
             File file = new File(before_file_path);
             file.delete();
             jdbcTemplate.update("update album set title = ?, contents = ?, file_url = ? where id = ?;", title, text, files.get(0).getOriginalFilename(), album_id);
@@ -123,9 +123,13 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
     @Override
     public void delete(Long id) {
         Album this_album = jdbcTemplate.query("select * from album where id = ?", memberRowMapper(), id).get(0);
-        String before_file_path = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\" + this_album.getFile_url();
+        String before_file_path = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+this_album.getTitle()+"\\"+this_album.getFile_url();
+
         File file = new File(before_file_path);
         file.delete();
+        File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+this_album.getTitle()+"\\");
+        folder.delete();
+
         jdbcTemplate.update("delete from album where id = ?", id);
     }
 

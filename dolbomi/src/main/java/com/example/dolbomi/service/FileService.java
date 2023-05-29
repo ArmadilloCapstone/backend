@@ -25,11 +25,11 @@ public class FileService {
         return files;
     }
 
-    public void removeFileById(Long newsid){
-        fileRepository.removeFileById(newsid);
+    public void removeFileById(String domain, Long newsid){
+        fileRepository.removeFileById(domain, newsid);
     }
 
-    public void deleteFileInfo(Long newsid){
-        fileRepository.deleteFileInfo(newsid);
+    public void deleteFileInfo(String domain, Long newsid){
+        fileRepository.deleteFileInfo(domain, newsid);
     }
 }
