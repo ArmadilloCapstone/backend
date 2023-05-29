@@ -100,12 +100,6 @@ public class AlbumController {
         return albumService.getAlbum(no);
     }
 
-    @PostMapping("/album/files/{no}")
-    public List<UploadedFile> getFilesByNo(
-            @PathVariable Long no){
-        return fileService.getFilesByNo(no);
-    }
-
     @RequestMapping("/download/album/{file}")
     public void fileDownload(@PathVariable String file,
                              HttpServletResponse response) throws IOException {

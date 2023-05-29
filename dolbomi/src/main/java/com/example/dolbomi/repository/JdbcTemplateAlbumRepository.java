@@ -36,7 +36,7 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
                 album.setClass_id(rs.getLong("class_id"));
                 album.setUploaded_date(rs.getDate("uploaded_date"));
                 album.setContents(rs.getString("contents"));
-                album.setContents(rs.getString("file_url"));
+                album.setFile_url(rs.getString("file_url"));
 
                 return album;
             }
