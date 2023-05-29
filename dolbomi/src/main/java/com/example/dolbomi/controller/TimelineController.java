@@ -7,10 +7,7 @@ import com.example.dolbomi.domain.StudentTime;
 import com.example.dolbomi.service.StudentService;
 import com.example.dolbomi.service.TimelineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,19 +23,19 @@ public class TimelineController {
 
     //private final StudentService studentService;
 
-    @PostMapping("/studentFindAll")
-    public List<Student> studentFindAll() {
-        return timelineService.studentFindAll();
+    @PostMapping("/studentFindAll/{teacher_id}")
+    public List<Student> studentFindAllByTid(@PathVariable("teacher_id") Long teacher_id) {
+        return timelineService.studentFindAllByTid(teacher_id);
     }
 
-    @PostMapping("/studentTimeFindAll")
-    public List<StudentTime> studentTimeFindAll() {
-        return timelineService.studentTimeFindAll();
+    @PostMapping("/studentTimeFindAll/{teacher_id}")
+    public List<StudentTime> studentTimeFindAllByTid(@PathVariable("teacher_id") Long teacher_id) {
+        return timelineService.studentTimeFindAllByTid(teacher_id);
     }
 
-    @PostMapping("/studentScheduleFindAll")
-    public List<StudentSchedule> studentScheduleFindAll() {
-        return timelineService.studentScheduleFindAll();
+    @PostMapping("/studentScheduleFindAll/{teacher_id}")
+    public List<StudentSchedule> studentScheduleFindAllByTid(@PathVariable("teacher_id") Long teacher_id) {
+        return timelineService.studentScheduleFindAllByTid(teacher_id);
     }
 
     @PostMapping("/AfterSchoolClassFindAll")

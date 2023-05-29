@@ -69,8 +69,12 @@ public class JdbcTemplateStudentScheduleRepository implements StudentScheduleRep
     }
 
     @Override
+    public List<StudentSchedule> findAllByTid(Long teacher_id) {
+        return jdbcTemplate.query("select SS.* from student_schedule SS inner join (select S.* from student S inner join teacher T on S.class_id = T.class_id where T.id = ?) S on SS.student_id = S.id ", memberRowMapper(), teacher_id);
+    }
+    @Override
     public List<StudentSchedule> findAll() {
-        return jdbcTemplate.query("select * from student_schedule", memberRowMapper());
+        return jdbcTemplate.query("zz", memberRowMapper());
     }
 
     private RowMapper<StudentSchedule> memberRowMapper() {

@@ -62,6 +62,10 @@ public class JdbcTemplateStudentStateRepository implements StudentStateRepositor
         return jdbcTemplate.query("select SS.id, SS.student_id, S.name, SS.state from student_state SS inner join student S on SS.student_id = S.id", memberFormRowMapper());
     }
 
+    @Override
+    public List<StudentStateForm> findAllByTid(Long teacher_id) {
+        return jdbcTemplate.query("select SS.id, SS.student_id, S.name, SS.state from student_state SS inner join (select S.* from student S inner join teacher T on S.class_id = T.class_id where T.id = ?) S on SS.student_id = S.id", memberFormRowMapper(), teacher_id);
+    }
     private RowMapper<StudentState> memberRowMapper() {
         return new RowMapper<StudentState>() {
             @Override

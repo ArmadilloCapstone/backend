@@ -17,4 +17,5 @@ public interface StudentRepository {
     List<Student> findStudent_idById(Long id);
     List<Student> findActivationStudent();
     List<Student> findAll();
+    List<Student> findAllByTid(Long teacher_id);
 }

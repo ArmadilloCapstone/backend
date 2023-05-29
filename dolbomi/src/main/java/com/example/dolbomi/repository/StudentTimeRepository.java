@@ -11,4 +11,5 @@ public interface StudentTimeRepository {
     List<StudentTime> findByStudent_id(Long student_id);
     boolean deleteStudentTime(Long id);
     List<StudentTime> findAll();
+    List<StudentTime> findAllByTid(Long teacher_id);
 }
