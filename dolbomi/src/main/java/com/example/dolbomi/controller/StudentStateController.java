@@ -27,9 +27,9 @@ public class StudentStateController {
         return studentStateService.sendStudentState(parent_id);
     }
 
-    @PostMapping("/getStudentInfo")
-    public List<StudentStateForm> getStudentInfo(){
-        return studentStateService.findMembers();
+    @PostMapping("/getStudentInfo/{teacher_id}")
+    public List<StudentStateForm> getStudentInfo(@PathVariable("teacher_id") Long teacher_id){
+        return studentStateService.findMembersByTid(teacher_id);
     }
 
 }

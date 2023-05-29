@@ -61,7 +61,7 @@ public class StudentStateService {
         }
     }
 
-    public List<StudentStateForm> findMembers() {
-        return studentStateRepository.findAll();
+    public List<StudentStateForm> findMembersByTid(Long teacher_id) {
+        return studentStateRepository.findAllByTid(teacher_id);
     }
 }

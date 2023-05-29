@@ -12,4 +12,5 @@ public interface StudentStateRepository {
     Optional<StudentState> findById(Long id);
     List<StudentState> findByStudentId(Long student_id);
     List<StudentStateForm> findAll();
+    List<StudentStateForm> findAllByTid(Long teacher_id);
 }

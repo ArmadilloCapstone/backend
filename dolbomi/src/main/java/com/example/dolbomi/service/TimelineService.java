@@ -24,14 +24,14 @@ public class TimelineService {
         this.studentTimeRepository = studentTimeRepository;
     }
 
-    public List<Student> studentFindAll() {
-        return studentRepository.findAll();
+    public List<Student> studentFindAllByTid(Long teacher_id) {
+        return studentRepository.findAllByTid(teacher_id);
     }
-    public List<StudentTime> studentTimeFindAll(){
-        return studentTimeRepository.findAll();
+    public List<StudentTime> studentTimeFindAllByTid(Long teacher_id){
+        return studentTimeRepository.findAllByTid(teacher_id);
     }
-    public List<StudentSchedule> studentScheduleFindAll(){
-        return studentScheduleRepository.findAll();
+    public List<StudentSchedule> studentScheduleFindAllByTid(Long teacher_id){
+        return studentScheduleRepository.findAllByTid(teacher_id);
     }
     public List<AfterSchoolClass> afterSchoolClassFindAll(){
         return afterSchoolClassRepository.findAll();

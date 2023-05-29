@@ -13,4 +13,5 @@ public interface StudentScheduleRepository {
     List<StudentSchedule> findByStudent_id(Long student_id);
     boolean deleteStudentSchedule(Long id);
     List<StudentSchedule> findAll();
+    List<StudentSchedule> findAllByTid(Long teacher_id);
 }
