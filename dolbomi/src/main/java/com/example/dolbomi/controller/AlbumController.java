@@ -61,9 +61,9 @@ public class AlbumController {
         for (MultipartFile file : files) {
             Long albumId = album.getId();
             if (!file.isEmpty()) {
-                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+title+"\\");
+                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+title);
                 folder.mkdirs();
-                file.transferTo(folder);
+                file.transferTo(new File(folder.getAbsolutePath()+"\\"+file.getOriginalFilename()));
                 album.setFile_url(file.getOriginalFilename());
             }
         }
@@ -84,9 +84,9 @@ public class AlbumController {
         albumService.updateAlbum(album_id, title, text, true, files);
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+title+"\\");
+                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+title);
                 folder.mkdirs();
-                file.transferTo(folder);
+                file.transferTo(new File(folder.getAbsolutePath()+"\\"+file.getOriginalFilename()));
             }
         }
         return "updated";

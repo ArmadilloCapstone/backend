@@ -81,9 +81,9 @@ public class NewsController {
         for (MultipartFile file : files) {
             Long newsId = news.getId();
             if (!file.isEmpty()) {
-                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title+"\\");
+                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title);
                 folder.mkdirs();
-                file.transferTo(folder);
+                file.transferTo(new File(folder.getAbsolutePath()+"\\"+file.getOriginalFilename()));
                 fileService.saveFileInfo(newsId, file.getOriginalFilename());
             }
         }
@@ -108,9 +108,9 @@ public class NewsController {
             for (MultipartFile file : files) {
                 Long newsId = news_id;
                 if (!file.isEmpty()) {
-                    File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title+"\\");
+                    File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title);
                     folder.mkdirs();
-                    file.transferTo(folder);
+                    file.transferTo(new File(folder.getAbsolutePath()+"\\"+file.getOriginalFilename()));
                     fileService.saveFileInfo(newsId, file.getOriginalFilename());
                 }
             }
