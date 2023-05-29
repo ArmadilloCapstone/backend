@@ -61,9 +61,9 @@ public class AlbumController {
         for (MultipartFile file : files) {
             Long albumId = album.getId();
             if (!file.isEmpty()) {
-                String fullPath = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
-                file.transferTo(new File(fullPath));
-                //fileService.saveFileInfo(albumId, file.getOriginalFilename());
+                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+title+"\\");
+                folder.mkdirs();
+                file.transferTo(folder);
                 album.setFile_url(file.getOriginalFilename());
             }
         }
@@ -82,13 +82,11 @@ public class AlbumController {
     public String updateAlbum(@RequestParam Long album_id, @RequestParam String title,
                              @RequestParam String text, @RequestParam List<MultipartFile> files) throws IOException{
         albumService.updateAlbum(album_id, title, text, true, files);
-        fileService.removeFileById(album_id);
-        //fileService.deleteFileInfo(album_id);
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                String fullPath = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
-                file.transferTo(new File(fullPath));
-                //fileService.saveFileInfo(album_id, file.getOriginalFilename());
+                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+title+"\\");
+                folder.mkdirs();
+                file.transferTo(folder);
             }
         }
         return "updated";
@@ -120,6 +118,7 @@ public class AlbumController {
     @DeleteMapping("/album/{no}")
     public ResponseEntity<Map<String, Boolean>> deleteBoardByNo(
             @PathVariable Long no){
+        //fileService.removeFileById("album", no);
         return albumService.deleteAlbum(no);
     }
 

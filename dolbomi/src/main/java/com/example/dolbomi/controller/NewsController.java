@@ -81,8 +81,9 @@ public class NewsController {
         for (MultipartFile file : files) {
             Long newsId = news.getId();
             if (!file.isEmpty()) {
-                String fullPath = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\" + file.getOriginalFilename();
-                file.transferTo(new File(fullPath));
+                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title+"\\");
+                folder.mkdirs();
+                file.transferTo(folder);
                 fileService.saveFileInfo(newsId, file.getOriginalFilename());
             }
         }
@@ -102,13 +103,14 @@ public class NewsController {
     public String updateNews(@RequestParam Long news_id, @RequestParam String title,
                            @RequestParam String text, @RequestParam List<MultipartFile> files) throws IOException{
             newsService.updateNews(news_id, title, text, true, files);
-            fileService.removeFileById(news_id);
-            fileService.deleteFileInfo(news_id);
+            fileService.removeFileById("news", news_id);
+            fileService.deleteFileInfo("news", news_id);
             for (MultipartFile file : files) {
                 Long newsId = news_id;
                 if (!file.isEmpty()) {
-                    String fullPath = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\" + file.getOriginalFilename();
-                    file.transferTo(new File(fullPath));
+                    File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title+"\\");
+                    folder.mkdirs();
+                    file.transferTo(folder);
                     fileService.saveFileInfo(newsId, file.getOriginalFilename());
                 }
             }
@@ -146,6 +148,8 @@ public class NewsController {
     @DeleteMapping("/news/{no}")
     public ResponseEntity<Map<String, Boolean>> deleteBoardByNo(
         @PathVariable Long no){
+        fileService.removeFileById("news", no);
+        fileService.deleteFileInfo("news", no);
         return newsService.deleteNews(no);
     }
 
