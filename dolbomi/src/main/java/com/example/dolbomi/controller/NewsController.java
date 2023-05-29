@@ -81,9 +81,9 @@ public class NewsController {
         for (MultipartFile file : files) {
             Long newsId = news.getId();
             if (!file.isEmpty()) {
-                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title+"\\");
+                File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title);
                 folder.mkdirs();
-                file.transferTo(folder);
+                file.transferTo(new File(folder.getAbsolutePath()+"\\"+file.getOriginalFilename()));
                 fileService.saveFileInfo(newsId, file.getOriginalFilename());
             }
         }
@@ -108,9 +108,9 @@ public class NewsController {
             for (MultipartFile file : files) {
                 Long newsId = news_id;
                 if (!file.isEmpty()) {
-                    File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title+"\\");
+                    File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+title);
                     folder.mkdirs();
-                    file.transferTo(folder);
+                    file.transferTo(new File(folder.getAbsolutePath()+"\\"+file.getOriginalFilename()));
                     fileService.saveFileInfo(newsId, file.getOriginalFilename());
                 }
             }
@@ -128,10 +128,10 @@ public class NewsController {
             @PathVariable Long no){
         return fileService.getFilesByNo(no);
     }
-    @RequestMapping("/download/news/{file}")
-    public void fileDownload(@PathVariable String file,
+    @RequestMapping("/download/news/{folder}/{file}")
+    public void fileDownload(@PathVariable String folder, @PathVariable String file,
                              HttpServletResponse response) throws IOException {
-        File f = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\", file);
+        File f = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\"+folder+"\\"+file);
         // file 다운로드 설정
         response.setContentType("application/download");
         response.setContentLength((int)f.length());
