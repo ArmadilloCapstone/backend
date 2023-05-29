@@ -81,12 +81,13 @@ public class PickupService {
         int studentCount = pickupListRequestForm.getStudentPickupFormList().size();
         for(int i = 0; i<studentCount;i++){
             PickupRequestForm pickupRequestForm = new PickupRequestForm();
-            Optional<Guardian> guardian = guardianRepository.findById(pickupListRequestForm.getPickupManId());
+            Optional<Guardian> guardian = guardianRepository.findBySerialNum(pickupListRequestForm.getPickupManId());
+            System.out.println(guardian.get().getName());
             if(guardian.isPresent()){
                 pickupRequestForm.setPickupManId(guardian.get().getId());
                 pickupRequestForm.setPickupManName(guardian.get().getName());
             } else{
-                System.out.println("보호자 정보가 없습니다");
+                System.out.println("There is no information about guardian");
                 return null;
             }
             Optional<Student> student = studentRepository.findById(pickupListRequestForm.getStudentPickupFormList().get(i).getId());

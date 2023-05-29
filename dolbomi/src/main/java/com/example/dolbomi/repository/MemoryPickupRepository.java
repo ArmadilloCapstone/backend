@@ -14,7 +14,7 @@ public class MemoryPickupRepository implements PickupRepository{
 
     @Override
     public PickupRequestForm saveByParent(PickupRequestForm pickupRequestForm, Long class_id) {
-        if (store.get(class_id).isEmpty() == true){
+        if (store.get(class_id) == null){
             Map<Long, PickupRequestForm> subStore = new HashMap<>();
             store.put(class_id, subStore);
             sequence[class_id.intValue()] = 0;
@@ -26,7 +26,7 @@ public class MemoryPickupRepository implements PickupRepository{
 
     @Override
     public PickupRequestForm saveByGuardian(PickupRequestForm pickupRequestForm, Long class_id) {
-        if (store.get(class_id).isEmpty() == true){
+        if (store.get(class_id) == null){
             Map<Long, PickupRequestForm> subStore = new HashMap<>();
             store.put(class_id, subStore);
             sequence[class_id.intValue()] = 0;

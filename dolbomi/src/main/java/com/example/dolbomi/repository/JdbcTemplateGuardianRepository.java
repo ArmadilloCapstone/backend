@@ -43,6 +43,12 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
         List<Guardian> result = jdbcTemplate.query("select * from guardian where id = ?", memberRowMapper(), id);
         return result.stream().findAny();
     }
+    @Override
+    public Optional<Guardian> findBySerialNum(Long serial_num) {
+        List<Guardian> result = jdbcTemplate.query("select * from guardian where serial_num = ?", memberRowMapper(), serial_num);
+        return result.stream().findAny();
+    }
+
 
     @Override
     public List<Guardian> findAll() {

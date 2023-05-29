@@ -36,6 +36,7 @@ public class PickupController {
 
     @PostMapping("/guardian")
     public List<StudentPickupForm> guardianPickup(@RequestBody Guardian guardian){
+        System.out.println(guardian.getId());
         return pickupService.selectStudentForGuardian(guardian);
     }
 

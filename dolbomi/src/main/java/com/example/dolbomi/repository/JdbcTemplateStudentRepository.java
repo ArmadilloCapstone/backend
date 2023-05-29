@@ -83,7 +83,8 @@ public class JdbcTemplateStudentRepository implements StudentRepository {
 
     @Override
     public List<Student> findStudent_idById(Long id) {
-        List<Student> result = jdbcTemplate.query("select S.* from student_of_guardian SG inner join student S on SG.student_id = S.id where guardian_id = ?", memberRowMapper(), id);
+        List<Student> result = jdbcTemplate.query("select S.* from (select SG.* from student_of_guardian SG inner join guardian G on SG.guardian_id = G.id where G.serial_num = ?) SG inner join student S on SG.student_id = S.id", memberRowMapper(), id);
+        System.out.println(result.size());
         return result;
     }
 

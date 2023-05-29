@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface GuardianRepository {
     Guardian save(Guardian guardian);
+    Optional<Guardian> findBySerialNum(Long serial_num);
     Optional<Guardian> findById(Long id);
     List<Guardian> findAll();
     List<Guardian> findByNameInfo(String name, String info);
