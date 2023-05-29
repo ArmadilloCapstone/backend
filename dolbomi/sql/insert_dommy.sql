@@ -47,11 +47,15 @@ values(002, 20230002, '14:00:00', '14:00:00', '14:00:00', '14:00:00', '14:00:00'
 insert into student_time(id, student_id, entry1, entry2, entry3, entry4, entry5, off1, off2, off3, off4, off5)
 values(003, 20230003, '14:00:00', '14:00:00', '14:00:00', '14:00:00', '14:00:00', '18:30:00', '18:30:00', '18:30:00', '18:30:00', '18:30:00');
 insert into guardian(id, name, serial_num ,info)
-values(0001,"하루윌", 1750298361, "가나다 태권도장의 셔틀버스 기사");
-insert into student_of_guardian(guardian_id, student_id)
-values(1750298361, 1);
-insert into student_of_guardian(guardian_id, student_id)
-values(1750298361, 2);
+values(0001,"하루윌", 175029, "가나다 태권도장의 셔틀버스 기사");
+insert into guardian(id, name, serial_num, info)
+values(0002,"김하늘", 888645, "미술학원쌤");
+insert into student_of_guardian(id, guardian_id, student_id)
+values(1,1, 20230001);
+insert into student_of_guardian(id, guardian_id, student_id)
+values(2,1, 20230002);
+insert into student_of_guardian(id, guardian_id, student_id)
+values(3,2, 20230003);
 insert into parent(id, name, phone_num, gender, birth_date, child_id, class_id, disable)
 values(12007050, '가민경', '01055558888', 2,'1973-09-03',20230003,1,1);
 insert into parent(id, name, phone_num, gender, birth_date, child_id, class_id, disable)

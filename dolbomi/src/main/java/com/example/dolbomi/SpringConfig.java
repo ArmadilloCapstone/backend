@@ -61,6 +61,10 @@ public class SpringConfig {
         return new AlbumService(albumRepository());
     }
 
+    @Bean
+    public GuardianManageService guardianManageService() { return new GuardianManageService(guardianRepository(), studentRepository(),
+            studentOfGuardianRepository());}
+
 
 
     @Bean
@@ -118,8 +122,12 @@ public class SpringConfig {
     public NewsRepository newsRepository() { return new JdbcTemplateNewsRepository(dataSource);    }
 
     @Bean
+<<<<<<< HEAD
     public FileRepository fileRepository() { return new JdbcTemplateFileRepository(dataSource);}
 
     @Bean
     public AlbumRepository albumRepository() { return new JdbcTemplateAlbumRepository(dataSource);}
+=======
+    public StudentOfGuardianRepository studentOfGuardianRepository() { return new JdbcTemplateStudentOfGuardianRepository(dataSource); }
+>>>>>>> guardian_manage_service
 }

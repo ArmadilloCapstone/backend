@@ -33,7 +33,7 @@ create table student
     id int primary key,
     name char(5),
     grade tinyint,
-    phone_num char(11),
+    phone_num char(15),
     gender tinyint,
     class_id int,
     birth_date date,
@@ -88,6 +88,7 @@ create table guardian
 );
 create table student_of_guardian
 (
+    id int primary key,
     guardian_id int,
     student_id int
 );
@@ -95,7 +96,7 @@ create table parent
 (
     id int primary key,
     name char(5),
-    phone_num char(11),
+    phone_num char(15),
     gender tinyint,
     birth_date date,
     child_id int,
@@ -119,7 +120,7 @@ create table teacher
 (
     id int primary key,
     name char(5),
-    phone_num char(11),
+    phone_num char(15),
     gender tinyint,
     birth_date date,
     class_id int,
@@ -191,6 +192,7 @@ alter table album convert to charset utf8;
 alter table guardian convert to charset utf8;
 alter table guardian modify id int not null auto_increment;
 alter table student_of_guardian convert to charset utf8;
+alter table student_of_guardian modify id int not null auto_increment;
 alter table parent convert to charset utf8;
 alter table parent_account convert to charset utf8;
 alter table parent_account modify id int not null auto_increment;
