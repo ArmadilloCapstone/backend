@@ -24,7 +24,7 @@ public class GuardianManageService {
         this.studentOfGuardianRepository = studentOfGuardianRepository;
     }
     public String addNewGuardian(Guardian guardian){
-        List<Guardian> result = guardianRepository.findBySerialNum(guardian.getSerial_num());
+        List<Guardian> result = guardianRepository.findByNameInfo(guardian.getName(),guardian.getInfo());
         if(result.size()==1){
             System.out.println("This guardian is already exist");
             return "이미 등록된 보호자입니다";
@@ -35,6 +35,11 @@ public class GuardianManageService {
         } else {
             return "fail";
         }
+    }
+
+    public List<Guardian> sendGuardianList(){
+        List<Guardian> guardianList = guardianRepository.findAll();
+        return guardianList;
     }
 
     public void deleteGuardian(Long id){
@@ -92,32 +97,20 @@ public class GuardianManageService {
 
     public List<GuardianManageForm> sendGuardianStudentList() {
         List<StudentOfGuardian> studentOfGuardianList = studentOfGuardianRepository.findAll();
+        List<Guardian> guardianList = guardianRepository.findAll();
+        int guardianNum = guardianList.size();
         int count = studentOfGuardianList.size();
-        int guardianNum = 0;
-        Long[] idList = new Long[count];
-
-        for (int i = 0; i < count; i++) {
-            for (int j = 0; j < count; j++) {
-                if ((idList[j] == 0L) && (idList[j] != studentOfGuardianList.get(i).getGuardian_id())) {
-                    idList[j] = studentOfGuardianList.get(i).getGuardian_id();
-                    guardianNum++;
-                    break;
-                } else if ((idList[j] != 0L) && (idList[j] == studentOfGuardianList.get(i).getGuardian_id())) {
-                    break;
-                }
-            }
-        }
 
         List<GuardianManageForm> guardianManageFormList = new ArrayList<>();
         for (int i = 0; i < guardianNum; i++) {
             GuardianManageForm guardianManageForm = new GuardianManageForm();
-            guardianManageForm.setId(idList[i]);
-            guardianManageForm.setName(guardianRepository.findById(idList[i]).get().getName());
-            guardianManageForm.setSerial_num(guardianRepository.findById(idList[i]).get().getSerial_num());
-            guardianManageForm.setInfo(guardianRepository.findById(idList[i]).get().getInfo());
+            guardianManageForm.setId(guardianList.get(i).getId());
+            guardianManageForm.setName(guardianList.get(i).getName());
+            guardianManageForm.setSerial_num(guardianList.get(i).getSerial_num());
+            guardianManageForm.setInfo(guardianList.get(i).getInfo());
             List<Student> studentList = new ArrayList<>();
             for (int j = 0; j < count; j++) {
-                if (idList[i] == studentOfGuardianList.get(j).getGuardian_id()) {
+                if (guardianList.get(i).getId() == studentOfGuardianList.get(j).getGuardian_id()) {
                     Student student = new Student();
                     student.setId(studentOfGuardianList.get(j).getStudent_id());
                     student.setName(studentRepository.findById(studentOfGuardianList.get(j).getStudent_id()).get().getName());

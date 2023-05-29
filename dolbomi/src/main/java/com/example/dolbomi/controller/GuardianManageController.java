@@ -6,6 +6,7 @@ import com.example.dolbomi.service.GuardianManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,12 @@ public class GuardianManageController {
     public String addNewGuardian(@RequestBody Guardian guardian){
         return guardianManageService.addNewGuardian(guardian);
     }
+
+    @PostMapping("/guardianManage/guardianList")
+    public List<Guardian> sendGuardianList(){
+        return guardianManageService.sendGuardianList();
+    }
+
     @DeleteMapping("/guardianManage/guardian/{productId}")
     public void deleteGuardian(@PathVariable("productId") Long productId){
         guardianManageService.deleteGuardian(productId);
@@ -32,8 +39,12 @@ public class GuardianManageController {
     }
 
     @PostMapping("/guardianManage/student_submit")
-    public String addNewStudentUnderGuardian(@RequestBody GuardianManageForm guardianManageForm){
-        return guardianManageService.addNewStudentUnderGuardian(guardianManageForm);
+    public String addNewStudentUnderGuardian(@RequestParam GuardianManageForm edited,
+                                                 @RequestParam List<Student> checkedList){
+        System.out.println("edited : " + edited);
+        System.out.println("checkedList : "+checkedList);
+        edited.setStudentList(checkedList);
+        return guardianManageService.addNewStudentUnderGuardian(edited);
     }
 
     @DeleteMapping("/guardianManage/student/{guardian_id}/{student_id}")
