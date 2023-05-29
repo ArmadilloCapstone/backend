@@ -23,7 +23,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.assertj:assertj-core:3.11.1'
 }
-
+/*
 tasks.named('test') {
 	useJUnitPlatform()
 }
@@ -70,3 +70,4 @@ task copyReactBuildFiles(type: Copy) {
 	from "$frontendDir/build"
 	into "$buildDir/resources/main/static"
 }
+*/

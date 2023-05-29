@@ -98,11 +98,10 @@ public class AlbumController {
         return albumService.getAlbum(no);
     }
 
-    @RequestMapping("/download/album/{file}")
-    public void fileDownload(@PathVariable String file,
+    @RequestMapping("/download/album/{folder}/{file}")
+    public void fileDownload(@PathVariable String folder, @PathVariable String file,
                              HttpServletResponse response) throws IOException {
-        String names[] = file.split("@");
-        File f = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+names[0]+"\\"+names[1]);
+        File f = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+folder+"\\"+file);
         // file 다운로드 설정
         response.setContentType("application/download");
         response.setContentLength((int)f.length());
