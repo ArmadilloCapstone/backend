@@ -39,12 +39,9 @@ public class GuardianManageController {
     }
 
     @PostMapping("/guardianManage/student_submit")
-    public String addNewStudentUnderGuardian(@RequestParam GuardianManageForm edited,
-                                                 @RequestParam List<Student> checkedList){
-        System.out.println("edited : " + edited);
-        System.out.println("checkedList : "+checkedList);
-        edited.setStudentList(checkedList);
-        return guardianManageService.addNewStudentUnderGuardian(edited);
+    public String addNewStudentUnderGuardian(@RequestBody GuardianManageForm guardianManageForm){
+        System.out.println(guardianManageForm.getStudentList().get(0).getName());
+        return guardianManageService.addNewStudentUnderGuardian(guardianManageForm);
     }
 
     @DeleteMapping("/guardianManage/student/{guardian_id}/{student_id}")

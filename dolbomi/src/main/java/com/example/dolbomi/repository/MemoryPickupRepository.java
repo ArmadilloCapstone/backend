@@ -38,7 +38,7 @@ public class MemoryPickupRepository implements PickupRepository{
 
     @Override
     public List<PickupRequestForm> findAll(Long class_id) {
-<<<<<<< HEAD
+
         System.out.println(class_id);
         if(store.get(class_id) == null){
             return null;
@@ -46,12 +46,6 @@ public class MemoryPickupRepository implements PickupRepository{
         else{
             return new ArrayList<>(store.get(class_id).values());
         }
-=======
-        if(store.get(class_id) == null){
-            return null;
-        }
-        return new ArrayList<>(store.get(class_id).values());
->>>>>>> guardian_manage_service
     }
 
     public void clearPickupStore(Long class_id){

@@ -598,7 +598,7 @@ public class AdminService {
     public String addNewStudentScheduleManageForm(StudentScheduleManageForm studentScheduleManageForm){
         List<Student> isStudent = studentRepository.findByName(studentScheduleManageForm.getName());
         List<AfterSchoolClass> isAfterSchoolClass = afterSchoolClassRepository.findByClassName(studentScheduleManageForm.getClass_name());
-        if((isStudent.size() == 1)&&(isAfterSchoolClass.size()==1)&&(isStudent.get(0).getDisable()==1)){
+        if((isStudent.size() == 1)&&(isAfterSchoolClass.size()>=1)&&(isStudent.get(0).getDisable()==1)){
             List<StudentSchedule> result = studentScheduleRepository.findByStudent_idClass_id(isStudent.get(0).getId(),isAfterSchoolClass.get(0).getId());
             if(result.size()==1){
                 System.out.println("This student schedule is already existing");
