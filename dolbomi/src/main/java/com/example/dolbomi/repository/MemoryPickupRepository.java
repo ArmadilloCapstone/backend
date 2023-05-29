@@ -38,7 +38,6 @@ public class MemoryPickupRepository implements PickupRepository{
 
     @Override
     public List<PickupRequestForm> findAll(Long class_id) {
-
         System.out.println(class_id);
         if(store.get(class_id) == null){
             return null;

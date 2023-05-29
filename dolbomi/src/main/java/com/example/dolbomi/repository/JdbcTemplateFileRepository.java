@@ -79,7 +79,7 @@ public class JdbcTemplateFileRepository implements FileRepository {
 
         for (UploadedFile uploadedFile : origin_files){
             String file_name = uploadedFile.getOriginFileName();
-            String path = "D:\\";
+            String path = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\";
             File file = new File(path + file_name);
             file.delete();
         }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.awt.*;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class GuardianManageController {
     private GuardianManageService guardianManageService;
