@@ -146,6 +146,8 @@ public class NewsController {
     @DeleteMapping("/news/{no}")
     public ResponseEntity<Map<String, Boolean>> deleteBoardByNo(
         @PathVariable Long no){
+        fileService.removeFileById(no);
+        fileService.deleteFileInfo(no);
         return newsService.deleteNews(no);
     }
 

@@ -2,6 +2,7 @@ package com.example.dolbomi.repository;
 
 import com.example.dolbomi.domain.Album;
 import com.example.dolbomi.domain.News;
+import com.example.dolbomi.domain.Teacher;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -43,6 +45,22 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
         };
     }
 
+    private RowMapper<Teacher> teacherRowMapper(){
+        return new RowMapper<Teacher>() {
+            @Override
+            public Teacher mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Teacher teacher = new Teacher();
+                teacher.setId(rs.getLong("id"));
+                teacher.setName(rs.getString("name"));
+                teacher.setPhone_num(rs.getString("phone_num"));
+                teacher.setGender(rs.getLong("gender"));
+                teacher.setBirth_date(rs.getDate("birth_date"));
+                teacher.setClass_id(rs.getLong("class_id"));
+                return teacher;
+            }
+        };
+    }
+
 
     @Override
     public List<Album> findAllByTeacherID(Long id){
@@ -66,6 +84,10 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("album").usingGeneratedKeyColumns("id");
 
+        List<Teacher> this_teacher = jdbcTemplate.query("select * from teacher where id = ?", teacherRowMapper(), album.getWriter_id());
+        Long this_class_id = this_teacher.get(0).getClass_id();
+        album.setClass_id(this_class_id);
+
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("title", album.getTitle());
         parameters.put("writer_id",album.getWriter_id());
@@ -83,8 +105,13 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
     public Album updateAlbum(Long album_id, String title, String text, Boolean file_changed, List<MultipartFile> files){
         if(file_changed==false)
             jdbcTemplate.update("update album set title = ?, contents = ?  where id = ?;", title, text, album_id);
-        else
+        else {
+            Album this_album = jdbcTemplate.query("select * from album where id = ?", memberRowMapper(), album_id).get(0);
+            String before_file_path = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\" + this_album.getFile_url();
+            File file = new File(before_file_path);
+            file.delete();
             jdbcTemplate.update("update album set title = ?, contents = ?, file_url = ? where id = ?;", title, text, files.get(0).getOriginalFilename(), album_id);
+        }
         return new Album();
     }
 
@@ -95,6 +122,10 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
     }
     @Override
     public void delete(Long id) {
+        Album this_album = jdbcTemplate.query("select * from album where id = ?", memberRowMapper(), id).get(0);
+        String before_file_path = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\" + this_album.getFile_url();
+        File file = new File(before_file_path);
+        file.delete();
         jdbcTemplate.update("delete from album where id = ?", id);
     }
 
