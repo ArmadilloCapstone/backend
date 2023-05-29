@@ -1,6 +1,7 @@
 package com.example.dolbomi.repository;
 
 import com.example.dolbomi.domain.Parent;
+import com.example.dolbomi.domain.ParentAccount;
 import com.example.dolbomi.domain.Teacher;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,9 +29,12 @@ public class JdbcTemplateParentAccountRespository implements ParentAccountRespos
 
     @Override
     public Boolean signup(String user_id, String user_pw, String name) {
-        List<Parent> list =  jdbcTemplate.query("select * from parent where name = ?", memberTRowMapper(), name);
-        if(list.size() == 1){
-            Long tid = list.get(0).getId();
+        List<Parent> validation1 =  jdbcTemplate.query("select * from parent where name = ?", memberTRowMapper(), name);
+        Long parent_id = validation1.get(0).getId();
+        List<ParentAccount> validation2 =  jdbcTemplate.query("select * from parent_account where parent_id = ?", memberPCRowMapper(), parent_id);
+        List<ParentAccount> validation3 =  jdbcTemplate.query("select * from parent_account where user_id = ?", memberPCRowMapper(), user_id);
+        if(validation1.size() == 1 && validation2.size() == 0 && validation3.size() == 0){ // 학부모가 존재
+            Long tid = validation1.get(0).getId();
 
             SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
             jdbcInsert.withTableName("parent_account").usingGeneratedKeyColumns("id");
@@ -74,6 +78,22 @@ public class JdbcTemplateParentAccountRespository implements ParentAccountRespos
                 parent.setDisable(rs.getLong("disable"));
 
                 return parent;
+            }
+        };
+    }
+
+    private RowMapper<ParentAccount> memberPCRowMapper() {
+        return new RowMapper<ParentAccount>() {
+            @Override
+            public ParentAccount mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                ParentAccount parentAccount = new ParentAccount();
+                parentAccount.setId(rs.getLong("id"));
+                parentAccount.setParent_id(rs.getLong("parent_id"));
+                parentAccount.setUser_id(rs.getString("user_id"));
+                parentAccount.setUser_pw(rs.getString("user_pw"));
+
+                return parentAccount;
             }
         };
     }

@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -38,7 +39,6 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
                 news.setClass_id(rs.getLong("class_id"));
                 news.setDate(rs.getDate("uploaded_date"));
                 news.setText(rs.getString("contents"));
-                news.setFile_url(rs.getString("file_url"));
 
                 return news;
             }
@@ -47,7 +47,19 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
 
     @Override
     public List<News> findAllByTeacherID(Long id) {
-        return jdbcTemplate.query("select * from news where class_id = ?",memberRowMapper(), id);
+        return jdbcTemplate.query("select N.* from news N inner join teacher T on N.class_id = T.class_id where T.id = ?",memberRowMapper(), id);
+    }
+
+    @Override
+    public List<News> searchNews(Long teacher_id, String keyword, String option){
+        if(option.equals("title")) {
+            return jdbcTemplate.query("select N.* from news N inner join teacher T on N.class_id = T.class_id where T.id = ? and N.title like '%" + keyword + "%'",
+                    memberRowMapper(), teacher_id);
+        }
+        else {
+            return jdbcTemplate.query("select N.* from news N inner join teacher T on N.class_id = T.class_id where T.id = ? and N.contents like '%" + keyword + "%'",
+                    memberRowMapper(), teacher_id);
+        }
     }
 
     @Override
@@ -73,11 +85,25 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         parameters.put("class_id",news.getClass_id());
         parameters.put("uploaded_date",news.getDate());
         parameters.put("contents",news.getText());
-        parameters.put("file_url",news.getFile_url());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         news.setId(key.longValue());
         return news;
+    }
+
+    @Override
+    public News updateNews(Long news_id, String title, String text, Boolean file_changed, List<MultipartFile> files){
+        //jdbcTemplate.update("delete from news where id = ?", id)
+        //jdbcTemplate.update("update admin set user_pw = ? where user_id = ? and user_pw = ?;", user_new_pw, user_id, user_pw);
+
+        jdbcTemplate.update("update news set title = ?, contents = ?  where id = ?;", title, text, news_id);
+
+        if(file_changed==true){
+
+
+        }
+
+        return new News();
     }
 
 }

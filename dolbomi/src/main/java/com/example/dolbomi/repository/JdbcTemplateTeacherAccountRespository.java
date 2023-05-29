@@ -1,8 +1,6 @@
 package com.example.dolbomi.repository;
 
-import com.example.dolbomi.domain.StudentTime;
-import com.example.dolbomi.domain.Teacher;
-import com.example.dolbomi.domain.TeacherAccount;
+import com.example.dolbomi.domain.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -30,9 +28,12 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
 
     @Override
     public Boolean signup(String user_id, String user_pw, String name) {
-        List<Teacher> list =  jdbcTemplate.query("select * from teacher where name = ?", memberTRowMapper(), name);
-        if(list.size() == 1){
-            Long tid = list.get(0).getId();
+        List<Teacher> validation1 =  jdbcTemplate.query("select * from teacher where name = ?", memberTRowMapper(), name);
+        Long parent_id = validation1.get(0).getId();
+        List<TeacherAccount> validation2 =  jdbcTemplate.query("select * from teacher_account where teacher_id = ?", memberTCRowMapper(), parent_id);
+        List<TeacherAccount> validation3 =  jdbcTemplate.query("select * from teacher_account where user_id = ?", memberTCRowMapper(), user_id);
+        if(validation1.size() == 1 && validation2.size() == 0 && validation3.size() == 0){
+            Long tid = validation1.get(0).getId();
 
             SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
             jdbcInsert.withTableName("teacher_account").usingGeneratedKeyColumns("id");
@@ -93,4 +94,23 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
             }
         };
     }
+
+
+    private RowMapper<TeacherAccount> memberTCRowMapper() {
+        return new RowMapper<TeacherAccount>() {
+            @Override
+            public TeacherAccount mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                TeacherAccount teacherAccount = new TeacherAccount();
+                teacherAccount.setId(rs.getLong("id"));
+                teacherAccount.setTeacher_id(rs.getLong("teacher_id"));
+                teacherAccount.setUser_id(rs.getString("user_id"));
+                teacherAccount.setUser_pw(rs.getString("user_pw"));
+
+                return teacherAccount;
+            }
+        };
+    }
+
+
 }
