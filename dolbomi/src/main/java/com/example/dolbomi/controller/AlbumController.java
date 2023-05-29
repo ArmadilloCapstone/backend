@@ -101,7 +101,8 @@ public class AlbumController {
     @RequestMapping("/download/album/{file}")
     public void fileDownload(@PathVariable String file,
                              HttpServletResponse response) throws IOException {
-        File f = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\", file);
+        String names[] = file.split("@");
+        File f = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\"+names[0]+"\\"+names[1]);
         // file 다운로드 설정
         response.setContentType("application/download");
         response.setContentLength((int)f.length());
