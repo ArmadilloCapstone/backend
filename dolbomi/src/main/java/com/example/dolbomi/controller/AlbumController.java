@@ -61,7 +61,7 @@ public class AlbumController {
         for (MultipartFile file : files) {
             Long albumId = album.getId();
             if (!file.isEmpty()) {
-                String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
+                String fullPath = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
                 file.transferTo(new File(fullPath));
                 //fileService.saveFileInfo(albumId, file.getOriginalFilename());
                 album.setFile_url(file.getOriginalFilename());
@@ -86,7 +86,7 @@ public class AlbumController {
         //fileService.deleteFileInfo(album_id);
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
+                String fullPath = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\" + file.getOriginalFilename();
                 file.transferTo(new File(fullPath));
                 //fileService.saveFileInfo(album_id, file.getOriginalFilename());
             }
@@ -109,7 +109,7 @@ public class AlbumController {
     @RequestMapping("/download/album/{file}")
     public void fileDownload(@PathVariable String file,
                              HttpServletResponse response) throws IOException {
-        File f = new File("C:\\build\\resources\\main\\static\\static\\media\\album\\", file);
+        File f = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\album\\", file);
         // file 다운로드 설정
         response.setContentType("application/download");
         response.setContentLength((int)f.length());

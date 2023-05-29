@@ -81,7 +81,7 @@ public class NewsController {
         for (MultipartFile file : files) {
             Long newsId = news.getId();
             if (!file.isEmpty()) {
-                String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\news\\" + file.getOriginalFilename();
+                String fullPath = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\" + file.getOriginalFilename();
                 file.transferTo(new File(fullPath));
                 fileService.saveFileInfo(newsId, file.getOriginalFilename());
             }
@@ -107,7 +107,7 @@ public class NewsController {
             for (MultipartFile file : files) {
                 Long newsId = news_id;
                 if (!file.isEmpty()) {
-                    String fullPath = "C:\\build\\resources\\main\\static\\static\\media\\news\\" + file.getOriginalFilename();
+                    String fullPath = "C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\" + file.getOriginalFilename();
                     file.transferTo(new File(fullPath));
                     fileService.saveFileInfo(newsId, file.getOriginalFilename());
                 }
@@ -129,7 +129,7 @@ public class NewsController {
     @RequestMapping("/download/news/{file}")
     public void fileDownload(@PathVariable String file,
                              HttpServletResponse response) throws IOException {
-        File f = new File("C:\\build\\resources\\main\\static\\static\\media\\news\\", file);
+        File f = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\news\\", file);
         // file 다운로드 설정
         response.setContentType("application/download");
         response.setContentLength((int)f.length());

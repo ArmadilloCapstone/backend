@@ -36,6 +36,7 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
                 album.setClass_id(rs.getLong("class_id"));
                 album.setUploaded_date(rs.getDate("uploaded_date"));
                 album.setContents(rs.getString("contents"));
+                album.setContents(rs.getString("file_url"));
 
                 return album;
             }
@@ -71,6 +72,7 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
         parameters.put("class_id",album.getClass_id());
         parameters.put("uploaded_date",album.getUploaded_date());
         parameters.put("contents",album.getContents());
+        parameters.put("file_url",album.getFile_url());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         album.setId(key.longValue());
