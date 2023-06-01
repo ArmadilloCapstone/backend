@@ -1,3 +1,4 @@
+drop table if exists message CASCADE;
 drop table if exists teacher_account CASCADE;
 drop table if exists teacher CASCADE;
 drop table if exists parent_account CASCADE;
@@ -166,6 +167,17 @@ create table album
     file_url char(100)
 
 );
+create table message
+(
+    id int primary key,
+    sender_id char(20),
+    sender_name char(20),
+    receiver_id char(20),
+    receiver_name char(20),
+    text char(100),
+    date timestamp
+
+);
 SET FOREIGN_KEY_CHECKS = 0;
 alter table teacher modify id int not null auto_increment;
 alter table parent modify id int not null auto_increment;
@@ -199,3 +211,5 @@ alter table parent_account modify id int not null auto_increment;
 alter table teacher convert to charset utf8;
 alter table teacher_account convert to charset utf8;
 alter table teacher_account modify id int not null auto_increment;
+alter table message modify id int not null auto_increment;
+alter table message convert to charset utf8;

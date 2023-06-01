@@ -23,11 +23,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.assertj:assertj-core:3.11.1'
 }
-/*
-tasks.named('test') {
+
+tasks.named('test'){
 	useJUnitPlatform()
 }
-
+/*
 def frontendDir = "$projectDir/frontend"
 sourceSets {
 	main {
