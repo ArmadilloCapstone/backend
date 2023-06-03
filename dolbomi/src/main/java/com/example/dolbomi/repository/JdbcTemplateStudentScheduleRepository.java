@@ -74,7 +74,7 @@ public class JdbcTemplateStudentScheduleRepository implements StudentScheduleRep
     }
     @Override
     public List<StudentSchedule> findAll() {
-        return jdbcTemplate.query("zz", memberRowMapper());
+        return jdbcTemplate.query("select * from student_schedule", memberRowMapper());
     }
 
     private RowMapper<StudentSchedule> memberRowMapper() {

@@ -27,7 +27,7 @@ dependencies {
 tasks.named('test'){
 	useJUnitPlatform()
 }
-/*
+
 def frontendDir = "$projectDir/frontend"
 sourceSets {
 	main {
@@ -71,4 +71,3 @@ task copyReactBuildFiles(type: Copy) {
 	from "$frontendDir/build"
 	into "$buildDir/resources/main/static"
 }
-*/

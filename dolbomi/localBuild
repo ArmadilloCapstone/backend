@@ -1,0 +1,1 @@
+./gradlew build -x test ; cd build/libs/ ; java -jar *SNAPSHOT.jar

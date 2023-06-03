@@ -672,6 +672,110 @@ public class AdminService {
         }
         return "fail";
     }
+    public String testaddNewStudentScheduleManageForm(StudentScheduleManageForm studentScheduleManageForm){
+        Optional<Student> isStudent = studentRepository.findById(studentScheduleManageForm.getStudent_id());
+        Optional<AfterSchoolClass> isAfterSchoolClass = afterSchoolClassRepository.findById(studentScheduleManageForm.getClass_id());
+        if((isStudent.isPresent())&&(isAfterSchoolClass.isPresent())&&(isStudent.get().getDisable()==1)){
+            List<StudentSchedule> result = studentScheduleRepository.findByStudent_idClass_id(isStudent.get().getId(),isAfterSchoolClass.get().getId());
+            if(result.size()==1){
+                System.out.println("This student schedule is already existing");
+                return "이미 존재하는 학생시간표 입니다";
+            }
+            else if (result.size()==0) {
+                List<StudentTime> isStudentTime = studentTimeRepository.findByStudent_id(isStudent.get().getId());
+                if(isStudentTime.size()==0){
+                    System.out.println("There is no entry and off time for student. Please add entry and off time first.");
+                    return "학생 입퇴실시간이 없습니다. 학생 입퇴실시간을 먼저 설정해주세요";
+                }
+                else if (isStudentTime.size()==1) {
+                    switch (isAfterSchoolClass.get().getDay().intValue()) {
+                        case 1:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_1()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_1())) {
+                                System.out.println("Invalid afterschoolclass time in day1");
+                                return "잘못된 시작 및 종료시간 입력입니다";
+                            } else break;
+
+                        case 2:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_2()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_2())) {
+                                System.out.println("Invalid afterschoolclass time in day2");
+                                return "잘못된 시작 및 종료시간 입력입니다";
+                            } else break;
+
+                        case 3:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_3()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_3())) {
+                                System.out.println("Invalid afterschoolclass time in day3");
+                                return "잘못된 시작 및 종료시간 입력입니다";
+                            } else break;
+
+                        case 4:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_4()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_4())) {
+                                System.out.println("Invalid afterschoolclass time in day4");
+                                return "잘못된 시작 및 종료시간 입력입니다";
+                            } else break;
+
+                        case 5:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_5()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_5())) {
+                                System.out.println("Invalid afterschoolclass time in day5");
+                                return "잘못된 시작 및 종료시간 입력입니다";
+                            } else break;
+
+                        default:
+                            System.out.println("Invalid day");
+                            return "잘못된 요일 입력입니다";
+                    }
+                    List<StudentSchedule> existStudentScheduleList = studentScheduleRepository.findByStudent_id(isStudent.get().getId());
+                    int afterClassCount = existStudentScheduleList.size();
+                    for(int i = 0; i<afterClassCount;i++){
+                        AfterSchoolClass existStudentSchedule = afterSchoolClassRepository.findById(existStudentScheduleList.get(i).getClass_id()).get();
+                        if(existStudentSchedule.getDay()==isAfterSchoolClass.get().getDay()){
+                            //방과후 시간표끼리의 시간 겹치는지 아닌지 비교
+                            if((existStudentSchedule.getEnd_time().before(isAfterSchoolClass.get().getStart_time()) ||
+                                    existStudentSchedule.getStart_time().after(isAfterSchoolClass.get().getEnd_time()))){
+
+                                System.out.println("Add new student schedule");
+                                StudentSchedule studentSchedule = new StudentSchedule();
+                                studentSchedule.setStudent_id(isStudent.get().getId());
+                                studentSchedule.setClass_id(isAfterSchoolClass.get().getId());
+                                studentScheduleRepository.save(studentSchedule);
+                                return "success";
+                            } else {
+                                System.out.println("It overlaps with the already registered after-school class schedule");
+                                return "이미 등록된 방과후교실 시간표와 겹칩니다.";
+                            }
+                        }
+                    }
+                    //if there is no any exist after school class
+                    System.out.println("Add new student schedule");
+                    StudentSchedule studentSchedule = new StudentSchedule();
+                    studentSchedule.setStudent_id(isStudent.get().getId());
+                    studentSchedule.setClass_id(isAfterSchoolClass.get().getId());
+                    studentScheduleRepository.save(studentSchedule);
+                    return "success";
+                }
+            } else {
+                System.out.println("Duplicate student schedule in add NewStudentScheduleManageForm");
+                return "중복된 학생시간표가 입력되었습니다";
+            }
+        } else if(isStudent.isPresent()){
+            System.out.println("There is no that kinds of dolbom student in addNewStudentScheduleManageForm");
+            return "잘못된 학생 입력입니다";
+        } else if (isAfterSchoolClass.isPresent()) {
+            System.out.println("There is no that kinds of AfterSchoolClass in addNewStudentScheduleManageForm");
+            return "잘못된 방과후교실 입력입니다";
+        } else if (isStudent.get().getDisable()==0) {
+            System.out.println("There is no activation dolbom student in addNewStudentScheduleManageForm");
+            return "잘못된 학생 입력입니다";
+        } else {
+            System.out.println("Duplicate dolbom student or dolbom afterschoolclass in addNewStudentScheduleManageForm");
+            return "중복된 돌봄학생 혹은 방과후교실이 입력되었습니다";
+        }
+        return "fail";
+    }
     public void deleteStudentSchedule(Long id){
         Optional<StudentSchedule> result = studentScheduleRepository.findById(id);
         if(result.isPresent()){
