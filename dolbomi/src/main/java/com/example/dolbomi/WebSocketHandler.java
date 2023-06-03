@@ -72,9 +72,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
             }
             System.out.println(message.getPayload());
 
-            var targetSession = sessionMap.get(chat.getString("id"));
-            System.out.println(chat.getString("id"));;
-            System.out.println(chat.getString("name"));;
+            var targetSession = sessionMap.get(chat.getString("receiver_id"));
+            System.out.println(chat.getString("receiver_id"));;
+            System.out.println(chat.getString("receiver_name"));;
             System.out.println(chat.getString("text"));
             System.out.println(targetSession);
             if (targetSession == null || userid == null) {
@@ -83,8 +83,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
             Message newMessage = new Message();
             newMessage.setSender_id(userid);
             newMessage.setSender_name(idNameMap.get(userid));
-            newMessage.setReceiver_id(chat.getString("id"));
-            newMessage.setReceiver_name(chat.getString("name"));;
+            newMessage.setReceiver_id(chat.getString("receiver_id"));
+            newMessage.setReceiver_name(chat.getString("receiver_name"));;
             newMessage.setText(chat.getString("text"));
             newMessage.setDate(new Timestamp(System.currentTimeMillis()));
             Message createdMessage = messageService.createMessage(newMessage);
