@@ -45,6 +45,7 @@ public class AdminController {
 
     @PostMapping("/student_submit_csv")
     public void addNewStudentByCsv(@RequestParam("file") List<MultipartFile> files) {
+        System.out.println(files.get(0).getOriginalFilename());
         for (int i = 0; i < files.size(); i++) {
             adminService.addNewStudentByCsv(files.get(i));
         }

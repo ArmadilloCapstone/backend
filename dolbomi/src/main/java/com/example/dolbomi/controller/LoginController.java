@@ -23,7 +23,7 @@ public class LoginController {
     public Object login(@RequestBody LoginForm loginForm){
         System.out.println(loginForm);
         if(loginForm.getOption() == 1){ // option 1 . teacher
-            List<Teacher> list = loginService.LoginT(loginForm.getUser_id(), loginForm.getUser_pw());
+            List<TeacherLoginForm> list = loginService.LoginT(loginForm.getUser_id(), loginForm.getUser_pw());
             if(list.size() == 1) return list.get(0);
 
         }

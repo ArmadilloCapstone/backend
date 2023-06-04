@@ -103,7 +103,7 @@ public class JdbcTemplateMessageRepository implements MessageRepository{
 
     @Override
     public List<Teacher> getAllTeacherByPid(Long id) {
-        List<Teacher> result = jdbcTemplate.query("select T.* from parent P inner join (select T.* from teacher T inner join teacher_account TA on T.id = TA.teacher_id) T on T.class_id = P.class_id where P.id = 1",memberTRowMapper(), id);
+        List<Teacher> result = jdbcTemplate.query("select T.* from parent P inner join (select T.* from teacher T inner join teacher_account TA on T.id = TA.teacher_id) T on T.class_id = P.class_id where P.id = ?",memberTRowMapper(), id);
         return result;
     }
 

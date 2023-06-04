@@ -1,5 +1,6 @@
 package com.example.dolbomi.service;
 
+import com.example.dolbomi.controller.TeacherLoginForm;
 import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
 
@@ -20,7 +21,7 @@ public class LoginService {
         this.adminRepository = adminRepository;
     }
 
-    public List<Teacher> LoginT(String user_id, String user_pw) {
+    public List<TeacherLoginForm> LoginT(String user_id, String user_pw) {
         return teacherAccountRespository.login(user_id, user_pw);
     }
     public String signupT(String user_id, String user_pw, String name, String phone_num)
