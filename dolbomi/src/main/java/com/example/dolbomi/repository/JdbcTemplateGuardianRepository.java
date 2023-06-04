@@ -19,6 +19,10 @@ import java.util.Optional;
 public class JdbcTemplateGuardianRepository implements GuardianRepository{
     private final JdbcTemplate jdbcTemplate;
 
+    private Long sha256(Long src){
+        return src*100+123;
+    }
+
     public JdbcTemplateGuardianRepository(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -72,7 +76,8 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
 
     @Override
     public List<Guardian> login(Long serial_num) {
-        return jdbcTemplate.query("select * from guardian where serial_num = ?", memberRowMapper(), serial_num);
+        return jdbcTemplate.query("select * from guardian where serial_num = ?",
+                memberRowMapper(), sha256(serial_num));
     }
 
     @Override
@@ -81,9 +86,9 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
         jdbcInsert.withTableName("guardian").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("serial_num", serialNum);;
-        parameters.put("name", name);;
-        parameters.put("info", info);;
+        parameters.put("serial_num", sha256(serialNum));
+        parameters.put("name", name);
+        parameters.put("info", info);
 
         jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
