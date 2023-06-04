@@ -15,10 +15,11 @@ drop table if exists admin CASCADE;
 drop table if exists news CASCADE;
 drop table if exists uploaded_file CASCADE;
 drop table if exists album CASCADE;
+
 create table admin
 (
     user_id char(20),
-    user_pw char(20),
+    user_pw char(200),
     name char(5)
 );
 create table dolbom_class
@@ -113,7 +114,7 @@ create table parent_account
     id int primary key,
     parent_id int,
     user_id char(20),
-    user_pw char(20),
+    user_pw char(200),
     foreign key (parent_id)
         references parent(id) on update cascade
 );
@@ -132,7 +133,7 @@ create table teacher_account
     id int primary key,
     teacher_id int,
     user_id char(20),
-    user_pw char(20),
+    user_pw char(200),
     child_id int,
     class_id int,
     disable tinyint,
