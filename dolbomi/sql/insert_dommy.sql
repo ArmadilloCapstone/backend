@@ -1,5 +1,5 @@
 insert into admin(user_id, user_pw, name)
-values('admin', '1234', '관리자');
+values('admin', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', '관리자');
 insert into dolbom_class(id, class_name, class_num, year_seme, disable)
 values(1, '돌봄1반', 1, '2021-1',1);
 insert into dolbom_class(id, class_name, class_num, year_seme, disable)

@@ -70,7 +70,7 @@ public class SpringConfig {
 
     @Bean
     public CallService callService(){
-        return new CallService(teacherRepository());
+        return new CallService(teacherRepository(),parentRepository());
     }
 
     @Bean

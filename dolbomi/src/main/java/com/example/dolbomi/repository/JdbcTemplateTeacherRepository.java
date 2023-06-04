@@ -50,6 +50,12 @@ public class JdbcTemplateTeacherRepository implements TeacherRepository{
     }
 
     @Override
+    public List<Teacher> findByClass_id(Long class_id) {
+        List<Teacher> result = jdbcTemplate.query("select * from teacher where class_id = ?",memberRowMapper(),class_id);
+        return result;
+    }
+
+    @Override
     public boolean activationTeacher(Long id) {
         int result = jdbcTemplate.update("update teacher set disable = ? where id = ?;", 1, id);
         if(result == 1){
