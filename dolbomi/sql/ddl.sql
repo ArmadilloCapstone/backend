@@ -15,6 +15,7 @@ drop table if exists admin CASCADE;
 drop table if exists news CASCADE;
 drop table if exists uploaded_file CASCADE;
 drop table if exists album CASCADE;
+
 create table admin
 (
     user_id char(20),
