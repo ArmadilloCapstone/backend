@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ParentAccountRespository {
     List<Parent> login(String user_id, String user_pw);
-    Boolean signup(String user_id, String user_pw, String name);
+    String signup(String user_id, String user_pw, String name, String phone_num);
     Boolean changePw(String user_id, String user_pw, String user_new_pw);
 }

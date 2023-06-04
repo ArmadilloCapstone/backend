@@ -4,6 +4,8 @@ public class SignupForm {
     private Long serical_num;
     private String user_id;
     private String user_pw;
+
+    private String phone_num;
     private String name;
     private String info;
     private Long option;
@@ -30,6 +32,14 @@ public class SignupForm {
 
     public void setUser_pw(String user_pw) {
         this.user_pw = user_pw;
+    }
+
+    public String getPhone_num() {
+        return phone_num;
+    }
+
+    public void setPhone_num(String phone_num) {
+        this.phone_num = phone_num;
     }
 
     public String getName() {

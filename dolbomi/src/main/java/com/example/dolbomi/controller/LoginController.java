@@ -25,6 +25,7 @@ public class LoginController {
         if(loginForm.getOption() == 1){ // option 1 . teacher
             List<Teacher> list = loginService.LoginT(loginForm.getUser_id(), loginForm.getUser_pw());
             if(list.size() == 1) return list.get(0);
+
         }
         if(loginForm.getOption() == 2){ // option 2 . parent
             List<Parent> list = loginService.LoginP(loginForm.getUser_id(), loginForm.getUser_pw());
@@ -86,24 +87,14 @@ public class LoginController {
     public String signup(@RequestBody SignupForm signupForm) {
         System.out.println(signupForm);
         if(signupForm.getOption() == 1){ // option 1 . teacher
-            Boolean b = loginService.signupT(signupForm.getUser_id(), signupForm.getUser_pw(), signupForm.getName());
-            if(b == true){
-                return "success";
-            }
-            else{
-                return "error";
-            }
+            String result = loginService.signupT(signupForm.getUser_id(), signupForm.getUser_pw(), signupForm.getName(), signupForm.getPhone_num());
+            return result;
         }
         if(signupForm.getOption() == 2){ // option 2 . parent
-            Boolean b = loginService.signupP(signupForm.getUser_id(), signupForm.getUser_pw(), signupForm.getName());
-            if(b == true){
-                return "success";
-            }
-            else{
-                return "error";
-            }
+            String result = loginService.signupP(signupForm.getUser_id(), signupForm.getUser_pw(), signupForm.getName(), signupForm.getPhone_num());
+            return result;
         }
-        if(signupForm.getOption() == 3){ // option 3 . guardian
+        if(signupForm.getOption() == 3){ // option 3 . guardian 사용되지 않음
             Boolean b = loginService.signupG(signupForm.getSerical_num(), signupForm.getName(), signupForm.getInfo());
             if(b == true){
                 return "success";

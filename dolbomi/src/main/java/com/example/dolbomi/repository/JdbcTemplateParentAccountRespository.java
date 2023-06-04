@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -18,21 +20,47 @@ import java.util.Map;
 public class JdbcTemplateParentAccountRespository implements ParentAccountRespository{
     private final JdbcTemplate jdbcTemplate;
 
+    private String sha256(String text) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(text.getBytes());
+
+            StringBuilder builder = new StringBuilder();
+            for (byte b : md.digest()) {
+                builder.append(String.format("%02x", b));
+            }
+            return builder.toString();
+
+        } catch (NoSuchAlgorithmException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
     public JdbcTemplateParentAccountRespository(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public List<Parent> login(String user_id, String user_pw) {
-        return jdbcTemplate.query("select P.* from parent_account PS inner join parent P on PS.parent_id = P.id where PS.user_id = ? and PS.user_pw = ?", memberTRowMapper(), user_id, user_pw);
+        return jdbcTemplate.query("select P.* from parent_account PS inner join parent P on PS.parent_id = P.id where PS.user_id = ? and PS.user_pw = ?",
+                memberTRowMapper(), user_id, sha256(user_pw));
     }
 
     @Override
-    public Boolean signup(String user_id, String user_pw, String name) {
-        List<Parent> validation1 =  jdbcTemplate.query("select * from parent where name = ?", memberTRowMapper(), name);
+    public String signup(String user_id, String user_pw, String name, String phone_num) {
+        List<Parent> validation1 =  jdbcTemplate.query("select * from parent where name = ? and phone_num = ?", memberTRowMapper(), name, phone_num);
+        if(validation1.size() != 1){
+            return "일치하는 학부모가 없습니다.";
+        }
         Long parent_id = validation1.get(0).getId();
         List<ParentAccount> validation2 =  jdbcTemplate.query("select * from parent_account where parent_id = ?", memberPCRowMapper(), parent_id);
         List<ParentAccount> validation3 =  jdbcTemplate.query("select * from parent_account where user_id = ?", memberPCRowMapper(), user_id);
+        if(validation2.size() != 0){
+            return "이미 등록된 회원입니다.";
+        }
+        if(validation3.size() != 0){
+            return "이미 존재하는 아이디입니다.";
+        }
         if(validation1.size() == 1 && validation2.size() == 0 && validation3.size() == 0){ // 학부모가 존재
             Long tid = validation1.get(0).getId();
 
@@ -40,22 +68,23 @@ public class JdbcTemplateParentAccountRespository implements ParentAccountRespos
             jdbcInsert.withTableName("parent_account").usingGeneratedKeyColumns("id");
 
             Map<String, Object> parameters = new HashMap<>();
-            parameters.put("parent_id", tid);;
-            parameters.put("user_id", user_id);;
-            parameters.put("user_pw", user_pw);;
+            parameters.put("parent_id", tid);
+            parameters.put("user_id", user_id);
+            parameters.put("user_pw", sha256(user_pw));
 
             jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-            return true;
+            return "success";
         }
         else{
-            return false;
+            return "error";
         }
     }
 
     @Override
     public Boolean changePw(String user_id, String user_pw, String user_new_pw) {
-        int result = jdbcTemplate.update("update parent_account set user_pw = ? where user_id = ? and user_pw = ?;", user_new_pw, user_id, user_pw);
+        int result = jdbcTemplate.update("update parent_account set user_pw = ? where user_id = ? and user_pw = ?;",
+                sha256(user_new_pw), user_id, sha256(user_pw));
         if(result == 1){
             return true;
         }

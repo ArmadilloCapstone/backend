@@ -19,22 +19,26 @@ public class MessageController {
     public MessageController(MessageService messageService){
         this.messageService = messageService;
     }
-/*
+
     @PostMapping("/getAllParentByTid")
     public List<Parent> getAllParentByTid(@RequestBody Teacher teacher){
+        return messageService.getAllParentByTid(teacher.getId());
     }
 
     @PostMapping("/getAllTeacherByPid")
     public List<Teacher> getAllTeacherByPid(@RequestBody Parent parent){
+        return messageService.getAllTeacherByPid(parent.getId());
     }
 
     @PostMapping("/getAllMessageByTid")
     public List<Message> getAllMessageByTid(@RequestBody Teacher teacher){
+        return messageService.getAllMessageByTid("T" + Long.toString(teacher.getId()));
     }
 
     @PostMapping("/getAllMessageByPid")
     public List<Message> getAllMessageByPid(@RequestBody Parent parent){
+        return messageService.getAllMessageByPid("P" + Long.toString(parent.getId()));
     }
 
- */
+
 }

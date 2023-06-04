@@ -23,9 +23,9 @@ public class LoginService {
     public List<Teacher> LoginT(String user_id, String user_pw) {
         return teacherAccountRespository.login(user_id, user_pw);
     }
-    public Boolean signupT(String user_id, String user_pw, String name)
+    public String signupT(String user_id, String user_pw, String name, String phone_num)
     {
-        return teacherAccountRespository.signup(user_id, user_pw, name);
+        return teacherAccountRespository.signup(user_id, user_pw, name, phone_num);
 
     }
     public Boolean changePwT(String user_id, String user_pw, String user_new_pw)
@@ -37,9 +37,9 @@ public class LoginService {
     public List<Parent> LoginP(String user_id, String user_pw) {
         return parentAccountRespository.login(user_id, user_pw);
     }
-    public Boolean signupP(String user_id, String user_pw, String name)
+    public String signupP(String user_id, String user_pw, String name, String phone_num)
     {
-        return parentAccountRespository.signup(user_id, user_pw, name);
+        return parentAccountRespository.signup(user_id, user_pw, name, phone_num);
 
     }
     public Boolean changePwP(String user_id, String user_pw, String user_new_pw)
