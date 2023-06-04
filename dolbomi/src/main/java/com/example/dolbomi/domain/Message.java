@@ -71,13 +71,13 @@ public class Message {
     @Override
     public String toString() {
         return "{" +
-                "'id':'" + id + "'" +
-                ",'sender_id':'" + sender_id + "'" +
-                ",'sender_name':'" + sender_name + "'" +
-                ",'receiver_id':'" + receiver_id + "'" +
-                ",'receiver_name':'" + receiver_name + "'" +
-                ",'text':'" + text + "'" +
-                ",'date':'" + date.toString() +
-                "'}";
+                "\"id\":\"" + id + "\"" +
+                ",\"sender_id\":\"" + sender_id + "\"" +
+                ",\"sender_name\":\"" + sender_name + "\"" +
+                ",\"receiver_id\":\"" + receiver_id + "\"" +
+                ",\"receiver_name\":\"" + receiver_name + "\"" +
+                ",\"text\":\"" + text + "\"" +
+                ",\"date\":\"" + date.toString() +
+                "\"}";
     }
 }

@@ -1,5 +1,6 @@
 package com.example.dolbomi.repository;
 
+import com.example.dolbomi.controller.TeacherLoginForm;
 import com.example.dolbomi.domain.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -40,9 +41,9 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
     }
 
     @Override
-    public List<Teacher> login(String user_id, String user_pw) {
-        return jdbcTemplate.query("select T.* from teacher_account TS inner join teacher T on TS.teacher_id = T.id where TS.user_id = ? and TS.user_pw = ?",
-                memberTRowMapper(), user_id, sha256(user_pw));
+    public List<TeacherLoginForm> login(String user_id, String user_pw) {
+        return jdbcTemplate.query("select T.*, DC.class_name from dolbom_class DC inner join (select T.* from teacher_account TS inner join teacher T on TS.teacher_id = T.id where TS.user_id = ? and TS.user_pw = ?) T on DC.id = T.class_id",
+                memberTLFRowMapper(), user_id, sha256(user_pw));
     }
 
     @Override
@@ -120,6 +121,26 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
                 teacher.setDisable(rs.getLong("disable"));
 
                 return teacher;
+            }
+        };
+    }
+
+    private RowMapper<TeacherLoginForm> memberTLFRowMapper() {
+        return new RowMapper<TeacherLoginForm>() {
+            @Override
+            public TeacherLoginForm mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                TeacherLoginForm teacherLoginForm = new TeacherLoginForm();
+                teacherLoginForm.setId(rs.getLong("id"));
+                teacherLoginForm.setName(rs.getString("name"));
+                teacherLoginForm.setPhone_num(rs.getString("phone_num"));
+                teacherLoginForm.setGender(rs.getLong("gender"));
+                teacherLoginForm.setBirth_date(rs.getDate("birth_date"));
+                teacherLoginForm.setClass_id(rs.getLong("class_id"));
+                teacherLoginForm.setDisable(rs.getLong("disable"));
+                teacherLoginForm.setClass_name(rs.getString("class_name"));
+
+                return teacherLoginForm;
             }
         };
     }
