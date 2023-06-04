@@ -571,11 +571,11 @@ public class AdminService {
             afterSchoolClassManageForm.setStart_time(afterSchoolClassList.get(i).getStart_time().toLocalTime());
             afterSchoolClassManageForm.setEnd_time(afterSchoolClassList.get(i).getEnd_time().toLocalTime());
             Long day = afterSchoolClassList.get(i).getDay();
-            if(day == 1){ afterSchoolClassManageForm.setDay("월"); }
-            else if (day == 2) { afterSchoolClassManageForm.setDay("화"); }
-            else if (day == 3) { afterSchoolClassManageForm.setDay("수"); }
-            else if (day == 4) { afterSchoolClassManageForm.setDay("목"); }
-            else if (day == 5) { afterSchoolClassManageForm.setDay("금"); }
+            if(day == 1L){ afterSchoolClassManageForm.setDay("월"); }
+            else if (day == 2L) { afterSchoolClassManageForm.setDay("화"); }
+            else if (day == 3L) { afterSchoolClassManageForm.setDay("수"); }
+            else if (day == 4L) { afterSchoolClassManageForm.setDay("목"); }
+            else if (day == 5L) { afterSchoolClassManageForm.setDay("금"); }
             else  {
                 System.out.println("Day doesn't exist");
                 afterSchoolClassManageForm.setDay("error day");
@@ -735,6 +735,21 @@ public class AdminService {
             studentScheduleForm.setId(studentScheduleList.get(i).getId());
             studentScheduleForm.setName(studentRepository.findById(studentScheduleList.get(i).getStudent_id()).get().getName());
             studentScheduleForm.setClass_name(afterSchoolClassRepository.findById(studentScheduleList.get(i).getClass_id()).get().getClass_name());
+            Long day = afterSchoolClassRepository.findById(studentScheduleList.get(i).getClass_id()).get().getDay();
+            if(day == 1L){
+                studentScheduleForm.setDay("월");
+            } else if (day == 2L){
+                studentScheduleForm.setDay("화");
+            } else if (day == 3L){
+                studentScheduleForm.setDay("수");
+            } else if (day == 4L){
+                studentScheduleForm.setDay("목");
+            } else if (day == 5L){
+                studentScheduleForm.setDay("금");
+            } else {
+                System.out.println("Day doesn't exist");
+                studentScheduleForm.setDay("error day");
+            }
             studentScheduleFormList.add(studentScheduleForm);
         }
         return studentScheduleFormList;

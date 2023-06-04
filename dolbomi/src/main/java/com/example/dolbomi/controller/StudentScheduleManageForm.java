@@ -6,6 +6,8 @@ public class StudentScheduleManageForm {
     private String class_name;
     private Long student_id;
     private Long class_id;
+    private String day;
+
     public Long getId() {
         return id;
     }
@@ -27,7 +29,6 @@ public class StudentScheduleManageForm {
     public Long getStudent_id() {
         return student_id;
     }
-
     public void setStudent_id(Long student_id) {
         this.student_id = student_id;
     }
@@ -38,6 +39,13 @@ public class StudentScheduleManageForm {
 
     public void setClass_id(Long class_id) {
         this.class_id = class_id;
+    }
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 
 }
