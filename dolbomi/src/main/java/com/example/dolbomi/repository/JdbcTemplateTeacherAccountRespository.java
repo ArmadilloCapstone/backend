@@ -27,11 +27,20 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
     }
 
     @Override
-    public Boolean signup(String user_id, String user_pw, String name) {
-        List<Teacher> validation1 =  jdbcTemplate.query("select * from teacher where name = ?", memberTRowMapper(), name);
+    public String signup(String user_id, String user_pw, String name, String phone_num) {
+        List<Teacher> validation1 =  jdbcTemplate.query("select * from teacher where name = ? and phone_num = ?", memberTRowMapper(), name, phone_num);
+        if(validation1.size() != 1){
+            return "일치하는 선생님이 없습니다.";
+        }
         Long parent_id = validation1.get(0).getId();
         List<TeacherAccount> validation2 =  jdbcTemplate.query("select * from teacher_account where teacher_id = ?", memberTCRowMapper(), parent_id);
         List<TeacherAccount> validation3 =  jdbcTemplate.query("select * from teacher_account where user_id = ?", memberTCRowMapper(), user_id);
+        if(validation2.size() != 0){
+            return "이미 등록된 회원입니다.";
+        }
+        if(validation3.size() != 0){
+            return "이미 존재하는 아이디입니다.";
+        }
         if(validation1.size() == 1 && validation2.size() == 0 && validation3.size() == 0){
             Long tid = validation1.get(0).getId();
 
@@ -45,10 +54,10 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
 
             jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-            return true;
+            return "success";
         }
         else{
-            return false;
+            return "error";
         }
     }
     @Override

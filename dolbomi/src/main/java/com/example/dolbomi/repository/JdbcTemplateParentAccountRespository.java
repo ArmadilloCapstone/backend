@@ -28,11 +28,20 @@ public class JdbcTemplateParentAccountRespository implements ParentAccountRespos
     }
 
     @Override
-    public Boolean signup(String user_id, String user_pw, String name) {
-        List<Parent> validation1 =  jdbcTemplate.query("select * from parent where name = ?", memberTRowMapper(), name);
+    public String signup(String user_id, String user_pw, String name, String phone_num) {
+        List<Parent> validation1 =  jdbcTemplate.query("select * from parent where name = ? and phone_num = ?", memberTRowMapper(), name, phone_num);
+        if(validation1.size() != 1){
+            return "일치하는 학부모가 없습니다.";
+        }
         Long parent_id = validation1.get(0).getId();
         List<ParentAccount> validation2 =  jdbcTemplate.query("select * from parent_account where parent_id = ?", memberPCRowMapper(), parent_id);
         List<ParentAccount> validation3 =  jdbcTemplate.query("select * from parent_account where user_id = ?", memberPCRowMapper(), user_id);
+        if(validation2.size() != 0){
+            return "이미 등록된 회원입니다.";
+        }
+        if(validation3.size() != 0){
+            return "이미 존재하는 아이디입니다.";
+        }
         if(validation1.size() == 1 && validation2.size() == 0 && validation3.size() == 0){ // 학부모가 존재
             Long tid = validation1.get(0).getId();
 
@@ -46,10 +55,10 @@ public class JdbcTemplateParentAccountRespository implements ParentAccountRespos
 
             jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-            return true;
+            return "success";
         }
         else{
-            return false;
+            return "error";
         }
     }
 

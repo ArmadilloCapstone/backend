@@ -60,7 +60,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         if(chat.getString("type").equals("setting")){
             sessionMap.put(chat.getString("id"), session);
             idNameMap.put(chat.getString("id"), chat.getString("name"));
-            session.sendMessage(new TextMessage(chat.getString("id") + "가 등록되었습니다."));
+            //session.sendMessage(new TextMessage(chat.getString("id") + "가 등록되었습니다."));
         }
         else if(chat.getString("type").equals("message")){
             System.out.println("HI");
@@ -77,9 +77,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
             System.out.println(chat.getString("receiver_name"));;
             System.out.println(chat.getString("text"));
             System.out.println(targetSession);
-            if (targetSession == null || userid == null) {
-                return;
-            }
             Message newMessage = new Message();
             newMessage.setSender_id(userid);
             newMessage.setSender_name(idNameMap.get(userid));
@@ -88,6 +85,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
             newMessage.setText(chat.getString("text"));
             newMessage.setDate(new Timestamp(System.currentTimeMillis()));
             Message createdMessage = messageService.createMessage(newMessage);
+            if (targetSession == null || userid == null) {
+                return;
+            }
             targetSession.sendMessage(new TextMessage(createdMessage.toString()));
         }
         else{
