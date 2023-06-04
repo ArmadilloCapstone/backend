@@ -60,8 +60,8 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
             jdbcInsert.withTableName("teacher_account").usingGeneratedKeyColumns("id");
 
             Map<String, Object> parameters = new HashMap<>();
-            parameters.put("teacher_id", tid);;
-            parameters.put("user_id", user_id);;
+            parameters.put("teacher_id", tid);
+            parameters.put("user_id", user_id);
             parameters.put("user_pw", sha256(user_pw));;
 
             jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
