@@ -116,7 +116,7 @@ public class AdminController {
         if (result == 0) {
             return "해당 방과후활동을 듣고있는 학생이 있으므로 삭제할 수 없습니다";
         } else if (result == 1) {
-            return "삭제되었습니다";
+            return "success";
         } else {
             return "존재하지 않는 방과후활동";
         }
@@ -146,7 +146,7 @@ public class AdminController {
     public List<Student> sendStudentForStudentSchedule(){ return adminService.sendStudentList(); }
 
     @PostMapping("/student_schedule/AfterSchoolClassList")
-    public List<AfterSchoolClass> sendAfterSchoolClassForStudentSchedule() { return adminService.sendAfterSchoolClassList(); }
+    public List<AfterSchoolClassManageForm> sendAfterSchoolClassForStudentSchedule() { return adminService.sendAfterSchoolClassList(); }
 
     @PostMapping("/student_time_submit")
     public String addNewStudentTimeManageForm(@RequestBody StudentTimeManageForm studentTimeManageForm) {

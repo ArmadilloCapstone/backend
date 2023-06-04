@@ -68,7 +68,10 @@ public class SpringConfig {
     { return new GuardianManageService(guardianRepository(), studentRepository(),
             studentOfGuardianRepository());}
 
-
+    @Bean
+    public CallService callService(){
+        return new CallService(teacherRepository());
+    }
 
     @Bean
     public AfterSchoolClassRepository afterSchoolClassRepository() {
