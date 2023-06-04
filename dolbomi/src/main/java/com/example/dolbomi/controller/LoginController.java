@@ -39,9 +39,6 @@ public class LoginController {
             if(list.size() == 1) return list.get(0);
         }
 
-
-
-
         ErrorObject error = new ErrorObject();
         error.setName("Error");
         return error;

@@ -7,6 +7,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -17,13 +20,31 @@ import java.util.Optional;
 public class JdbcTemplateTeacherAccountRespository implements TeacherAccountRespository{
     private final JdbcTemplate jdbcTemplate;
 
+
+    private String sha256(String text) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(text.getBytes());
+
+            StringBuilder builder = new StringBuilder();
+            for (byte b : md.digest()) {
+                builder.append(String.format("%02x", b));
+            }
+            return builder.toString();
+
+        } catch (NoSuchAlgorithmException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
     public JdbcTemplateTeacherAccountRespository(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
-    public List<Teacher> login(String user_id, String user_pw) {
-        return jdbcTemplate.query("select T.* from teacher_account TS inner join teacher T on TS.teacher_id = T.id where TS.user_id = ? and TS.user_pw = ?", memberTRowMapper(), user_id, user_pw);
+    public List<Teacher> login(String user_id,  String user_pw) {
+        return jdbcTemplate.query("select T.* from teacher_account TS inner join teacher T on TS.teacher_id = T.id where TS.user_id = ? and TS.user_pw = ?",
+                memberTRowMapper(), user_id, sha256(user_pw));
     }
 
     @Override
@@ -41,7 +62,7 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("teacher_id", tid);;
             parameters.put("user_id", user_id);;
-            parameters.put("user_pw", user_pw);;
+            parameters.put("user_pw", sha256(user_pw));;
 
             jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
@@ -53,7 +74,7 @@ public class JdbcTemplateTeacherAccountRespository implements TeacherAccountResp
     }
     @Override
     public Boolean changePw(String user_id, String user_pw, String user_new_pw) {
-        int result = jdbcTemplate.update("update teacher_account set user_pw = ? where user_id = ? and user_pw = ?;", user_new_pw, user_id, user_pw);
+        int result = jdbcTemplate.update("update teacher_account set user_pw = ? where user_id = ? and user_pw = ?;", sha256(user_new_pw), user_id, sha256(user_pw));
         if(result == 1){
             return true;
         }
