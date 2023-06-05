@@ -6,8 +6,3 @@ spring:
   web:
     resources:
       static-locations: classpath:/static, classpath:/frontend # 이부분 추가해야됨
-  server:
-    servlet:
-      multipart:
-        maxFileSize: 50MB
-        maxRequestSize: 100MB

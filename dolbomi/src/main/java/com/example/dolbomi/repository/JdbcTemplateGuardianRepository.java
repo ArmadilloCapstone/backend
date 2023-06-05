@@ -20,7 +20,7 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
     private final JdbcTemplate jdbcTemplate;
 
     private Long sha256(Long src){
-        return src*100+123;
+        return src;
     }
 
     public JdbcTemplateGuardianRepository(DataSource dataSource){
@@ -31,6 +31,9 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
     public Guardian save(Guardian guardian) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("guardian").usingGeneratedKeyColumns("id");
+
+        Long new_serial_num = sha256(guardian.getSerial_num());
+        guardian.setSerial_num(new_serial_num);
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", guardian.getName());;
@@ -49,7 +52,7 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
     }
     @Override
     public Optional<Guardian> findBySerialNum(Long serial_num) {
-        List<Guardian> result = jdbcTemplate.query("select * from guardian where serial_num = ?", memberRowMapper(), serial_num);
+        List<Guardian> result = jdbcTemplate.query("select * from guardian where serial_num = ?", memberRowMapper(), sha256(serial_num));
         return result.stream().findAny();
     }
 
