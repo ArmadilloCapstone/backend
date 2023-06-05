@@ -1,9 +1,6 @@
 package com.example.dolbomi.controller;
 
-import com.example.dolbomi.domain.Album;
-import com.example.dolbomi.domain.News;
-import com.example.dolbomi.domain.Teacher;
-import com.example.dolbomi.domain.UploadedFile;
+import com.example.dolbomi.domain.*;
 import com.example.dolbomi.service.AlbumService;
 import com.example.dolbomi.service.FileService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,11 +39,23 @@ public class AlbumController {
         return albumService.getAllAlbumByTeacherID(teacher.getId());
     }
 
+    @PostMapping("/GalleryList/forParent")
+    public List<Album> getAllAlbumForParent(@RequestBody Parent parent)
+    {
+        return albumService.getAllAlbumByParentID(parent.getId());
+    }
+
     @PostMapping("/GalleryList/search")
     public List<Album> searchAlbum(@RequestBody SearchForm searchForm){
         // option="title" 제목검색
         // option="text 내용검색
         return albumService.searchAlbum(searchForm.getTeacher_id(), searchForm.getKeyword(), searchForm.getOption());
+    }
+    @PostMapping("/ParentGalleryList/search")
+    public List<Album> searchAlbumForParent(@RequestBody SearchForm searchForm){
+        // option="title" 제목검색
+        // option="text 내용검색
+        return albumService.searchAlbumForParent(searchForm.getParent_id(), searchForm.getKeyword(), searchForm.getOption());
     }
 
     @PostMapping("/GalleryList/create/file")

@@ -52,7 +52,7 @@ public class SpringConfig {
 
     @Bean
     public NewsService newsService(){
-        return new NewsService(newsRepository());
+        return new NewsService(newsRepository(), parentRepository());
     }
     @Bean
     public FileService fileService(){
@@ -60,7 +60,7 @@ public class SpringConfig {
     }
     @Bean
     public AlbumService albumService(){
-        return new AlbumService(albumRepository());
+        return new AlbumService(albumRepository(), parentRepository());
     }
 
     @Bean

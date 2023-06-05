@@ -67,6 +67,11 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
     }
 
     @Override
+    public List<News> findAllByClassID(Long id) {
+        return jdbcTemplate.query("select * from news where class_id = ?",memberRowMapper(), id);
+    }
+
+    @Override
     public List<News> searchNews(Long teacher_id, String keyword, String option){
         if(option.equals("title")) {
             return jdbcTemplate.query("select N.* from news N inner join teacher T on N.class_id = T.class_id where T.id = ? and N.title like '%" + keyword + "%'",
@@ -75,6 +80,18 @@ public class JdbcTemplateNewsRepository implements NewsRepository{
         else {
             return jdbcTemplate.query("select N.* from news N inner join teacher T on N.class_id = T.class_id where T.id = ? and N.contents like '%" + keyword + "%'",
                     memberRowMapper(), teacher_id);
+        }
+    }
+
+    @Override
+    public List<News> searchNewsForParent(Long parent_id, String keyword, String option) {
+        if(option.equals("title")) {
+            return jdbcTemplate.query("select N.* from news N inner join parent P on N.class_id = P.class_id where P.id = ? and N.title like '%" + keyword + "%'",
+                    memberRowMapper(), parent_id);
+        }
+        else {
+            return jdbcTemplate.query("select N.* from news N inner join parent P on N.class_id = P.class_id where P.id = ? and N.contents like '%" + keyword + "%'",
+                    memberRowMapper(), parent_id);
         }
     }
 

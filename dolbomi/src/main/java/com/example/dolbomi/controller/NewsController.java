@@ -8,7 +8,6 @@ import com.example.dolbomi.service.FileService;
 import com.example.dolbomi.service.NewsService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Path;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -45,6 +43,10 @@ public class NewsController {
         System.out.println(newsService.getAllNewsByTeacherID(teacher.getId()).get(0).getDate());
         return newsService.getAllNewsByTeacherID(teacher.getId());
     }
+    @PostMapping("/BbsList/forParent")
+    public List<News> getAllNewsForParent(@RequestBody Parent parent){
+        return newsService.getAllNewsByParentID(parent.getId());
+    }
 
     @PostMapping("/BbsList/search")
     public List<News> searchNews(@RequestBody SearchForm searchForm){
@@ -53,6 +55,12 @@ public class NewsController {
         return newsService.searchNews(searchForm.getTeacher_id(), searchForm.getKeyword(), searchForm.getOption());
     }
 
+    @PostMapping("/ParentBbsList/search")
+    public List<News> searchNewsForParent(@RequestBody SearchForm searchForm){
+        // option="title" 제목검색
+        // option="text 내용검색
+        return newsService.searchNewsForParent(searchForm.getParent_id(), searchForm.getKeyword(), searchForm.getOption());
+    }
     @PostMapping("/BbsList/create/nofile")
     public News createNews(@RequestParam String title, @RequestParam String text,
                            @RequestParam Long teacher_id) throws IOException {

@@ -2,16 +2,10 @@ package com.example.dolbomi.service;
 
 import com.example.dolbomi.domain.News;
 import com.example.dolbomi.repository.NewsRepository;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import com.example.dolbomi.repository.ParentRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.channels.MulticastChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,17 +13,26 @@ import java.util.Map;
 public class NewsService {
 
     private final NewsRepository newsRepository;
+    private final ParentRepository parentRepository;
 
-    public NewsService(NewsRepository newsRepository){
+    public NewsService(NewsRepository newsRepository, ParentRepository parentRepository){
         this.newsRepository = newsRepository;
+        this.parentRepository = parentRepository;
     }
 
     public List<News> getAllNewsByTeacherID(long id){
         return newsRepository.findAllByTeacherID(id);
     }
+    public List<News> getAllNewsByParentID(long parent_id){
+        long class_id = parentRepository.findById(parent_id).get().getClass_id();
+        return newsRepository.findAllByClassID(class_id);
+    }
 
     public List<News> searchNews(Long teacher_id, String keyword, String option) {
         return newsRepository.searchNews(teacher_id, keyword, option);
+    }
+    public List<News> searchNewsForParent(Long parent_id, String keyword, String option) {
+        return newsRepository.searchNewsForParent(parent_id, keyword, option);
     }
 
     public News createNews(News news){

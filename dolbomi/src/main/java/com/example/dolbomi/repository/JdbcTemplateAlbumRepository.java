@@ -68,6 +68,11 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
     }
 
     @Override
+    public List<Album> findAllByClassID(Long id) {
+        return jdbcTemplate.query("select * from album where class_id = ?",memberRowMapper(),id);
+    }
+
+    @Override
     public List<Album> searchAlbum(Long teacher_id, String keyword, String option){
         if(option.equals("title")) {
             return jdbcTemplate.query("select A.* from album A inner join teacher T on A.class_id = T.class_id where T.id = ? and A.title like '%" + keyword + "%'",
@@ -76,6 +81,18 @@ public class JdbcTemplateAlbumRepository implements  AlbumRepository{
         else {
             return jdbcTemplate.query("select A.* from album A inner join teacher T on A.class_id = T.class_id where T.id = ? and A.contents like '%" + keyword + "%'",
                     memberRowMapper(), teacher_id);
+        }
+    }
+
+    @Override
+    public List<Album> searchAlbumForParent(Long parent_id, String keyword, String option) {
+        if(option.equals("title")) {
+            return jdbcTemplate.query("select A.* from album A inner join parent P on A.class_id = P.class_id where P.id = ? and A.title like '%" + keyword + "%'",
+                    memberRowMapper(), parent_id);
+        }
+        else {
+            return jdbcTemplate.query("select A.* from album A inner join parent P on A.class_id = P.class_id where P.id = ? and A.contents like '%" + keyword + "%'",
+                    memberRowMapper(), parent_id);
         }
     }
 

@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface NewsRepository {
 
     List<News> findAllByTeacherID(Long id);
+    List<News> findAllByClassID(Long id);
     List<News> searchNews(Long teacher_id, String keyword, String option);
+    List<News> searchNewsForParent(Long parent_id, String keyword, String option);
     Optional<News> findById(Long id);
     News save(News news);
     void delete(Long no);

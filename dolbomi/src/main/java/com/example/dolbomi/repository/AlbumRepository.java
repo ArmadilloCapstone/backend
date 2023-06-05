@@ -11,7 +11,10 @@ public interface AlbumRepository {
 
     public List<Album> findAllByTeacherID(Long id);
 
+    public List<Album> findAllByClassID(Long id);
+
     List<Album> searchAlbum(Long teacher_id, String keyword, String option);
+    List<Album> searchAlbumForParent(Long parent_id, String keyword, String option);
 
     Album save(Album album);
 
