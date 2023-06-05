@@ -20,7 +20,7 @@ public class JdbcTemplateGuardianRepository implements GuardianRepository{
     private final JdbcTemplate jdbcTemplate;
 
     private Long sha256(Long src){
-        return src*100+123;
+        return src;
     }
 
     public JdbcTemplateGuardianRepository(DataSource dataSource){
