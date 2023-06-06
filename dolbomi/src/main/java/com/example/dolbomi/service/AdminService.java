@@ -220,7 +220,7 @@ public class AdminService {
                         studentSchedule.setId(Long.parseLong(stringList.get(0)));
                         studentSchedule.setStudent_id(Long.parseLong(stringList.get(1)));
                         studentSchedule.setClass_id(Long.parseLong(stringList.get(2)));
-                        studentScheduleRepository.save(studentSchedule);
+                        addNewStudentSchedule(studentSchedule);
                     }
                     else if(filename.equals("6.inputStudentTime.csv")){
                         StudentTime studentTime = new StudentTime();
@@ -497,9 +497,9 @@ public class AdminService {
     public void addNewAfterSchoolClass(AfterSchoolClass afterSchoolClass){
         List<AfterSchoolClass> result = afterSchoolClassRepository.findByClass_nameDay(afterSchoolClass.getClass_name(), afterSchoolClass.getDay());
         if(result.size() == 1){
-            System.out.println("This AfterSchoolClass is already existing");
+            System.out.println("This AfterSchoolClass is already existing by csv");
         } else if (result.size() == 0) {
-            System.out.println("Add new AfterSchoolClass");
+            System.out.println("Add new AfterSchoolClass by csv");
             afterSchoolClassRepository.save(afterSchoolClass);
         }
     }
@@ -614,6 +614,109 @@ public class AdminService {
         }
         return afterSchoolClassManageFormList;
     }
+    public void addNewStudentSchedule(StudentSchedule studentSchedule){
+        Optional<Student> isStudent = studentRepository.findById(studentSchedule.getStudent_id());
+        Optional<AfterSchoolClass> isAfterSchoolClass = afterSchoolClassRepository.findById(studentSchedule.getClass_id());
+        if((isStudent.isPresent())&&(isAfterSchoolClass.isPresent())){
+            List<StudentSchedule> result = studentScheduleRepository.findByStudent_idClass_id(isStudent.get().getId(),isAfterSchoolClass.get().getId());
+            if(result.size()==1){
+                System.out.println("This student schedule is already existing by csv");
+                return;
+            }
+            else if (result.size()==0) {
+                List<StudentTime> isStudentTime = studentTimeRepository.findByStudent_id(isStudent.get().getId());
+                if(isStudentTime.size()==0){
+                    System.out.println("There is no entry and off time for student. Please add entry and off time first.");
+                    return;
+                }
+                else if (isStudentTime.size()==1) {
+                    switch (isAfterSchoolClass.get().getDay().intValue()) {
+                        case 1:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_1()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_1())) {
+                                System.out.println("Invalid afterschoolclass time in day1");
+                                return;
+                            } else break;
+
+                        case 2:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_2()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_2())) {
+                                System.out.println("Invalid afterschoolclass time in day2");
+                                return;
+                            } else break;
+
+                        case 3:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_3()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_3())) {
+                                System.out.println("Invalid afterschoolclass time in day3");
+                                return;
+                            } else break;
+
+                        case 4:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_4()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_4())) {
+                                System.out.println("Invalid afterschoolclass time in day4");
+                                return;
+                            } else break;
+
+                        case 5:
+                            if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_5()) ||
+                                    isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_5())) {
+                                System.out.println("Invalid afterschoolclass time in day5");
+                                return;
+                            } else break;
+
+                        default:
+                            System.out.println("Invalid day");
+                            return;
+                    }
+                    List<StudentSchedule> existStudentScheduleList = studentScheduleRepository.findByStudent_id(isStudent.get().getId());
+                    int afterClassCount = existStudentScheduleList.size();
+                    for(int i = 0; i<afterClassCount;i++){
+                        AfterSchoolClass existStudentSchedule = afterSchoolClassRepository.findById(existStudentScheduleList.get(i).getClass_id()).get();
+                        if(existStudentSchedule.getDay()==isAfterSchoolClass.get().getDay()){
+                            //방과후 시간표끼리의 시간 겹치는지 아닌지 비교
+                            if((existStudentSchedule.getEnd_time().before(isAfterSchoolClass.get().getStart_time()) ||
+                                    existStudentSchedule.getStart_time().after(isAfterSchoolClass.get().getEnd_time()))){
+
+                                System.out.println("Add new student schedule by csv");
+                                StudentSchedule newStudentSchedule = new StudentSchedule();
+                                newStudentSchedule.setStudent_id(isStudent.get().getId());
+                                newStudentSchedule.setClass_id(isAfterSchoolClass.get().getId());
+                                studentScheduleRepository.save(newStudentSchedule);
+                                return;
+                            } else {
+                                System.out.println("It overlaps with the already registered after-school class schedule");
+                                return;
+                            }
+                        }
+                    }
+                    //if there is no any exist after school class
+                    System.out.println("Add new student schedule by csv");
+                    StudentSchedule newStudentSchedule = new StudentSchedule();
+                    newStudentSchedule.setStudent_id(isStudent.get().getId());
+                    newStudentSchedule.setClass_id(isAfterSchoolClass.get().getId());
+                    studentScheduleRepository.save(newStudentSchedule);
+                    return;
+                }
+            } else {
+                System.out.println("Duplicate student schedule in add NewStudentSchedule");
+                return;
+            }
+        } else if(isStudent.isPresent()){
+            System.out.println("There is no that kinds of dolbom student in addNewStudentSchedule");
+            return;
+        } else if (isAfterSchoolClass.isPresent()) {
+            System.out.println("There is no that kinds of AfterSchoolClass in addNewStudentSchedule");
+            return;
+        } else {
+            System.out.println("Duplicate dolbom student or dolbom afterschoolclass in addNewStudentSchedule");
+            return;
+        }
+        return;
+    }
+
+
 
     public String addNewStudentScheduleManageForm(StudentScheduleManageForm studentScheduleManageForm){
         Optional<Student> isStudent = studentRepository.findById(studentScheduleManageForm.getStudent_id());
