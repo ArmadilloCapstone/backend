@@ -28,6 +28,7 @@ tasks.named('test'){
 	useJUnitPlatform()
 }
 
+
 def frontendDir = "$projectDir/frontend"
 sourceSets {
 	main {

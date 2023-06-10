@@ -1,6 +1,7 @@
 package com.example.dolbomi.repository;
 
 import com.example.dolbomi.domain.PickupMessage;
+import com.example.dolbomi.domain.Teacher;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,6 +12,7 @@ import org.springframework.util.FileCopyUtils;
 import javax.sql.DataSource;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -78,17 +80,47 @@ public class JdbcTemplatePickupMessageRepository implements PickupMessageReposit
         };
     }
 
+    private RowMapper<Teacher> teacherRowMapper(){
+        return new RowMapper<Teacher>() {
+            @Override
+            public Teacher mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Teacher teacher = new Teacher();
+                teacher.setId(rs.getLong("id"));
+                teacher.setName(rs.getString("name"));
+                teacher.setPhone_num(rs.getString("phone_num"));
+                teacher.setGender(rs.getLong("gender"));
+                teacher.setBirth_date(rs.getDate("birth_date"));
+                teacher.setClass_id(rs.getLong("class_id"));
+                teacher.setDisable(rs.getLong("disable"));
+
+                return teacher;
+            }
+        };
+    }
+
     public void exportPickupLog(Long teacher_id, HttpServletResponse response){
 
         List<PickupMessage> result = jdbcTemplate.query("select * from pickup_message where teacher_id = ?",memberRowMapper(), teacher_id);
-        if(result.size()==0){
-            return;
-        }
-        String teacher_name = result.get(0).getTeacher_name();
-        try {
-            File file = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\exportedLogs\\돌봄교사 " + teacher_name + " 학생 픽업 로그.csv\\");
-            BufferedWriter bw = new BufferedWriter(new FileWriter((file)));
 
+        try {
+            String teacher_name;
+
+            if(result.size()==0){
+                List<Teacher> result2 = jdbcTemplate.query("select * from teacher where id = ?",teacherRowMapper(), teacher_id);
+                teacher_name = result2.get(0).getName();
+                System.out.println("teachername0:"+teacher_name);
+            }
+            else{
+                 teacher_name = result.get(0).getTeacher_name();
+                System.out.println("teachername1:"+teacher_name);
+            }
+
+            File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\exportedLogs\\");
+            folder.mkdirs();
+            File file = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\exportedLogs\\돌봄교사 " + teacher_name + " 학생 픽업 로그.txt\\");
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            //BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "Cp1252"));
             bw.write("교사명, 보호자명, 학생명, 픽업 시간\n");
 
             for (PickupMessage pickupMessage : result){
@@ -104,7 +136,8 @@ public class JdbcTemplatePickupMessageRepository implements PickupMessageReposit
             bw.flush();
             bw.close();
 
-            String filename = "돌봄교사 " + teacher_name + " 학생 픽업 로그.csv";
+
+            String filename = "돌봄교사 " + teacher_name + " 학생 픽업 로그.txt";
             String filename_chrome = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
 
             response.setContentType("application/download");
