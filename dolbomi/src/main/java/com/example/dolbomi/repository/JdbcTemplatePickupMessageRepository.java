@@ -1,14 +1,19 @@
 package com.example.dolbomi.repository;
 
 import com.example.dolbomi.domain.PickupMessage;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.util.FileCopyUtils;
 
 import javax.sql.DataSource;
+import java.io.*;
+import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,5 +76,53 @@ public class JdbcTemplatePickupMessageRepository implements PickupMessageReposit
                 return pickupMessage;
             }
         };
+    }
+
+    public void exportPickupLog(Long teacher_id, HttpServletResponse response){
+
+        List<PickupMessage> result = jdbcTemplate.query("select * from pickup_message where teacher_id = ?",memberRowMapper(), teacher_id);
+        if(result.size()==0){
+            return;
+        }
+        String teacher_name = result.get(0).getTeacher_name();
+        try {
+            File file = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\exportedLogs\\돌봄교사 " + teacher_name + " 학생 픽업 로그.csv\\");
+            BufferedWriter bw = new BufferedWriter(new FileWriter((file)));
+
+            bw.write("교사명, 보호자명, 학생명, 픽업 시간\n");
+
+            for (PickupMessage pickupMessage : result){
+                bw.write(pickupMessage.getTeacher_name());
+                bw.write(", ");
+                bw.write(pickupMessage.getPickup_man_name());
+                bw.write(", ");
+                bw.write(pickupMessage.getStudent_name());
+                bw.write(", ");
+                bw.write(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(pickupMessage.getDate()));
+                bw.write("\n");
+            }
+            bw.flush();
+            bw.close();
+
+            String filename = "돌봄교사 " + teacher_name + " 학생 픽업 로그.csv";
+            String filename_chrome = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
+
+            response.setContentType("application/download");
+            response.setContentLength((int)file.length());
+            response.setHeader("Content-disposition", "attachment;filename=\""+filename_chrome+"\"");
+            // response 객체를 통해서 서버로부터 파일 다운로드
+            OutputStream os = response.getOutputStream();
+            // 파일 입력 객체 생성
+            FileInputStream fis = new FileInputStream(file);
+            FileCopyUtils.copy(fis, os);
+            fis.close();
+            os.close();
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+
     }
 }

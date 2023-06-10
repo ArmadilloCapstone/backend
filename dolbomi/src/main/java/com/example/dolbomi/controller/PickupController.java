@@ -3,12 +3,9 @@ package com.example.dolbomi.controller;
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.service.PickupService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,4 +51,10 @@ public class PickupController {
     public List<PickupRequestForm> teacherSend(@PathVariable("teacher_id") Long teacher_id){
         return pickupService.sendPickupForTeacher(teacher_id);
     }
+
+    @RequestMapping("/exportPickupLog/{teacher_id}")
+    public void exportPickupLog(@PathVariable Long teacher_id, HttpServletResponse response){
+        pickupService.exportPickupLog(teacher_id, response);
+    }
+
 }

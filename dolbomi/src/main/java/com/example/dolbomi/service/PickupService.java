@@ -5,6 +5,7 @@ import com.example.dolbomi.controller.PickupRequestForm;
 import com.example.dolbomi.controller.StudentPickupForm;
 import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -135,6 +136,10 @@ public class PickupService {
             pickupMessage.setDate(timestamp);
             pickupMessageRepository.save(pickupMessage);
         }
+    }
+
+    public void exportPickupLog(Long teacher_id, HttpServletResponse response){
+        pickupMessageRepository.exportPickupLog(teacher_id, response);
     }
 
 }
