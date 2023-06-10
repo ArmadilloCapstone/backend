@@ -33,7 +33,7 @@ public class SpringConfig {
     @Bean
     public PickupService pickupService() {
         return new PickupService(studentRepository(), pickupRepository(), parentRepository(),
-                guardianRepository(), teacherRepository());
+                guardianRepository(), teacherRepository(), pickupMessageRepository());
     }
     @Bean
     public StudentStateService studentStateService(){
@@ -134,4 +134,8 @@ public class SpringConfig {
     public AlbumRepository albumRepository() { return new JdbcTemplateAlbumRepository(dataSource);}
     @Bean
     public StudentOfGuardianRepository studentOfGuardianRepository() { return new JdbcTemplateStudentOfGuardianRepository(dataSource); }
+    @Bean
+    public PickupMessageRepository pickupMessageRepository(){
+        return new JdbcTemplatePickupMessageRepository(dataSource);
+    }
 }

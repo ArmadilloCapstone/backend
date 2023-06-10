@@ -15,6 +15,7 @@ drop table if exists admin CASCADE;
 drop table if exists news CASCADE;
 drop table if exists uploaded_file CASCADE;
 drop table if exists album CASCADE;
+drop table if exists pickup_message CASCADE;
 
 create table admin
 (
@@ -179,6 +180,24 @@ create table message
     date timestamp
 
 );
+create table pickup_message
+(
+    id int primary key,
+    pickup_man_id int,
+    pickup_man_name char(20),
+    student_id int,
+    student_name char(20),
+    student_grade tinyint,
+    student_gender tinyint,
+    teacher_id int,
+    teacher_name char(20),
+    date timestamp,
+    foreign key (student_id)
+            references student(id) on update cascade,
+    foreign key (teacher_id)
+            references teacher(id) on update cascade
+);
+
 SET FOREIGN_KEY_CHECKS = 0;
 alter table teacher modify id int not null auto_increment;
 alter table parent modify id int not null auto_increment;
@@ -214,3 +233,5 @@ alter table teacher_account convert to charset utf8;
 alter table teacher_account modify id int not null auto_increment;
 alter table message modify id int not null auto_increment;
 alter table message convert to charset utf8;
+alter table pickup_message convert to charset utf8;
+alter table pickup_message modify id int not null auto_increment;

@@ -3,12 +3,11 @@ package com.example.dolbomi.service;
 import com.example.dolbomi.controller.PickupListRequestForm;
 import com.example.dolbomi.controller.PickupRequestForm;
 import com.example.dolbomi.controller.StudentPickupForm;
-import com.example.dolbomi.domain.Guardian;
-import com.example.dolbomi.domain.Parent;
-import com.example.dolbomi.domain.Student;
-import com.example.dolbomi.domain.Teacher;
+import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PickupService {
@@ -17,15 +16,17 @@ public class PickupService {
     private final ParentRepository parentRepository;
     private final GuardianRepository guardianRepository;
     private final TeacherRepository teacherRepository;
+    private final PickupMessageRepository pickupMessageRepository;
 
     public PickupService(StudentRepository studentRepository, PickupRepository pickupRepository,
                          ParentRepository parentRepository, GuardianRepository guardianRepository,
-                         TeacherRepository teacherRepository){
+                         TeacherRepository teacherRepository, PickupMessageRepository pickupMessageRepository){
         this.studentRepository = studentRepository;
         this.pickupRepository = pickupRepository;
         this.parentRepository = parentRepository;
         this.guardianRepository = guardianRepository;
         this.teacherRepository = teacherRepository;
+        this.pickupMessageRepository = pickupMessageRepository;
     }
     public StudentPickupForm selectStudentForParent(Parent parent){
         StudentPickupForm studentPickupForm = new StudentPickupForm();
@@ -109,11 +110,30 @@ public class PickupService {
         Optional<Teacher> teacher = teacherRepository.findById(teacher_id);
         if(teacher.isPresent()){
             List<PickupRequestForm> pickupRequestFormList = pickupRepository.findAll(teacher.get().getClass_id());
+            savePickupLog(teacher, pickupRequestFormList);
             pickupRepository.clearPickupStore(teacher.get().getClass_id());
             return pickupRequestFormList;
         } else {
             System.out.println("유효하지 않은 돌봄교사 id입니다");
             return null;
+        }
+    }
+
+    private void savePickupLog(Optional<Teacher> teacher, List<PickupRequestForm> pickupRequestFormList) {
+        int count = pickupRequestFormList.size();
+        for(int i = 0; i< count; i++){
+            PickupMessage pickupMessage = new PickupMessage();
+            pickupMessage.setPickup_man_id(pickupRequestFormList.get(i).getPickupManId());
+            pickupMessage.setPickup_man_name(pickupRequestFormList.get(i).getPickupManName());
+            pickupMessage.setStudent_id(pickupRequestFormList.get(i).getStudentId());
+            pickupMessage.setStudent_name(pickupRequestFormList.get(i).getStudentName());
+            pickupMessage.setStudent_grade(pickupRequestFormList.get(i).getStudentGrade());
+            pickupMessage.setStudent_gender(pickupRequestFormList.get(i).getStudentGender());
+            pickupMessage.setTeacher_id(teacher.get().getId());
+            pickupMessage.setTeacher_name(teacher.get().getName());
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            pickupMessage.setDate(timestamp);
+            pickupMessageRepository.save(pickupMessage);
         }
     }
 
