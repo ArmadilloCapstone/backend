@@ -1,9 +1,9 @@
-package com.example.dolbomi.controller;
+package com.example.dolbomi.form;
 
-public class ChangePwForm {
+public class LoginForm {
     private String user_id;
     private String user_pw;
-    private String user_new_pw;
+    private Long serial_num;
     private Long option;
 
     public String getUser_id() {
@@ -22,16 +22,16 @@ public class ChangePwForm {
         this.user_pw = user_pw;
     }
 
-    public String getUser_new_pw() {
-        return user_new_pw;
-    }
-
-    public void setUser_new_pw(String user_new_pw) {
-        this.user_new_pw = user_new_pw;
-    }
-
     public Long getOption() {
         return option;
+    }
+
+    public Long getSerial_num() {
+        return serial_num;
+    }
+
+    public void setSerial_num(Long serial_num) {
+        this.serial_num = serial_num;
     }
 
     public void setOption(Long option) {

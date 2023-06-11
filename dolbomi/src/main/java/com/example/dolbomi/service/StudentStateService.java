@@ -1,6 +1,6 @@
 package com.example.dolbomi.service;
 
-import com.example.dolbomi.controller.StudentStateForm;
+import com.example.dolbomi.form.StudentStateForm;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.domain.Student;
 import com.example.dolbomi.domain.StudentState;
@@ -45,18 +45,18 @@ public class StudentStateService {
                     studentStateForm.setState(result.get(0).getState());
                     return studentStateForm;
                 } else if (result.size() == 0) {
-                    System.out.println("존재하지 않는 돌봄학생입니다");
+                    //System.out.println("존재하지 않는 돌봄학생입니다");
                     return null;
                 } else{
-                    System.out.println("돌봄학생id가 중복되어있습니다");
+                    //System.out.println("돌봄학생id가 중복되어있습니다");
                     return null;
                 }
             } else {
-                System.out.println("존재하지 않는 돌봄학생입니다");
+                //System.out.println("존재하지 않는 돌봄학생입니다");
                 return null;
             }
         }else{
-            System.out.println("존재하지 않는 학부모입니다");
+            //System.out.println("존재하지 않는 학부모입니다");
             return null;
         }
     }

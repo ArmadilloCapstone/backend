@@ -1,6 +1,6 @@
 package com.example.dolbomi.repository;
 
-import com.example.dolbomi.controller.StudentStateForm;
+import com.example.dolbomi.form.StudentStateForm;
 import com.example.dolbomi.domain.StudentState;
 
 import java.util.List;

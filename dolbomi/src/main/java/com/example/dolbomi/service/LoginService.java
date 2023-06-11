@@ -1,11 +1,10 @@
 package com.example.dolbomi.service;
 
-import com.example.dolbomi.controller.TeacherLoginForm;
+import com.example.dolbomi.form.TeacherLoginForm;
 import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
 
 import java.util.List;
-import java.util.Optional;
 
 public class LoginService {
 

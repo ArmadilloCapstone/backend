@@ -2,12 +2,14 @@ package com.example.dolbomi.controller;
 
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
+import com.example.dolbomi.form.PickupListRequestForm;
+import com.example.dolbomi.form.PickupRequestForm;
+import com.example.dolbomi.form.StudentPickupForm;
 import com.example.dolbomi.service.PickupService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -25,15 +27,10 @@ public class PickupController {
         parent.setChild_id(20230001L);
         return pickupService.selectStudentForParent(parent); }
 
-    /*
-    @PostMapping("/parent")
-    public StudentPickupForm parentPickup(@RequestBody Parent parent){
-        return pickupService.selectStudentForParent(parent); }
-    */
 
     @PostMapping("/guardian")
     public List<StudentPickupForm> guardianPickup(@RequestBody Guardian guardian){
-        System.out.println(guardian.getId());
+        //System.out.println(guardian.getId());
         return pickupService.selectStudentForGuardian(guardian);
     }
 

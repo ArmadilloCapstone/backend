@@ -1,4 +1,4 @@
-package com.example.dolbomi.controller;
+package com.example.dolbomi.form;
 
 public class StudentPickupForm {
     private Long id;

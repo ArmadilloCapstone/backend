@@ -1,6 +1,6 @@
 package com.example.dolbomi.repository;
 
-import com.example.dolbomi.controller.PickupRequestForm;
+import com.example.dolbomi.form.PickupRequestForm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class MemoryPickupRepository implements PickupRepository{
 
     @Override
     public List<PickupRequestForm> findAll(Long class_id) {
-        System.out.println(class_id);
+        //System.out.println(class_id);
         if(store.get(class_id) == null){
             return null;
         }

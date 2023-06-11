@@ -1,6 +1,7 @@
 package com.example.dolbomi.controller;
 
 import com.example.dolbomi.domain.*;
+import com.example.dolbomi.form.SearchForm;
 import com.example.dolbomi.service.AlbumService;
 import com.example.dolbomi.service.FileService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,8 +35,8 @@ public class AlbumController {
     @PostMapping("/GalleryList")
     public List<Album> getAllAlbum(@RequestBody Teacher teacher)
     {
-        System.out.println("hi album");
-        System.out.println(albumService.getAllAlbumByTeacherID(teacher.getId()).get(0).getUploaded_date());
+        //System.out.println("hi album");
+        //System.out.println(albumService.getAllAlbumByTeacherID(teacher.getId()).get(0).getUploaded_date());
         return albumService.getAllAlbumByTeacherID(teacher.getId());
     }
 

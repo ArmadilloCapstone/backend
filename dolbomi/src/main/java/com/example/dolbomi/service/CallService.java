@@ -1,6 +1,6 @@
 package com.example.dolbomi.service;
 
-import com.example.dolbomi.controller.CallForm;
+import com.example.dolbomi.form.CallForm;
 import com.example.dolbomi.domain.Teacher;
 import com.example.dolbomi.repository.ParentRepository;
 import com.example.dolbomi.repository.TeacherRepository;

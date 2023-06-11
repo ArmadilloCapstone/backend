@@ -1,6 +1,6 @@
 package com.example.dolbomi.repository;
 
-import com.example.dolbomi.controller.PickupRequestForm;
+import com.example.dolbomi.form.PickupRequestForm;
 
 import java.util.List;
 

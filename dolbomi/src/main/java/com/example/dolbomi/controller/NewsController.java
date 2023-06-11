@@ -4,6 +4,7 @@ import com.example.dolbomi.domain.News;
 import com.example.dolbomi.domain.UploadedFile;
 import com.example.dolbomi.domain.Parent;
 import com.example.dolbomi.domain.Teacher;
+import com.example.dolbomi.form.SearchForm;
 import com.example.dolbomi.service.FileService;
 import com.example.dolbomi.service.NewsService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,8 +40,8 @@ public class NewsController {
     @PostMapping("/BbsList")
     public List<News> getAllNews(@RequestBody Teacher teacher)
     {
-        System.out.println("hi");
-        System.out.println(newsService.getAllNewsByTeacherID(teacher.getId()).get(0).getDate());
+        //System.out.println("hi");
+        //System.out.println(newsService.getAllNewsByTeacherID(teacher.getId()).get(0).getDate());
         return newsService.getAllNewsByTeacherID(teacher.getId());
     }
     @PostMapping("/BbsList/forParent")

@@ -1,4 +1,4 @@
-package com.example.dolbomi.controller;
+package com.example.dolbomi.form;
 
 import org.springframework.web.multipart.MultipartFile;
 

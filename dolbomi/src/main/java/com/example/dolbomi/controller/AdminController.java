@@ -1,6 +1,7 @@
 package com.example.dolbomi.controller;
 
 import com.example.dolbomi.domain.*;
+import com.example.dolbomi.form.*;
 import com.example.dolbomi.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class AdminController {
 
     @PostMapping("/student_submit_csv")
     public void addNewStudentByCsv(@RequestParam("file") List<MultipartFile> files) {
-        System.out.println(files.get(0).getOriginalFilename());
+        //System.out.println(files.get(0).getOriginalFilename());
         for (int i = 0; i < files.size(); i++) {
             adminService.addNewStudentByCsv(files.get(i));
         }

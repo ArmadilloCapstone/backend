@@ -2,11 +2,11 @@ package com.example.dolbomi.controller;
 
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Student;
+import com.example.dolbomi.form.GuardianManageForm;
 import com.example.dolbomi.service.GuardianManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.List;
 
 @CrossOrigin
@@ -41,7 +41,7 @@ public class GuardianManageController {
 
     @PostMapping("/guardianManage/student_submit")
     public String addNewStudentUnderGuardian(@RequestBody GuardianManageForm guardianManageForm){
-        System.out.println(guardianManageForm.getStudentList().get(0).getName());
+        //System.out.println(guardianManageForm.getStudentList().get(0).getName());
         return guardianManageService.addNewStudentUnderGuardian(guardianManageForm);
     }
 

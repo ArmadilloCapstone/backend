@@ -1,7 +1,7 @@
 package com.example.dolbomi.service;
 
-import com.example.dolbomi.controller.*;
 import com.example.dolbomi.domain.*;
+import com.example.dolbomi.form.*;
 import com.example.dolbomi.repository.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,20 +42,20 @@ public class AdminService {
         List<DolbomClass> byName = dolbomClassRepository.findByClassName(dolbomClass.getClass_name());
         List<DolbomClass> byNum = dolbomClassRepository.findByClassNum(dolbomClass.getClass_num());
         if( (byNameNum.size()==1) && (byNum.size() == 1) && (byName.size() == 1) && (byNameNum.get(0).getDisable() == 0)){
-            System.out.println("Activation of existing dolbom class");
+            //System.out.println("Activation of existing dolbom class");
             dolbomClassRepository.activationDolbomClass(byNameNum.get(0).getId());
             dolbomClassRepository.updateDolbomClass(byNameNum.get(0).getId(),byNameNum.get(0).getYear_seme());
             return "success";
         } else if ( (byNameNum.size()==1) && (byNum.size() == 1) && (byName.size() == 1) && (byNameNum.get(0).getDisable() == 1)) {
-            System.out.println("This dolbom class is already active");
+            //System.out.println("This dolbom class is already active");
             return "이미 존재하는 돌봄교실 입니다";
         } else if ( (byNameNum.size() == 0) && (byNum.size() == 0) && (byName.size() == 0)) {
-            System.out.println("Add new dolbom class");
+            //System.out.println("Add new dolbom class");
             dolbomClass.setDisable(1L);
             dolbomClassRepository.save(dolbomClass);
             return "success";
         } else{
-            System.out.println("A dolbom class with the same class name but a different class number already exists");
+            //System.out.println("A dolbom class with the same class name but a different class number already exists");
             return "중복된 돌봄교실 이름 혹은 번호가 입력되었습니다";
         }
     }
@@ -63,12 +63,12 @@ public class AdminService {
     public void deleteDolbomClass(Long id){
         List<DolbomClass> result = dolbomClassRepository.findById(id);
         if((result.size()==1) && (result.get(0).getDisable() == 1)){
-            System.out.println("Disable the existing dolbom class");
+            //System.out.println("Disable the existing dolbom class");
             dolbomClassRepository.disableDolbomClass(result.get(0).getId());
         } else if ( (result.size()==1) && (result.get(0).getDisable() == 0)) {
-            System.out.println("This dolbom class is already inactive");
+            //System.out.println("This dolbom class is already inactive");
         } else {
-            System.out.println("error in deleteDolbomClass");
+            //System.out.println("error in deleteDolbomClass");
         }
     }
 
@@ -90,12 +90,12 @@ public class AdminService {
     public void addNewStudent(Student student){
         List<Student> result = studentRepository.findByNameBirth(student.getName(), student.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable() == 0)){
-            System.out.println("Activation of existing dolbom student by csv");
+            //System.out.println("Activation of existing dolbom student by csv");
             studentRepository.activationStudent(result.get(0).getId());
         } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
-            System.out.println("This dolbom student is already active by csv");
+            //System.out.println("This dolbom student is already active by csv");
         } else if (result.size() == 0) {
-            System.out.println("Add new dolbom student by csv");
+            //System.out.println("Add new dolbom student by csv");
             student.setDisable(1L);
             Student registerdStudent = studentRepository.save(student);
             StudentState studentState = new StudentState();
@@ -111,19 +111,19 @@ public class AdminService {
         } else if (studentManageForm.getGender().equals("여")) {
             gender = 2L;
         } else {
-            System.out.println("Gender doesn't exist");
+            //System.out.println("Gender doesn't exist");
             return "잘못된 성별 입력입니다";
         }
         List<Student> result = studentRepository.findByNameBirth(studentManageForm.getName(), studentManageForm.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable() == 0)){
-            System.out.println("Activation of existing dolbom student");
+            //System.out.println("Activation of existing dolbom student");
             studentRepository.activationStudent(result.get(0).getId());
             return "success";
         } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
-            System.out.println("This dolbom studnet is already active");
+            //System.out.println("This dolbom studnet is already active");
             return "이미 등록된 돌봄학생입니다";
         } else if (result.size() == 0) {
-            System.out.println("Add new dolbom student");
+            //System.out.println("Add new dolbom student");
             Student student = new Student();
             student.setId(studentManageForm.getId());
             student.setName(studentManageForm.getName());
@@ -134,10 +134,10 @@ public class AdminService {
             if(isDolbomClass.size() == 1){
                 student.setClass_id(isDolbomClass.get(0).getId());
             } else if (isDolbomClass.size() == 0){
-                System.out.println("There is no that kinds of dolbom class in addNewStudentManageForm");
+                //System.out.println("There is no that kinds of dolbom class in addNewStudentManageForm");
                 return "존재하지 않는 돌봄반 입력입니다";
             } else {
-                System.out.println("Duplicate dolbom class in addNewStudentManageForm");
+                //System.out.println("Duplicate dolbom class in addNewStudentManageForm");
                 student.setClass_id(isDolbomClass.get(0).getId());
             }
             student.setBirth_date(studentManageForm.getBirth_date());
@@ -259,12 +259,12 @@ public class AdminService {
     public void deleteStudent(Long id){
         Optional<Student> result = studentRepository.findById(id);
         if((result.isPresent()) && (result.get().getDisable() == 1)){
-            System.out.println("Disable the existing dolbom student");
+            //System.out.println("Disable the existing dolbom student");
             studentRepository.disableStudent(result.get().getId());
         } else if ( (result.isPresent()) && (result.get().getDisable() == 0) ) {
-            System.out.println("This dolbom student is already inactive");
+            //System.out.println("This dolbom student is already inactive");
         } else {
-            System.out.println("error in deleteStudent");
+            //System.out.println("error in deleteStudent");
         }
     }
 
@@ -288,7 +288,7 @@ public class AdminService {
             } else if (gender == 2L) {
                 studentManageForm.setGender("여");
             } else {
-                System.out.println("Gender value error stored in DB");
+                //System.out.println("Gender value error stored in DB");
                 studentManageForm.setGender("error in sendStudentManageFormList");
             }
             studentManageForm.setClass_name(dolbomClassRepository.findById(studentList.get(i).getClass_id()).get(0).getClass_name());
@@ -300,15 +300,15 @@ public class AdminService {
     }
 
     public void addNewTeacher(Teacher teacher){
-        System.out.println(teacher.getName());
+        //System.out.println(teacher.getName());
         List<Teacher> result = teacherRepository.findByNameBirth(teacher.getName(), teacher.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable() == 0)){
-            System.out.println("Activation of existing dolbom teacher by csv");
+            //System.out.println("Activation of existing dolbom teacher by csv");
             teacherRepository.activationTeacher(result.get(0).getId());
         } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
-            System.out.println("This dolbom teacher is already active by csv");
+            //System.out.println("This dolbom teacher is already active by csv");
         } else if (result.size() == 0) {
-            System.out.println("Add new dolbom teacher csv");
+            //System.out.println("Add new dolbom teacher csv");
             teacher.setDisable(1L);
             teacherRepository.save(teacher);
         }
@@ -321,19 +321,19 @@ public class AdminService {
         } else if (teacherManageForm.getGender().equals("여")) {
             gender = 2L;
         } else {
-            System.out.println("Gender doesn't exist");
+            //System.out.println("Gender doesn't exist");
             return "잘못된 성별 입력입니다";
         }
         List<Teacher> result = teacherRepository.findByNameBirth(teacherManageForm.getName(), teacherManageForm.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable() == 0)){
-            System.out.println("Activation of existing dolbom teacher");
+            //System.out.println("Activation of existing dolbom teacher");
             teacherRepository.activationTeacher(result.get(0).getId());
             return "success";
         } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
-            System.out.println("This dolbom teacher is already active");
+            //System.out.println("This dolbom teacher is already active");
             return "이미 등록된 돌봄교사입니다";
         } else if (result.size() == 0) {
-            System.out.println("Add new dolbom teacher");
+            //System.out.println("Add new dolbom teacher");
             Teacher teacher = new Teacher();
             teacher.setId(teacherManageForm.getId());
             teacher.setName(teacherManageForm.getName());
@@ -344,10 +344,10 @@ public class AdminService {
             if(isDolbomClass.size() == 1){
                 teacher.setClass_id(isDolbomClass.get(0).getId());
             } else if (isDolbomClass.size() == 0){
-                System.out.println("There is no that kinds of dolbom class in addNewTeacherManageForm");
+                //System.out.println("There is no that kinds of dolbom class in addNewTeacherManageForm");
                 return "존재하지 않는 돌봄반 입력입니다";
             } else {
-                System.out.println("Duplicate dolbom class in addNewTeacherManageForm");
+                //System.out.println("Duplicate dolbom class in addNewTeacherManageForm");
                 teacher.setClass_id(isDolbomClass.get(0).getId());
             }
             teacher.setDisable(1L);
@@ -360,12 +360,12 @@ public class AdminService {
     public void deleteTeacher(Long id){
         Optional<Teacher> result = teacherRepository.findById(id);
         if((result.isPresent()) && (result.get().getDisable() == 1)){
-            System.out.println("Disable the existing dolbom teacher");
+            //System.out.println("Disable the existing dolbom teacher");
             teacherRepository.disableTeacher(result.get().getId());
         } else if ( (result.isPresent()) && (result.get().getDisable() == 0) ) {
-            System.out.println("This dolbom teacher is already inactive.");
+            //System.out.println("This dolbom teacher is already inactive.");
         } else {
-            System.out.println("error in deleteTeacher");
+            //System.out.println("error in deleteTeacher");
         }
     }
 
@@ -384,7 +384,7 @@ public class AdminService {
             } else if (gender == 2L) {
                 teacherManageForm.setGender("여");
             } else {
-                System.out.println("Gender value error stored in DB");
+                //System.out.println("Gender value error stored in DB");
                 teacherManageForm.setGender("error in sendTeacherList");
             }
             teacherManageForm.setBirth_date(teacherList.get(i).getBirth_date());
@@ -397,12 +397,12 @@ public class AdminService {
     public void addNewParent(Parent parent){
         List<Parent> result = parentRepository.findByNameBirth(parent.getName(), parent.getBirth_date());
         if((result.size() == 1) && (result.get(0).getDisable()==0)){
-            System.out.println("Activation of existing parent by csv");
+            //System.out.println("Activation of existing parent by csv");
             parentRepository.activationParent(result.get(0).getId());
         } else if ( (result.size() == 1) && (result.get(0).getDisable() == 1) ) {
-            System.out.println("This parent is already active by csv");
+            //System.out.println("This parent is already active by csv");
         } else if (result.size() == 0) {
-            System.out.println("Add new parent csv");
+            //System.out.println("Add new parent csv");
             parent.setDisable(1L);
             parentRepository.save(parent);
         }
@@ -415,19 +415,19 @@ public class AdminService {
         } else if (parentManageForm.getGender().equals("여")) {
             gender = 2L;
         } else {
-            System.out.println("Gender doesn't exist");
+            //System.out.println("Gender doesn't exist");
             return "잘못된 성별 입력입니다";
         }
         List<Parent> result = parentRepository.findByNameBirth(parentManageForm.getName(), parentManageForm.getBirth_date());
         if((result.size()==1)&&(result.get(0).getDisable()==0)){
-            System.out.println("Activation of existing parent");
+            //System.out.println("Activation of existing parent");
             parentRepository.activationParent(result.get(0).getId());
             return "success";
         } else if ((result.size() == 1) && (result.get(0).getDisable() == 1)) {
-            System.out.println("This parent is already active");
+            //System.out.println("This parent is already active");
             return "이미 등록된 학부모입니다";
         } else if (result.size()==0) {
-            System.out.println("Add new parent");
+            //System.out.println("Add new parent");
             Parent parent = new Parent();
             parent.setId(parentManageForm.getId());
             parent.setName(parentManageForm.getName());
@@ -438,16 +438,16 @@ public class AdminService {
             if(isStudent.size()==1){
                 parent.setChild_id(isStudent.get(0).getId());
             } else if (isStudent.size()==0) {
-                System.out.println("There is no that kinds of dolbom student in addNewParentManageForm");
+                //System.out.println("There is no that kinds of dolbom student in addNewParentManageForm");
                 return "등록되지 않은 학생 입력입니다";
             } else{
-                System.out.println("Duplicate dolbom student in addNewParentManageForm");
+                //System.out.println("Duplicate dolbom student in addNewParentManageForm");
             }
             List<DolbomClass> isDolbomClass = dolbomClassRepository.findById(isStudent.get(0).getClass_id());
             if(isDolbomClass.size()==1){
                 parent.setClass_id(isDolbomClass.get(0).getId());
             } else {
-                System.out.println("There is no dolbom class in addNewParentManageForm");
+                //System.out.println("There is no dolbom class in addNewParentManageForm");
                 return "존재하지 않는 돌봄반 입력입니다";
             }
             parent.setDisable(1L);
@@ -460,12 +460,12 @@ public class AdminService {
     public void deleteParent(Long id){
         Optional<Parent> result = parentRepository.findById(id);
         if((result.isPresent()) && (result.get().getDisable()==1)){
-            System.out.println("Disable the existing parent");
+            //System.out.println("Disable the existing parent");
             parentRepository.disableParent(result.get().getId());
         } else if ( (result.isPresent()) && (result.get().getDisable() == 0) ) {
-            System.out.println("This parent is already inactive");
+            //System.out.println("This parent is already inactive");
         } else {
-            System.out.println("error in deleteParent");
+            //System.out.println("error in deleteParent");
         }
     }
 
@@ -484,7 +484,7 @@ public class AdminService {
             } else if (gender == 2L) {
                 parentManageForm.setGender("여");
             } else {
-                System.out.println("DB error in sendParentList");
+                //System.out.println("DB error in sendParentList");
                 parentManageForm.setGender("error in sendParentlist");
             }
             parentManageForm.setBirth_date(parentList.get(i).getBirth_date());
@@ -497,9 +497,9 @@ public class AdminService {
     public void addNewAfterSchoolClass(AfterSchoolClass afterSchoolClass){
         List<AfterSchoolClass> result = afterSchoolClassRepository.findByClass_nameDay(afterSchoolClass.getClass_name(), afterSchoolClass.getDay());
         if(result.size() == 1){
-            System.out.println("This AfterSchoolClass is already existing by csv");
+            //System.out.println("This AfterSchoolClass is already existing by csv");
         } else if (result.size() == 0) {
-            System.out.println("Add new AfterSchoolClass by csv");
+            //System.out.println("Add new AfterSchoolClass by csv");
             afterSchoolClassRepository.save(afterSchoolClass);
         }
     }
@@ -517,21 +517,21 @@ public class AdminService {
         } else if (afterSchoolClassManageForm.getDay().equals("금")) {
             day = 5L;
         } else {
-            System.out.println("Day doesn't exist");
+            //System.out.println("Day doesn't exist");
             return "잘못된 요일 입력입니다";
         }
         List<AfterSchoolClass> result = afterSchoolClassRepository.findByClass_nameDay(afterSchoolClassManageForm.getClass_name(),day);
         if(result.size() == 1){
-            System.out.println("This AfterSchoolClass is already existing");
+            //System.out.println("This AfterSchoolClass is already existing");
             return "이미 존재하는 방과후교실입니다";
         } else if (result.size() == 0) {
-            System.out.println("Add new AfterSchoolClass");
+            //System.out.println("Add new AfterSchoolClass");
             AfterSchoolClass afterSchoolClass = new AfterSchoolClass();
             afterSchoolClass.setId(afterSchoolClassManageForm.getId());
             afterSchoolClass.setClass_name(afterSchoolClassManageForm.getClass_name());
             if((afterSchoolClassManageForm.getStart_time().isAfter(afterSchoolClassManageForm.getEnd_time())) ||
             afterSchoolClassManageForm.getStart_time().equals(afterSchoolClassManageForm.getEnd_time())){
-                System.out.println("start time is equal or after than end time");
+                //System.out.println("start time is equal or after than end time");
                 return "잘못된 시작 및 종료시간 입력입니다";
             }
             afterSchoolClass.setStart_time(Time.valueOf(afterSchoolClassManageForm.getStart_time()));
@@ -550,10 +550,10 @@ public class AdminService {
             Long class_id = result.get().getId();
             List<StudentSchedule> studentScheduleList = studentScheduleRepository.findByClass_id(class_id);
             if(studentScheduleList.size() > 0){
-                System.out.println("Cannot delete because there are students listening to the AfterSchoolClass");
+                //System.out.println("Cannot delete because there are students listening to the AfterSchoolClass");
                 return 0;
             } else if (studentScheduleList.size() == 0) {
-                System.out.println("Delete AfterSchoolClass");
+                //System.out.println("Delete AfterSchoolClass");
                 afterSchoolClassRepository.deleteAfterSchoolClass(class_id);
                 return 1;
             }
@@ -577,7 +577,7 @@ public class AdminService {
             else if (day == 4L) { afterSchoolClassManageForm.setDay("목"); }
             else if (day == 5L) { afterSchoolClassManageForm.setDay("금"); }
             else  {
-                System.out.println("Day doesn't exist");
+                //System.out.println("Day doesn't exist");
                 afterSchoolClassManageForm.setDay("error day");
             }
             afterSchoolClassManageFormList.add(afterSchoolClassManageForm);
@@ -607,7 +607,7 @@ public class AdminService {
             } else if (day == 5L){
                 afterSchoolClassManageForm.setDay("금");
             } else {
-                System.out.println("Day doesn't exist");
+                //System.out.println("Day doesn't exist");
                 afterSchoolClassManageForm.setDay("error day");
             }
             afterSchoolClassManageFormList.add(afterSchoolClassManageForm);
@@ -620,13 +620,13 @@ public class AdminService {
         if((isStudent.isPresent())&&(isAfterSchoolClass.isPresent())){
             List<StudentSchedule> result = studentScheduleRepository.findByStudent_idClass_id(isStudent.get().getId(),isAfterSchoolClass.get().getId());
             if(result.size()==1){
-                System.out.println("This student schedule is already existing by csv");
+                //System.out.println("This student schedule is already existing by csv");
                 return;
             }
             else if (result.size()==0) {
                 List<StudentTime> isStudentTime = studentTimeRepository.findByStudent_id(isStudent.get().getId());
                 if(isStudentTime.size()==0){
-                    System.out.println("There is no entry and off time for student. Please add entry and off time first.");
+                    //System.out.println("There is no entry and off time for student. Please add entry and off time first.");
                     return;
                 }
                 else if (isStudentTime.size()==1) {
@@ -634,40 +634,40 @@ public class AdminService {
                         case 1:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_1()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_1())) {
-                                System.out.println("Invalid afterschoolclass time in day1");
+                                //System.out.println("Invalid afterschoolclass time in day1");
                                 return;
                             } else break;
 
                         case 2:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_2()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_2())) {
-                                System.out.println("Invalid afterschoolclass time in day2");
+                                //System.out.println("Invalid afterschoolclass time in day2");
                                 return;
                             } else break;
 
                         case 3:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_3()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_3())) {
-                                System.out.println("Invalid afterschoolclass time in day3");
+                                //System.out.println("Invalid afterschoolclass time in day3");
                                 return;
                             } else break;
 
                         case 4:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_4()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_4())) {
-                                System.out.println("Invalid afterschoolclass time in day4");
+                                //System.out.println("Invalid afterschoolclass time in day4");
                                 return;
                             } else break;
 
                         case 5:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_5()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_5())) {
-                                System.out.println("Invalid afterschoolclass time in day5");
+                                //System.out.println("Invalid afterschoolclass time in day5");
                                 return;
                             } else break;
 
                         default:
-                            System.out.println("Invalid day");
+                            //System.out.println("Invalid day");
                             return;
                     }
                     List<StudentSchedule> existStudentScheduleList = studentScheduleRepository.findByStudent_id(isStudent.get().getId());
@@ -679,20 +679,20 @@ public class AdminService {
                             if((existStudentSchedule.getEnd_time().before(isAfterSchoolClass.get().getStart_time()) ||
                                     existStudentSchedule.getStart_time().after(isAfterSchoolClass.get().getEnd_time()))){
 
-                                System.out.println("Add new student schedule by csv");
+                                //System.out.println("Add new student schedule by csv");
                                 StudentSchedule newStudentSchedule = new StudentSchedule();
                                 newStudentSchedule.setStudent_id(isStudent.get().getId());
                                 newStudentSchedule.setClass_id(isAfterSchoolClass.get().getId());
                                 studentScheduleRepository.save(newStudentSchedule);
                                 return;
                             } else {
-                                System.out.println("It overlaps with the already registered after-school class schedule");
+                                //System.out.println("It overlaps with the already registered after-school class schedule");
                                 return;
                             }
                         }
                     }
                     //if there is no any exist after school class
-                    System.out.println("Add new student schedule by csv");
+                    //System.out.println("Add new student schedule by csv");
                     StudentSchedule newStudentSchedule = new StudentSchedule();
                     newStudentSchedule.setStudent_id(isStudent.get().getId());
                     newStudentSchedule.setClass_id(isAfterSchoolClass.get().getId());
@@ -700,17 +700,17 @@ public class AdminService {
                     return;
                 }
             } else {
-                System.out.println("Duplicate student schedule in add NewStudentSchedule");
+                //System.out.println("Duplicate student schedule in add NewStudentSchedule");
                 return;
             }
         } else if(isStudent.isPresent()){
-            System.out.println("There is no that kinds of dolbom student in addNewStudentSchedule");
+            //System.out.println("There is no that kinds of dolbom student in addNewStudentSchedule");
             return;
         } else if (isAfterSchoolClass.isPresent()) {
-            System.out.println("There is no that kinds of AfterSchoolClass in addNewStudentSchedule");
+            //System.out.println("There is no that kinds of AfterSchoolClass in addNewStudentSchedule");
             return;
         } else {
-            System.out.println("Duplicate dolbom student or dolbom afterschoolclass in addNewStudentSchedule");
+            //System.out.println("Duplicate dolbom student or dolbom afterschoolclass in addNewStudentSchedule");
             return;
         }
         return;
@@ -724,13 +724,13 @@ public class AdminService {
         if((isStudent.isPresent())&&(isAfterSchoolClass.isPresent())){
             List<StudentSchedule> result = studentScheduleRepository.findByStudent_idClass_id(isStudent.get().getId(),isAfterSchoolClass.get().getId());
             if(result.size()==1){
-                System.out.println("This student schedule is already existing");
+                //System.out.println("This student schedule is already existing");
                 return "이미 존재하는 학생시간표 입니다";
             }
             else if (result.size()==0) {
                 List<StudentTime> isStudentTime = studentTimeRepository.findByStudent_id(isStudent.get().getId());
                 if(isStudentTime.size()==0){
-                    System.out.println("There is no entry and off time for student. Please add entry and off time first.");
+                    //System.out.println("There is no entry and off time for student. Please add entry and off time first.");
                     return "학생 입퇴실시간이 없습니다. 학생 입퇴실시간을 먼저 설정해주세요";
                 }
                 else if (isStudentTime.size()==1) {
@@ -738,40 +738,40 @@ public class AdminService {
                         case 1:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_1()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_1())) {
-                                System.out.println("Invalid afterschoolclass time in day1");
+                                //System.out.println("Invalid afterschoolclass time in day1");
                                 return "잘못된 시작 및 종료시간 입력입니다";
                             } else break;
 
                         case 2:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_2()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_2())) {
-                                System.out.println("Invalid afterschoolclass time in day2");
+                                //System.out.println("Invalid afterschoolclass time in day2");
                                 return "잘못된 시작 및 종료시간 입력입니다";
                             } else break;
 
                         case 3:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_3()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_3())) {
-                                System.out.println("Invalid afterschoolclass time in day3");
+                                //System.out.println("Invalid afterschoolclass time in day3");
                                 return "잘못된 시작 및 종료시간 입력입니다";
                             } else break;
 
                         case 4:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_4()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_4())) {
-                                System.out.println("Invalid afterschoolclass time in day4");
+                                //System.out.println("Invalid afterschoolclass time in day4");
                                 return "잘못된 시작 및 종료시간 입력입니다";
                             } else break;
 
                         case 5:
                             if (isAfterSchoolClass.get().getStart_time().before(isStudentTime.get(0).getEntry_5()) ||
                                     isAfterSchoolClass.get().getEnd_time().after(isStudentTime.get(0).getOff_5())) {
-                                System.out.println("Invalid afterschoolclass time in day5");
+                                //System.out.println("Invalid afterschoolclass time in day5");
                                 return "잘못된 시작 및 종료시간 입력입니다";
                             } else break;
 
                         default:
-                            System.out.println("Invalid day");
+                            //System.out.println("Invalid day");
                             return "잘못된 요일 입력입니다";
                     }
                     List<StudentSchedule> existStudentScheduleList = studentScheduleRepository.findByStudent_id(isStudent.get().getId());
@@ -783,20 +783,20 @@ public class AdminService {
                             if((existStudentSchedule.getEnd_time().before(isAfterSchoolClass.get().getStart_time()) ||
                                     existStudentSchedule.getStart_time().after(isAfterSchoolClass.get().getEnd_time()))){
 
-                                System.out.println("Add new student schedule");
+                                //System.out.println("Add new student schedule");
                                 StudentSchedule studentSchedule = new StudentSchedule();
                                 studentSchedule.setStudent_id(isStudent.get().getId());
                                 studentSchedule.setClass_id(isAfterSchoolClass.get().getId());
                                 studentScheduleRepository.save(studentSchedule);
                                 return "success";
                             } else {
-                                System.out.println("It overlaps with the already registered after-school class schedule");
+                                //System.out.println("It overlaps with the already registered after-school class schedule");
                                 return "이미 등록된 방과후교실 시간표와 겹칩니다.";
                             }
                         }
                     }
                     //if there is no any exist after school class
-                    System.out.println("Add new student schedule");
+                    //System.out.println("Add new student schedule");
                     StudentSchedule studentSchedule = new StudentSchedule();
                     studentSchedule.setStudent_id(isStudent.get().getId());
                     studentSchedule.setClass_id(isAfterSchoolClass.get().getId());
@@ -804,17 +804,17 @@ public class AdminService {
                     return "success";
                 }
             } else {
-                System.out.println("Duplicate student schedule in add NewStudentScheduleManageForm");
+                //System.out.println("Duplicate student schedule in add NewStudentScheduleManageForm");
                 return "중복된 학생시간표가 입력되었습니다";
             }
         } else if(isStudent.isPresent()){
-            System.out.println("There is no that kinds of dolbom student in addNewStudentScheduleManageForm");
+            //System.out.println("There is no that kinds of dolbom student in addNewStudentScheduleManageForm");
             return "잘못된 학생 입력입니다";
         } else if (isAfterSchoolClass.isPresent()) {
-            System.out.println("There is no that kinds of AfterSchoolClass in addNewStudentScheduleManageForm");
+            //System.out.println("There is no that kinds of AfterSchoolClass in addNewStudentScheduleManageForm");
             return "잘못된 방과후교실 입력입니다";
         } else {
-            System.out.println("Duplicate dolbom student or dolbom afterschoolclass in addNewStudentScheduleManageForm");
+            //System.out.println("Duplicate dolbom student or dolbom afterschoolclass in addNewStudentScheduleManageForm");
             return "중복된 돌봄학생 혹은 방과후교실이 입력되었습니다";
         }
         return "fail";
@@ -822,10 +822,10 @@ public class AdminService {
     public void deleteStudentSchedule(Long id){
         Optional<StudentSchedule> result = studentScheduleRepository.findById(id);
         if(result.isPresent()){
-            System.out.println("Delete StudentSchedule");
+            //System.out.println("Delete StudentSchedule");
             studentScheduleRepository.deleteStudentSchedule(id);
         } else {
-            System.out.println("Student schedule cannot be deleted because it does not exist");
+            //System.out.println("Student schedule cannot be deleted because it does not exist");
         }
     }
 
@@ -850,7 +850,7 @@ public class AdminService {
             } else if (day == 5L){
                 studentScheduleForm.setDay("금");
             } else {
-                System.out.println("Day doesn't exist");
+                //System.out.println("Day doesn't exist");
                 studentScheduleForm.setDay("error day");
             }
             studentScheduleFormList.add(studentScheduleForm);
@@ -861,9 +861,9 @@ public class AdminService {
     public void addNewStudentTime(StudentTime studentTime){
         List<StudentTime> result = studentTimeRepository.findByStudent_id(studentTime.getStudent_id());
         if(result.size() == 1){
-            System.out.println("This student time is already existing by csv");
+            //System.out.println("This student time is already existing by csv");
         } else if (result.size()==0) {
-            System.out.println("Add new student time by csv");
+            //System.out.println("Add new student time by csv");
             studentTimeRepository.save(studentTime);
         }
     }
@@ -873,36 +873,36 @@ public class AdminService {
         if (isStudent.size()==1){
             List<StudentTime> result = studentTimeRepository.findByStudent_id(isStudent.get(0).getId());
             if(result.size()==1){
-                System.out.println("This student time is already existing");
+                //System.out.println("This student time is already existing");
                 return "이미 등록된 학생입퇴실시간입니다";
             } else if (result.size()==0) {
-                System.out.println("Add new student time");
+                //System.out.println("Add new student time");
                 StudentTime studentTime = new StudentTime();
                 studentTime.setId(studentTimeManageForm.getId());
                 studentTime.setStudent_id(isStudent.get(0).getId());
                 if((studentTimeManageForm.getEntry_1().isAfter(studentTimeManageForm.getOff_1())) ||
                         studentTimeManageForm.getEntry_1().equals(studentTimeManageForm.getOff_1())){
-                    System.out.println("entry time1 is equal or after than off time1");
+                    //System.out.println("entry time1 is equal or after than off time1");
                     return "잘못된 시작 및 종료시간 입력입니다";
                 }
                 if((studentTimeManageForm.getEntry_2().isAfter(studentTimeManageForm.getOff_2())) ||
                         studentTimeManageForm.getEntry_2().equals(studentTimeManageForm.getOff_2())){
-                    System.out.println("entry time2 is equal or after than off time2");
+                    //System.out.println("entry time2 is equal or after than off time2");
                     return "잘못된 시작 및 종료시간 입력입니다";
                 }
                 if((studentTimeManageForm.getEntry_3().isAfter(studentTimeManageForm.getOff_3())) ||
                         studentTimeManageForm.getEntry_3().equals(studentTimeManageForm.getOff_3())){
-                    System.out.println("entry time3 is equal or after than off time3");
+                    //System.out.println("entry time3 is equal or after than off time3");
                     return "잘못된 시작 및 종료시간 입력입니다";
                 }
                 if((studentTimeManageForm.getEntry_4().isAfter(studentTimeManageForm.getOff_4())) ||
                         studentTimeManageForm.getEntry_4().equals(studentTimeManageForm.getOff_4())){
-                    System.out.println("entry time4 is equal or after than off time4");
+                    //System.out.println("entry time4 is equal or after than off time4");
                     return "잘못된 시작 및 종료시간 입력입니다";
                 }
                 if((studentTimeManageForm.getEntry_5().isAfter(studentTimeManageForm.getOff_5())) ||
                         studentTimeManageForm.getEntry_5().equals(studentTimeManageForm.getOff_5())){
-                    System.out.println("entry time5 is equal or after than off time5");
+                    //System.out.println("entry time5 is equal or after than off time5");
                     return "잘못된 시작 및 종료시간 입력입니다";
                 }
                 studentTime.setEntry_1(Time.valueOf(studentTimeManageForm.getEntry_1()));
@@ -919,10 +919,10 @@ public class AdminService {
                 return "success";
             }
         } else if (isStudent.size()==0) {
-            System.out.println("There is no that kinds of dolbom student");
+            //System.out.println("There is no that kinds of dolbom student");
             return "잘못된 학생 입력입니다";
         } else {
-            System.out.println("Duplicate student in addNewStudentTimeManageForm");
+            //System.out.println("Duplicate student in addNewStudentTimeManageForm");
             return "중복된 학생이 입력되었습니다";
         }
         return "fail";
@@ -930,10 +930,10 @@ public class AdminService {
     public void deleteStudentTime(Long id){
         Optional<StudentTime> result = studentTimeRepository.findById(id);
         if(result.isPresent()){
-            System.out.println("Delete student time");
+            //System.out.println("Delete student time");
             studentTimeRepository.deleteStudentTime(id);
         } else {
-            System.out.println("Student time cannot be deleted because it does not exist");
+            //System.out.println("Student time cannot be deleted because it does not exist");
         }
     }
     public List<StudentTimeManageForm> sendStudentTimeManageFormList(){

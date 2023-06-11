@@ -1,7 +1,6 @@
 package com.example.dolbomi.repository;
 
-import com.example.dolbomi.controller.TeacherLoginForm;
-import com.example.dolbomi.domain.Teacher;
+import com.example.dolbomi.form.TeacherLoginForm;
 
 import java.util.List;
 

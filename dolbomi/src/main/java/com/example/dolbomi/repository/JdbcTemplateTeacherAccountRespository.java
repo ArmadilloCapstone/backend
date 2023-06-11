@@ -1,6 +1,6 @@
 package com.example.dolbomi.repository;
 
-import com.example.dolbomi.controller.TeacherLoginForm;
+import com.example.dolbomi.form.TeacherLoginForm;
 import com.example.dolbomi.domain.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class JdbcTemplateTeacherAccountRespository implements TeacherAccountRespository{
     private final JdbcTemplate jdbcTemplate;

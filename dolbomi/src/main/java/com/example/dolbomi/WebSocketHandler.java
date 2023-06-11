@@ -63,20 +63,20 @@ public class WebSocketHandler extends TextWebSocketHandler {
             //session.sendMessage(new TextMessage(chat.getString("id") + "가 등록되었습니다."));
         }
         else if(chat.getString("type").equals("message")){
-            System.out.println("HI");
+            //System.out.println("HI");
             String userid = null;
             for (String key : sessionMap.keySet()) {
                 if(session.equals(sessionMap.get(key))){
                     userid = key;
                 }
             }
-            System.out.println(message.getPayload());
+            //System.out.println(message.getPayload());
 
             var targetSession = sessionMap.get(chat.getString("receiver_id"));
-            System.out.println(chat.getString("receiver_id"));;
-            System.out.println(chat.getString("receiver_name"));;
-            System.out.println(chat.getString("text"));
-            System.out.println(targetSession);
+            //System.out.println(chat.getString("receiver_id"));;
+            //System.out.println(chat.getString("receiver_name"));;
+            //System.out.println(chat.getString("text"));
+            //System.out.println(targetSession);
             Message newMessage = new Message();
             newMessage.setSender_id(userid);
             newMessage.setSender_name(idNameMap.get(userid));
@@ -91,7 +91,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             targetSession.sendMessage(new TextMessage(createdMessage.toString()));
         }
         else{
-            System.out.println("Error");
+            //System.out.println("Error");
         }
 
 

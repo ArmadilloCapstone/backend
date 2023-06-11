@@ -109,11 +109,11 @@ public class JdbcTemplatePickupMessageRepository implements PickupMessageReposit
             if(result.size()==0){
                 List<Teacher> result2 = jdbcTemplate.query("select * from teacher where id = ?",teacherRowMapper(), teacher_id);
                 teacher_name = result2.get(0).getName();
-                System.out.println("teachername0:"+teacher_name);
+                //System.out.println("teachername0:"+teacher_name);
             }
             else{
                  teacher_name = result.get(0).getTeacher_name();
-                System.out.println("teachername1:"+teacher_name);
+                //System.out.println("teachername1:"+teacher_name);
             }
 
             File folder = new File("C:\\build\\deploy\\build\\resources\\main\\static\\static\\media\\exportedLogs\\");

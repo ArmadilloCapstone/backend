@@ -1,14 +1,13 @@
 package com.example.dolbomi.service;
 
-import com.example.dolbomi.controller.PickupListRequestForm;
-import com.example.dolbomi.controller.PickupRequestForm;
-import com.example.dolbomi.controller.StudentPickupForm;
+import com.example.dolbomi.form.PickupListRequestForm;
+import com.example.dolbomi.form.PickupRequestForm;
+import com.example.dolbomi.form.StudentPickupForm;
 import com.example.dolbomi.domain.*;
 import com.example.dolbomi.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PickupService {
@@ -61,7 +60,7 @@ public class PickupService {
             pickupRequestForm.setPickupManId(parent.get().getId());
             pickupRequestForm.setPickupManName(parent.get().getName());
         } else{
-            System.out.println("학부모 정보가 없습니다");
+            //System.out.println("학부모 정보가 없습니다");
             return null;
         }
         Long student_id = parent.get().getChild_id();
@@ -73,7 +72,7 @@ public class PickupService {
             pickupRequestForm.setStudentGender(student.get().getGender());
             pickupRepository.saveByParent(pickupRequestForm, student.get().getClass_id());
         } else{
-            System.out.println("돌봄학생 정보가 없습니다");
+            //System.out.println("돌봄학생 정보가 없습니다");
             return null;
         }
         return "success";
@@ -84,12 +83,12 @@ public class PickupService {
         for(int i = 0; i<studentCount;i++){
             PickupRequestForm pickupRequestForm = new PickupRequestForm();
             Optional<Guardian> guardian = guardianRepository.findBySerialNum(pickupListRequestForm.getPickupManId());
-            System.out.println(guardian.get().getName());
+            //System.out.println(guardian.get().getName());
             if(guardian.isPresent()){
                 pickupRequestForm.setPickupManId(guardian.get().getId());
                 pickupRequestForm.setPickupManName(guardian.get().getName());
             } else{
-                System.out.println("There is no information about guardian");
+                //System.out.println("There is no information about guardian");
                 return null;
             }
             Optional<Student> student = studentRepository.findById(pickupListRequestForm.getStudentPickupFormList().get(i).getId());
@@ -100,7 +99,7 @@ public class PickupService {
                 pickupRequestForm.setStudentGender(student.get().getGender());
                 pickupRepository.saveByGuardian(pickupRequestForm, student.get().getClass_id());
             } else{
-                System.out.println("돌봄학생 정보가 없습니다");
+                //System.out.println("돌봄학생 정보가 없습니다");
                 return null;
             }
         }
@@ -115,7 +114,7 @@ public class PickupService {
             pickupRepository.clearPickupStore(teacher.get().getClass_id());
             return pickupRequestFormList;
         } else {
-            System.out.println("유효하지 않은 돌봄교사 id입니다");
+            //System.out.println("유효하지 않은 돌봄교사 id입니다");
             return null;
         }
     }

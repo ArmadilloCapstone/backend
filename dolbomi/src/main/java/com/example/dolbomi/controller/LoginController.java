@@ -3,7 +3,10 @@ package com.example.dolbomi.controller;
 import com.example.dolbomi.domain.Admin;
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Parent;
-import com.example.dolbomi.domain.Teacher;
+import com.example.dolbomi.form.ChangePwForm;
+import com.example.dolbomi.form.LoginForm;
+import com.example.dolbomi.form.SignupForm;
+import com.example.dolbomi.form.TeacherLoginForm;
 import com.example.dolbomi.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +24,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public Object login(@RequestBody LoginForm loginForm){
-        System.out.println(loginForm);
+        //System.out.println(loginForm);
         if(loginForm.getOption() == 1){ // option 1 . teacher
             List<TeacherLoginForm> list = loginService.LoginT(loginForm.getUser_id(), loginForm.getUser_pw());
             if(list.size() == 1) return list.get(0);
@@ -50,7 +53,7 @@ public class LoginController {
 
     @PostMapping("/changepw")
     public String signup(@RequestBody ChangePwForm changeForm) {
-        System.out.println(changeForm);
+        //System.out.println(changeForm);
         if(changeForm.getOption() == 1){ // option 1 . teacher
             Boolean b = loginService.changePwT(changeForm.getUser_id(), changeForm.getUser_pw(), changeForm.getUser_new_pw());
             if(b == true){
@@ -85,7 +88,7 @@ public class LoginController {
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupForm signupForm) {
-        System.out.println(signupForm);
+        //System.out.println(signupForm);
         if(signupForm.getOption() == 1){ // option 1 . teacher
             String result = loginService.signupT(signupForm.getUser_id(), signupForm.getUser_pw(), signupForm.getName(), signupForm.getPhone_num());
             return result;

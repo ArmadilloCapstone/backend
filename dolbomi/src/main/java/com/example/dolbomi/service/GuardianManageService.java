@@ -1,6 +1,6 @@
 package com.example.dolbomi.service;
 
-import com.example.dolbomi.controller.GuardianManageForm;
+import com.example.dolbomi.form.GuardianManageForm;
 import com.example.dolbomi.domain.Guardian;
 import com.example.dolbomi.domain.Student;
 import com.example.dolbomi.domain.StudentOfGuardian;
@@ -26,10 +26,10 @@ public class GuardianManageService {
     public String addNewGuardian(Guardian guardian){
         List<Guardian> result = guardianRepository.findByNameInfo(guardian.getName(),guardian.getInfo());
         if(result.size()==1){
-            System.out.println("This guardian is already exist");
+            //System.out.println("This guardian is already exist");
             return "이미 등록된 보호자입니다";
         } else if (result.size()==0) {
-            System.out.println("Add new guardian");
+            //System.out.println("Add new guardian");
             guardianRepository.save(guardian);
             return "success";
         } else {
@@ -45,7 +45,7 @@ public class GuardianManageService {
     public void deleteGuardian(Long id){
         Optional<Guardian> result = guardianRepository.findById(id);
         if(result.isPresent()){
-            System.out.println("Delete guardian");
+            //System.out.println("Delete guardian");
             List<StudentOfGuardian> studentOfGuardianList = studentOfGuardianRepository.findByGuardian_id(id);
             int count = studentOfGuardianList.size();
             for(int i = 0; i<count;i++){
@@ -53,7 +53,7 @@ public class GuardianManageService {
             }
             guardianRepository.deleteGuardian(id);
         } else{
-            System.out.println("Guardian cannot be deleted because it does not exist");
+            //System.out.println("Guardian cannot be deleted because it does not exist");
         }
     }
     public List<Student> sendStudentList(Long guardian_id){
@@ -62,11 +62,11 @@ public class GuardianManageService {
         List<Student> studentList = new ArrayList<>();
         for(int i = 0; i < count; i++){
             if(studentOfGuardianRepository.findByGuardian_idStudent_id(guardian_id, result.get(i).getId()).size()==1){
-                System.out.println("This guardian already has this student");
+                //System.out.println("This guardian already has this student");
             } else if (studentOfGuardianRepository.findByGuardian_idStudent_id(guardian_id, result.get(i).getId()).size()==0) {
                 studentList.add(result.get(i));
             } else{
-                System.out.println("Duplicate Student_of_guardian");
+                //System.out.println("Duplicate Student_of_guardian");
             }
         }
         return studentList;
@@ -86,12 +86,12 @@ public class GuardianManageService {
     public void deleteStudentUnderGuardian(Long guardian_id, Long student_id){
         List<StudentOfGuardian> result = studentOfGuardianRepository.findByGuardian_idStudent_id(guardian_id, student_id);
         if(result.size()==1){
-            System.out.println("Delete student under guardian");
+            //System.out.println("Delete student under guardian");
             studentOfGuardianRepository.deleteStudentOfGuardian(result.get(0).getId());
         } else if (result.size()==0) {
-            System.out.println("Student under guardian cannot be deleted because it does not exist");
+            //System.out.println("Student under guardian cannot be deleted because it does not exist");
         } else {
-            System.out.println("Duplicate student_of_guardian");
+            //System.out.println("Duplicate student_of_guardian");
         }
     }
 
